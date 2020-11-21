@@ -6,11 +6,68 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.brand-logo {
+  margin-left: 20px;
 }
 
-* {
-  box-sizing: border-box;
+.brand-logo:hover {
+  border-bottom: 3px solid #1e88e5;
+}
+
+#logoMain {
+  height: 200px;
+  margin-right: 10px;
+}
+
+#logo {
+  height: 60px;
+  margin-right: 10px;
+}
+
+.loginButtons {
+  width: 100%;
+}
+
+.organizeTable {
+  margin-left: 25%;
+}
+
+#google {
+  background-color: #ea4335;
+}
+
+#linkedin {
+  background-color: #0077b5;
+}
+
+#loginForm {
+  margin-top: 80px;
+}
+
+#noAccount {
+  margin-top: 20px;
+}
+
+#newEmployee {
+  cursor: pointer;
+}
+
+#error {
+  font-size: 175px;
+}
+
+.nav-icon {
+  vertical-align: middle;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+/*#announcementBuilder {
+	padding: 10px;
+}*/
+
+.circle-small {
+  height: 30px;
+  margin-left: 15px;
+  margin-bottom: -10px;
 }
