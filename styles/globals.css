@@ -1,5 +1,10 @@
 html,
 
+body {
+  padding: 0;
+  margin: 0;
+}
+
 .brand-logo {
   margin-left: 20px;
 }
@@ -54,6 +59,14 @@ html,
   vertical-align: middle;
   margin-bottom: auto;
   margin-left: 20px;
+}
+
+.fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
 }
 
 /*#announcementBuilder {
