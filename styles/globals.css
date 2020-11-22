@@ -56,10 +56,10 @@ body {
   font-size: 175px;
 }
 
-.nav-icon {
+.nav-logo {
   vertical-align: middle;
-  display: inline-block;
-  margin-left: 5px;
+  margin-bottom: auto;
+  margin-left: 20px;
 }
 
 /*#announcementBuilder {
