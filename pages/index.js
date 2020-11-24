@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import ScheduleView from '../components/ScheduleView'
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+        <ScheduleView />
       </main>
 
       <footer className={styles.footer}>
