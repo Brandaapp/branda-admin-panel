@@ -31,18 +31,18 @@ export default function ScheduleView() {
 
     useEffect(() => {
         if (state.weekNum === -1) {
-            const day = new Date();
-            const date = DateTime.local(day.getFullYear(), day.getMonth() + 1, day.getDate());
+            //const day = new Date();
+            const date = DateTime.local(/* day.getFullYear(), day.getMonth() + 1, day.getDate() */);
             setWeek(date.minus({ days: (date.weekday % 7) }).toJSDate(),
                 date.plus({ days: (6 - (date.weekday % 7)) }).toJSDate(),
-                date.weekNumber);
+                date.weekNumber % 53);
         }
     });
 
     function renderRows() {
         return (state.scheduleData.map(schedule => {
             return (
-                <tr key={'_' + Math.random().toString(36).substr(2, 9)}>
+                <tr className="schedule-row" key={'_' + Math.random().toString(36).substr(2, 9)}>
                     <td>{schedule.name}</td>
                     <td>{schedule.monday === "11:00am-11:01am" ? "Closed" : schedule.monday}</td>
                     <td>{schedule.tuesday === "11:00am-11:01am" ? "Closed" : schedule.tuesday}</td>
@@ -66,11 +66,14 @@ export default function ScheduleView() {
 
     const open = Boolean(anchorEl);
     const id = open ? 'popover' : undefined;
-
-    if (state.weekNum === -1) return <img src="/loading-spinner.gif" style={{ width: "100px" }} />
+    if (state.weekNum === -1) return <img src="/branda-admin-loading-gif.gif" style={{ width: "280px" }} />
     else return (
         <div>
-            <h5>Week at a glance - current week is:</h5>
+            <h5>Week at a glance - current week is:
+                <span style={{ marginLeft: "10px", fontWeight: "500" }}>
+                    {state.weekStart.toLocaleDateString('en-US')} - {state.weekEnd.toLocaleDateString('en-US')}
+                </span>
+            </h5>
             <Button aria-describedby={id} variant="contained" style={{ backgroundColor: "#1B4470", color: "white" }} onClick={handleClick}>
                 Choose Week
             </Button>
@@ -92,14 +95,16 @@ export default function ScheduleView() {
             </Popover>
             <table style={{ width: "1150px" }}>
                 <thead>
-                    <th>Name</th>
-                    <th>Mon</th>
-                    <th>Tues</th>
-                    <th>Wed</th>
-                    <th>Thurs</th>
-                    <th>Fri</th>
-                    <th>Sat</th>
-                    <th>Sun</th>
+                    <tr>
+                        <th>Name</th>
+                        <th>Mon</th>
+                        <th>Tues</th>
+                        <th>Wed</th>
+                        <th>Thurs</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                        <th>Sun</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {renderRows()}

@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
-import DayPicker, { DateUtils } from 'react-day-picker';
+import { useState } from 'react';
+import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 
 const { DateTime } = require('luxon');
-const axios = require('axios');
 const weekStyle = { outside: { color: '#8b9898 !important' }, today: { color: '#171B1F' } };
 
 export default function WeekPicker(props) {
@@ -17,9 +16,7 @@ export default function WeekPicker(props) {
         const last = date.plus({ days: (6 - (date.weekday % 7)) }).toJSDate()
         setFirstDay(date.minus({ days: (date.weekday % 7) }).toJSDate());
         setLastDay(date.plus({ days: (6 - (date.weekday % 7)) }).toJSDate());
-        props.setWeek(first, last, date.weekNumber);
-        console.log(props.firstDay);
-        console.log(props.lastDay);
+        props.setWeek(first, last, date.weekNumber % 53);
     }
 
     function enterWeek(day) {
