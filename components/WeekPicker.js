@@ -11,16 +11,16 @@ export default function WeekPicker(props) {
     const [lastDay, setLastDay] = useState(props.lastDay);
     const [hoverRange, setHoverRange] = useState(undefined);
 
-    function selectWeek(day) {
+    async function selectWeek(day) {
         const date = DateTime.local(day.getFullYear(), day.getMonth() + 1, day.getDate());
+        const first = date.minus({ days: (date.weekday % 7) }).toJSDate();
+        const last = date.plus({ days: (6 - (date.weekday % 7)) }).toJSDate()
         setFirstDay(date.minus({ days: (date.weekday % 7) }).toJSDate());
         setLastDay(date.plus({ days: (6 - (date.weekday % 7)) }).toJSDate());
-        props.setWeek(firstDay, lastDay, date.weekNumber);
+        props.setWeek(first, last, date.weekNumber);
+        console.log(props.firstDay);
+        console.log(props.lastDay);
     }
-
-    /* useEffect(() => {
-        if (firstDay === null) selectWeek(new Date());
-    }); */
 
     function enterWeek(day) {
         const date = DateTime.local(day.getFullYear(), day.getMonth() + 1, day.getDate());

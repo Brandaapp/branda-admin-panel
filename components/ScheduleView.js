@@ -2,32 +2,35 @@ import { useState, useEffect } from 'react';
 import WeekPicker from './WeekPicker';
 import Popover from '@material-ui/core/Popover';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
 
 const { DateTime } = require('luxon');
 const axios = require('axios');
 
 export default function ScheduleView() {
-    const [weekStart, setWeekStart] = useState(null);
-    const [weekEnd, setWeekEnd] = useState(null);
-    const [weekNum, setWeekNum] = useState(-1);
-    const [scheduleData, setScheduleData] = useState([]);
+    const [state, setState] = useState({
+        weekStart: null,
+        weekEnd: null,
+        weekNum: -1,
+        scheduleData: []
+    });
     const [anchorEl, setAnchorEl] = useState(null);
 
     async function setWeek(start, end, num) {
         await axios.get(`/api/schedules/${num}`)
             .then(response => {
-                setScheduleData(response.data);
+                setState({
+                    weekStart: start,
+                    weekEnd: end,
+                    weekNum: num,
+                    scheduleData: response.data
+                })
                 console.log(response);
             })
             .catch(err => console.log("Error fetching schedule info", err));
-        setWeekStart(start);
-        setWeekEnd(end);
-        setWeekNum(num);
     }
 
     useEffect(() => {
-        if (weekNum === -1) {
+        if (state.weekNum === -1) {
             const day = new Date();
             const date = DateTime.local(day.getFullYear(), day.getMonth() + 1, day.getDate());
             setWeek(date.minus({ days: (date.weekday % 7) }).toJSDate(),
@@ -37,9 +40,9 @@ export default function ScheduleView() {
     });
 
     function renderRows() {
-        return (scheduleData.map(schedule => {
+        return (state.scheduleData.map(schedule => {
             return (
-                <tr>
+                <tr key={'_' + Math.random().toString(36).substr(2, 9)}>
                     <td>{schedule.name}</td>
                     <td>{schedule.monday === "11:00am-11:01am" ? "Closed" : schedule.monday}</td>
                     <td>{schedule.tuesday === "11:00am-11:01am" ? "Closed" : schedule.tuesday}</td>
@@ -64,7 +67,7 @@ export default function ScheduleView() {
     const open = Boolean(anchorEl);
     const id = open ? 'popover' : undefined;
 
-    if (weekNum === -1) return <img src="/loading-spinner.gif" style={{ width: "100px" }} />
+    if (state.weekNum === -1) return <img src="/loading-spinner.gif" style={{ width: "100px" }} />
     else return (
         <div>
             <h5>Week at a glance - current week is:</h5>
@@ -85,9 +88,9 @@ export default function ScheduleView() {
                     horizontal: 'center'
                 }}
             >
-                <WeekPicker setWeek={setWeek} firstDay={weekStart} lastDay={weekEnd} />
+                <WeekPicker setWeek={setWeek} firstDay={state.weekStart} lastDay={state.weekEnd} />
             </Popover>
-            <table>
+            <table style={{ width: "1150px" }}>
                 <thead>
                     <th>Name</th>
                     <th>Mon</th>
