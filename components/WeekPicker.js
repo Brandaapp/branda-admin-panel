@@ -3,6 +3,7 @@ import DayPicker, { DateUtils } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 
 const { DateTime } = require('luxon');
+const axios = require('axios');
 const today = DateTime.local();
 const weekStyle = { outside: { color: '#8b9898 !important' }, today: { color: '#171B1F' } };
 
@@ -15,6 +16,10 @@ export default function WeekPicker(props) {
         const date = DateTime.local(day.getFullYear(), day.getMonth() + 1, day.getDate());
         setFirstDay(date.minus({ days: (date.weekday % 7) }).toJSDate());
         setLastDay(date.plus({ days: (6 - (date.weekday % 7)) }).toJSDate());
+        axios.get('/api/getEmpSchedules', { params: { week: 48 } })
+            .then(response => {
+                console.log(response);
+            });
     }
 
     function enterWeek(day) {
