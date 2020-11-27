@@ -1,5 +1,4 @@
 html,
-
 body {
   padding: 0;
   margin: 0;
@@ -69,6 +68,10 @@ body {
   z-index: 1030;
 }
 
+.schedule-row {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
 /*#announcementBuilder {
 	padding: 10px;
 }*/
@@ -77,4 +80,17 @@ body {
   height: 30px;
   margin-left: 15px;
   margin-bottom: -10px;
+}
+
+.announcement-card {
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12),
+    0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  padding: 20px 25px 20px 25px;
+  border-radius: 4px;
+  margin-top: 15px;
+}
+
+.input-label {
+  font-size: 1.2rem;
+  line-height: 2;
 }

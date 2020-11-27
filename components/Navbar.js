@@ -11,7 +11,7 @@ export default function Navbar() {
               <Link href="/shuttles-management">
                 <a className="black-text">
                   Shuttles Managment
-                  <i className="small material-icons right">directions_bus</i>
+                  <i className="material-icons right">directions_bus</i>
                 </a>
               </Link>
             </li>
