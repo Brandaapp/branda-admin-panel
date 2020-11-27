@@ -6,19 +6,13 @@ import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 
 const Accordion = withStyles({
-    root: {
-        color: 'white',
-        backgroundColor: '#1B4370'
-    },
     expanded: {},
 })(MuiAccordion);
 
 const AccordionSummary = withStyles({
     root: {
-        color: 'white',
-        backgroundColor: '#1B4370',
         borderTop: '1px solid rgba(0, 0, 0, 0.125)',
-        borderBottom: '1px solid rgba(0, 0, 0, 0.125)',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.07)',
         marginBottom: -1,
         minHeight: 56,
         '&$expanded': {
@@ -50,7 +44,10 @@ export default function AnnouncementRow(props) {
         <div>
             <Accordion square expanded={open} onChange={handleChange}>
                 <AccordionSummary>
-                    <Typography>{props.title}</Typography>
+                    {props.title}
+                    <i className="material-icons right" style={{ marginLeft: "auto", color: "#D1D5DB" }}>
+                        {open ? 'expand_more' : 'chevron_left'}
+                    </i>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>{props.content}</Typography>

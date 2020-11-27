@@ -41,7 +41,10 @@ export default function Home() {
             border-bottom-right-radius: 50% !important;
           }
           .MuiPaper-elevation1 {
-              box-shadow: 0px 0px 0px 0px !important;
+            box-shadow: 0px 0px 0px 0px !important;
+          }
+          .MuiTypography-body1 {
+            margin-left: 1.5rem !important;
           }
         `}</style>
       </Head>
