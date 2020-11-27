@@ -1,8 +1,11 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import ScheduleView from '../components/ScheduleView'
+import { useState } from 'react';
+import Head from 'next/head';
+import styles from '../styles/Home.module.css';
+import ScheduleView from '../components/ScheduleView';
+import AnnouncementsView from '../components/AnnouncementsView';
 
 export default function Home() {
+  const [dataFetched, setDataFetched] = useState(false);
   return (
     <div className={styles.container}>
       <Head>
@@ -37,11 +40,19 @@ export default function Home() {
             border-top-right-radius: 50% !important;
             border-bottom-right-radius: 50% !important;
           }
+          .MuiPaper-elevation1 {
+              box-shadow: 0px 0px 0px 0px !important;
+          }
         `}</style>
       </Head>
 
       <main className={styles.main}>
-        <ScheduleView />
+        <div className="row">
+          <ScheduleView dataFetched={dataFetched} setDataFetched={setDataFetched} />
+        </div>
+        <div className="row">
+          <AnnouncementsView dataFetched={dataFetched} />
+        </div>
       </main>
 
       <footer className={styles.footer}>

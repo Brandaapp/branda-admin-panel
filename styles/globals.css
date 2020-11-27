@@ -81,3 +81,13 @@ body {
   margin-left: 15px;
   margin-bottom: -10px;
 }
+
+.announcements-display {
+  padding: 24px;
+}
+
+.card .announcement-card {
+  background-color: #1b4370;
+  border-radius: "4px";
+  margin-top: "15px";
+}

@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 const { DateTime } = require('luxon');
 const axios = require('axios');
 
-export default function ScheduleView() {
+export default function ScheduleView(props) {
     const [state, setState] = useState({
         weekStart: null,
         weekEnd: null,
@@ -27,12 +27,12 @@ export default function ScheduleView() {
                 console.log(response);
             })
             .catch(err => console.log("Error fetching schedule info", err));
+        if (!props.dataFetched) props.setDataFetched(true);
     }
 
     useEffect(() => {
         if (state.weekNum === -1) {
-            //const day = new Date();
-            const date = DateTime.local(/* day.getFullYear(), day.getMonth() + 1, day.getDate() */);
+            const date = DateTime.local();
             setWeek(date.minus({ days: (date.weekday % 7) }).toJSDate(),
                 date.plus({ days: (6 - (date.weekday % 7)) }).toJSDate(),
                 date.weekNumber % 53);
