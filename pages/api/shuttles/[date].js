@@ -4,7 +4,7 @@ const { DateTime } = require('luxon');
 
 dbConnect();
 
-export default (req,res) => {
+export default (req, res) => {
     const { query: { date } } = req;
     const day = DateTime.fromISO(date);
     ShuttleActivity.findOne({ 

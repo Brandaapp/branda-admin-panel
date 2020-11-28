@@ -3,7 +3,7 @@ import { weekStart, weekEnd, weekNum } from '../utils/dateUtils'
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 
-const weekStyle = { outside: { color: '#8b9898 !important' }, today: { color: '#171B1F' } };
+const weekStyle = { outside: { color: '#8b9898 !important' }/* , today: { color: 'inherit !important' } */ };
 
 export default function WeekPicker(props) {
     const [firstDay, setFirstDay] = useState(props.firstDay);

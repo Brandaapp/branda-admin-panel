@@ -15,6 +15,7 @@ export default function Home() {
           .DayPicker-Day {
             outline: none;
             border: 1px solid transparent;
+            color: #171b1f !important;
           }
           .WeekPicker .DayPicker-Day--hoverRange {
             background-color: #EFEFEF !important;
@@ -26,7 +27,7 @@ export default function Home() {
           }
           .WeekPicker .DayPicker-Day--start {
             background-color: #22568e !important;
-            color: white;
+            color: white !important;
             border-top-left-radius: 50% !important;
             border-bottom-left-radius: 50% !important;
             border-top-right-radius: 0 !important;
@@ -34,7 +35,7 @@ export default function Home() {
           }
           .WeekPicker .DayPicker-Day--end {
             background-color: #22568e !important;
-            color: white;
+            color: white !important;
             border-top-left-radius: 0 !important;
             border-bottom-left-radius: 0 !important;
             border-top-right-radius: 50% !important;
