@@ -25,7 +25,7 @@ export default (req, res) => {
                     monday: weekInfo.monday
                 });
             });
-            res.json(schedules);
+            res.send(schedules);
         }
     });
-};
+}
