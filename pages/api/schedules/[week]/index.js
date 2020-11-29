@@ -1,5 +1,5 @@
-import dbConnect from '../../../utils/dbConnect';
-let PlaceSchedule = require('../../../models/place-schedule');
+import dbConnect from '../../../../utils/dbConnect';
+let PlaceSchedule = require('../../../../models/place-schedule');
 
 dbConnect();
 
@@ -25,7 +25,7 @@ export default (req, res) => {
                     monday: weekInfo.monday
                 });
             });
-            res.json(schedules);
+            res.send(schedules);
         }
     });
-};
+}

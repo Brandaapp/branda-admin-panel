@@ -1,9 +1,9 @@
 import { useState } from 'react';
+import { weekStart, weekEnd, weekNum } from '../utils/dateUtils'
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 
-const { DateTime } = require('luxon');
-const weekStyle = { outside: { color: '#8b9898 !important' }, today: { color: '#171B1F' } };
+const weekStyle = { outside: { color: '#8b9898 !important' }/* , today: { color: 'inherit !important' } */ };
 
 export default function WeekPicker(props) {
     const [firstDay, setFirstDay] = useState(props.firstDay);
@@ -11,19 +11,17 @@ export default function WeekPicker(props) {
     const [hoverRange, setHoverRange] = useState(undefined);
 
     async function selectWeek(day) {
-        const date = DateTime.local(day.getFullYear(), day.getMonth() + 1, day.getDate());
-        const first = date.minus({ days: (date.weekday % 7) }).toJSDate();
-        const last = date.plus({ days: (6 - (date.weekday % 7)) }).toJSDate()
-        setFirstDay(date.minus({ days: (date.weekday % 7) }).toJSDate());
-        setLastDay(date.plus({ days: (6 - (date.weekday % 7)) }).toJSDate());
-        props.setWeek(first, last, date.weekNumber % 53);
+        const first = weekStart(day);
+        const last = weekEnd(day);
+        setFirstDay(first);
+        setLastDay(last);
+        props.setWeek(first,last,weekNum(day));
     }
 
     function enterWeek(day) {
-        const date = DateTime.local(day.getFullYear(), day.getMonth() + 1, day.getDate());
         setHoverRange({
-            from: date.minus({ days: (date.weekday % 7) }).toJSDate(),
-            to: date.plus({ days: (6 - (date.weekday % 7)) }).toJSDate()
+            from: weekStart(day),
+            to: weekEnd(day)
         });
     }
 

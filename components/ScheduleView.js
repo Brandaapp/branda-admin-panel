@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { weekStart, weekEnd, weekNum } from '../utils/dateUtils';
 import WeekPicker from './WeekPicker';
 import Popover from '@material-ui/core/Popover';
 import Button from '@material-ui/core/Button';
@@ -32,10 +33,8 @@ export default function ScheduleView(props) {
 
     useEffect(() => {
         if (state.weekNum === -1) {
-            const date = DateTime.local();
-            setWeek(date.minus({ days: (date.weekday % 7) }).toJSDate(),
-                date.plus({ days: (6 - (date.weekday % 7)) }).toJSDate(),
-                date.weekNumber % 53);
+            const day = new Date();
+            setWeek(weekStart(day),weekEnd(day),weekNum(day));
         }
     });
 
