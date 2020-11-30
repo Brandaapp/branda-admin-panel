@@ -17,6 +17,12 @@ export default (req, res) => {
             route: req.body.route,
             ID: req.body.ID
         }
+        /* 
+            11/30/2020
+            Note: MongoDB $ne query operator behaves in an unexpected way when used with arrays
+            explanation here: 
+            https://stackoverflow.com/questions/10907843/mongo-ne-query-with-an-array-not-working-as-expected/36484191
+         */
         ShuttleActivity.update(
             { date: { $gte: start, $lte: end }, "times.ID": { $ne: req.body.ID } },
             { $addToSet: { times: temp } },
