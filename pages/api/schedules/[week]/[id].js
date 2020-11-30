@@ -8,10 +8,10 @@ export default (req, res) => {
     PlaceSchedule.findOne({ emp_id: id }, (err, doc) => {
         if (err) {
             console.log("Error finding schedule", err);
-            res.sendStatus(500);
+            res.status(500);
         } else if (!doc) {
             console.log("Could not find schedule");
-            res.sendStatus(404);
+            res.status(404);
         } else {
             res.send(doc.weeks[week]);
         }
