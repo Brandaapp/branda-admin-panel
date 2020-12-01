@@ -29,7 +29,7 @@ export default (req, res) => {
             (err, doc) => {
                 if (err) {
                     console.log("Error adding shuttle");
-                    res.status(500);
+                    res.status(500).send("Oop");
                 } else {
                     res.send(doc);
                     
@@ -46,10 +46,10 @@ export default (req, res) => {
         }, (err, doc) => {
             if (err) {
                 console.log("Error finding date", err);
-                res.status(500);
+                res.status(500).send("Oop");
             } else if (!doc) {
                 console.log("Could not find date");
-                res.status(404);
+                res.status(404).send("Oop");
             } else {
                 res.send(doc);
             }

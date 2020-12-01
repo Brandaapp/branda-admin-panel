@@ -12,14 +12,14 @@ export default (req, res) => {
         temp.save((err, doc) => {
             if (err) {
                 console.log("Error saving new announcement", err);
-                res.status(500);
+                res.status(500).send("Oop");
             } else res.send(doc);
         });
     } else {
         Announcement.find({ active: 1 }, (err, docs) => {
             if (err) {
                 console.log("Error finding announcements", err);
-                res.status(500);
+                res.status(500).send("Oop");
             } else res.send(docs);
         });
     }

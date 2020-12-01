@@ -7,7 +7,7 @@ export default (req, res) => {
     PlaceSchedule.find({ active: 1 }, (err, docs) => {
         if (err) {
             console.log("Error finding schedules", err);
-            res.status(500);
+            res.status(500).send("Oop");
         } else {
             const { query: { week } } = req;
             let schedules = [];
