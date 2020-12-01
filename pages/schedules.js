@@ -6,7 +6,6 @@ export default function Schedules() {
     <div className={styles.container}>
       <Head>
         <title>Branda - Schedules</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>

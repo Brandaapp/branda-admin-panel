@@ -6,7 +6,6 @@ export default function Screens() {
     <div className={styles.container}>
       <Head>
         <title>Branda - Screens</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>

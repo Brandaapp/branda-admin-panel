@@ -6,7 +6,6 @@ export default function Register() {
     <div className={styles.container}>
       <Head>
         <title>Branda - Register</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
