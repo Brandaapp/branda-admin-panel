@@ -13,17 +13,19 @@ export default (req, res) => {
             let schedules = [];
             console.log("week: " + week);
             docs.forEach(place => {
-                let weekInfo = place.weeks[week];
-                schedules.push({
-                    name: place.Name,
-                    sunday: weekInfo.sunday,
-                    saturday: weekInfo.saturday,
-                    friday: weekInfo.friday,
-                    thursday: weekInfo.thursday,
-                    wednesday: weekInfo.wednesday,
-                    tuesday: weekInfo.tuesday,
-                    monday: weekInfo.monday
-                });
+                if (place.weeks.length > week) {
+                    let weekInfo = place.weeks[week];
+                    schedules.push({
+                        name: place.Name,
+                        sunday: weekInfo.sunday,
+                        saturday: weekInfo.saturday,
+                        friday: weekInfo.friday,
+                        thursday: weekInfo.thursday,
+                        wednesday: weekInfo.wednesday,
+                        tuesday: weekInfo.tuesday,
+                        monday: weekInfo.monday
+                    });
+                }
             });
             res.send(schedules);
         }

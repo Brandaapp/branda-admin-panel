@@ -13,7 +13,7 @@ export default (req, res) => {
             console.log("Could not find schedule");
             res.status(404).send("Oop");
         } else {
-            res.send(doc.weeks[week]);
+            res.send(doc.weeks > week ? doc.weeks[week] : null);
         }
     });
 }
