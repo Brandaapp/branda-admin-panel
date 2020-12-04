@@ -40,7 +40,7 @@ export default function Navbar() {
               </Link>
             </li>
             <li>
-              <Link href="/register">
+              <Link href="/announcements">
                 <a className="black-text">
                   Announcements
                   <i className="material-icons right">notification_important</i>

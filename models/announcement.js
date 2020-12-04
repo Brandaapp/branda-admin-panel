@@ -1,21 +1,14 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
 
-var AnnouncementSchema = new Schema({
-  title: {
-    type: String
-  },
-  content: {
-    type: String
-  },
-  // datetime: {
-  //   type: Date,
-  //   default: Date.now,
-  // },
-  active: {
-      type: Number,
-      default: 1
-  }
-});
+let BranvanNotifSchema = new Schema({
+    _id: Schema.Types.ObjectId,
+    type: String,
+    content: String, 
+    startTime: Date,
+    endTime: Date
+}, {
+    timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}
+})
 
-module.exports = mongoose.models.Announcement || mongoose.model('Announcement', AnnouncementSchema);
+module.exports = mongoose.models.BranvanNotif || mongoose.model('BranvanNotif', BranvanNotifSchema);
