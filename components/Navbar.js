@@ -40,18 +40,18 @@ export default function Navbar() {
               </Link>
             </li>
             <li>
-              <Link href="/screens">
+              <Link href="/register">
                 <a className="black-text">
-                  Screens
-                  <i className="material-icons right">ad_units</i>
+                  Announcements
+                  <i className="material-icons right">notification_important</i>
                 </a>
               </Link>
             </li>
             <li>
-              <Link href="/register">
+              <Link href="/screens">
                 <a className="black-text">
-                  Register
-                  <i className="material-icons right">person_add_alt_1</i>
+                  Screens
+                  <i className="material-icons right">ad_units</i>
                 </a>
               </Link>
             </li>
