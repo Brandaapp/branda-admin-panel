@@ -28,7 +28,7 @@ export default function AnnouncementsView(props) {
     });
 
     function createAnnouncement(data) {
-        axios.post('/api/announcements',data)
+        axios.post('/api/announcements', data)
             .then(() => {getAnnouncements()})
             .catch(err => console.log("Error creating announcement", err));
     }

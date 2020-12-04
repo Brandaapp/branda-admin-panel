@@ -4,7 +4,6 @@ import WeekPicker from './WeekPicker';
 import Popover from '@material-ui/core/Popover';
 import Button from '@material-ui/core/Button';
 
-const { DateTime } = require('luxon');
 const axios = require('axios');
 
 export default function ScheduleView(props) {
