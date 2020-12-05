@@ -1,0 +1,62 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Branda Admin Panel Backend",
+        "description": "Backend for the Branda admin panel",
+        "version": "1.0.1"
+    },
+    "paths": {
+        "/api/announcements": {
+            "post": {
+                "tags": ["announcements"],
+                "summary": "Creates a new announcement with the given form data",
+                "requestBody": {
+                    "description": "The announcement to add to the database",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/announcement.json"
+                            },
+                            "examples": {
+                                "announcement": {
+                                    "type": "Branvan Schedule Change",
+                                    "content": "Branvan schedule after winter break has been changed. Please see website for details.",
+                                    "startTime": "2020-11-22T14:57:00.000+00:00",
+                                    "endTime": "2021-01-15T02:57:00.000+00:00"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Announcement was successfully added to the database",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/announcement.json"
+                                },
+                                "examples": {
+                                    "announcement": {
+                                        "type": "Branvan Schedule Change",
+                                        "content": "Branvan schedule after winter break has been changed. Please see website for details.",
+                                        "startTime": "2020-11-22T14:57:00.000+00:00",
+                                        "endTime": "2021-01-15T02:57:00.000+00:00"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error creating announcement"
+                    }
+                }
+            }
+        },
+        "/api/announcements/{date}": {},
+        "/api/schedules": {},
+        "/api/schedules/{week}": {},
+        "/api/schedules/{week}/{id}": {},
+        "/api/shuttles/{date}": {}
+    }
+}
