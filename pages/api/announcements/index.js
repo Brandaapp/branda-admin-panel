@@ -1,5 +1,5 @@
-import { Mongoose } from 'mongoose';
 import dbConnect from '../../../utils/dbConnect';
+let mongoose = require('mongoose');
 let Announcement = require('../../../models/announcement');
 
 dbConnect();
@@ -7,7 +7,7 @@ dbConnect();
 //POST method
 export default (req, res) => {
     let temp = new Announcement({
-        _id: new Mongoose.Types.ObjectId(),
+        _id: new mongoose.Types.ObjectId(),
         startTime: req.body.startTime,
         endTime: req.body.endTime,
         type: req.body.type,

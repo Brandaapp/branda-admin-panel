@@ -1,14 +1,20 @@
 import '../styles/globals.css';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import '../styles/materialize.css';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import LuxonUtils from '@date-io/luxon';
 import Navbar from '../components/Navbar';
+
+const inputTheme = createMuiTheme({ palette: { primary: { main: "#1A4370" } } });
 
 function App({ Component, pageProps }) {
   return (
     <div>
       <MuiPickersUtilsProvider utils={LuxonUtils}>
-        <div className="row"><Navbar /></div>
-        <div className="row"><Component {...pageProps} /></div>
+        <ThemeProvider theme={inputTheme}>
+          <div className="row"><Navbar /></div>
+          <div className="row"><Component {...pageProps} /></div>
+        </ThemeProvider>
       </MuiPickersUtilsProvider>
     </div>
   );

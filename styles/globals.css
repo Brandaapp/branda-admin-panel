@@ -117,4 +117,19 @@ body {
 input:focus:not([read-only]) {
 	border-bottom: none!important;
 	box-shadow: none!important;	
-} 
+}
+
+/* .MuiPickersToolbar-toolbar {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  background-color: #1A4370 !important;
+}
+
+.MuiPickersDay-daySelected {
+  color: #fff;
+  font-weight: 500;
+  background-color: #1A4370 !important;
+} */
