@@ -6,7 +6,6 @@ export default function Reservations() {
     <div className={styles.container}>
       <Head>
         <title>Branda - Reservations</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>

@@ -6,7 +6,6 @@ export default function ShuttlesManagement() {
     <div className={styles.container}>
       <Head>
         <title>Branda - Shuttles Management</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>

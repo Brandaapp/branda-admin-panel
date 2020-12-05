@@ -10,7 +10,6 @@ export default function Home() {
     <div className={styles.container}>
       <Head>
         <title>Branda - Home</title>
-        <link rel="icon" href="/favicon.ico" />
         <style>{`
           .DayPicker-Day {
             outline: none;

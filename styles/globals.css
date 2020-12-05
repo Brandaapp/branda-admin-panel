@@ -90,7 +90,46 @@ body {
   margin-top: 15px;
 }
 
+.announcement-card ul {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.announcement-item {
+  padding: 20px 15px 5px 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  margin-bottom: -1;
+  min-height: 56;
+}
+
+.announcement-item span {
+  font-size: 1.2em;
+}
+
+.announcement-item p {
+  font-size: 1.07em;
+}
+
 .input-label {
   font-size: 1.2rem;
   line-height: 2;
 }
+
+input:focus:not([read-only]) {
+	border-bottom: none!important;
+	box-shadow: none!important;	
+}
+
+/* .MuiPickersToolbar-toolbar {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  background-color: #1A4370 !important;
+}
+
+.MuiPickersDay-daySelected {
+  color: #fff;
+  font-weight: 500;
+  background-color: #1A4370 !important;
+} */
