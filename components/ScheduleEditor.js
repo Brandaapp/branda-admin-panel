@@ -3,10 +3,11 @@ import { weekStart, weekEnd, weekNum } from "../utils/dateUtils";
 import WeekPicker from "./WeekPicker";
 import Popover from "@material-ui/core/Popover";
 import Button from "@material-ui/core/Button";
+import WeekEditor from "./WeekEditor";
 
 const axios = require("axios");
 
-export default function ScheduleEditor(props) {
+export default function ScheduleView(props) {
   const [state, setState] = useState({
     weekStart: null,
     weekEnd: null,
@@ -38,11 +39,81 @@ export default function ScheduleEditor(props) {
     }
   });
 
+  function renderRows() {
+    return state.scheduleData.map((schedule) => {
+      return (
+       <WeekEditor schedule = {schedule}></WeekEditor>
+      );
+    });
+  }
+
+  function handleClick(event) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleClose() {
+    setAnchorEl(null);
+  }
+
+  const open = Boolean(anchorEl);
+  const id = open ? "popover" : undefined;
   if (state.weekNum === -1)
     return (
       <img src="/branda-admin-loading-gif.gif" style={{ width: "280px" }} />
     );
-  else return (<div>
-      
-  </div>);
+  else
+    return (
+      <div>
+        <h5>
+          Week at a glance - current week is:
+          <span style={{ marginLeft: "10px", fontWeight: "500" }}>
+            {state.weekStart.toLocaleDateString("en-US")} -{" "}
+            {state.weekEnd.toLocaleDateString("en-US")}
+          </span>
+        </h5>
+        <Button
+          aria-describedby={id}
+          variant="contained"
+          style={{ backgroundColor: "#1B4470", color: "white" }}
+          onClick={handleClick}
+        >
+          Choose Week
+        </Button>
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+        >
+          <WeekPicker
+            setWeek={setWeek}
+            firstDay={state.weekStart}
+            lastDay={state.weekEnd}
+          />
+        </Popover>
+        <table style={{ width: "1150px" }}>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Mon</th>
+              <th>Tues</th>
+              <th>Wed</th>
+              <th>Thurs</th>
+              <th>Fri</th>
+              <th>Sat</th>
+              <th>Sun</th>
+            </tr>
+          </thead>
+          <tbody>{renderRows()}</tbody>
+        </table>
+      </div>
+    );
 }

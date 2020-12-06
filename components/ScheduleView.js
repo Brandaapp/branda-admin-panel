@@ -66,6 +66,7 @@ export default function ScheduleView(props) {
     const id = open ? 'popover' : undefined;
     if (state.weekNum === -1) return <img src="/branda-admin-loading-gif.gif" style={{ width: "280px" }} />
     else return (
+        
         <div>
             <h5>Week at a glance - current week is:
                 <span style={{ marginLeft: "10px", fontWeight: "500" }}>
