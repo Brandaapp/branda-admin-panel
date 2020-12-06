@@ -1,6 +1,6 @@
 import dbConnect from '../../../utils/dbConnect';
 let mongoose = require('mongoose');
-let Announcement = require('../../../models/announcement');
+let Announcement = require('../../../models/Announcement');
 
 dbConnect();
 

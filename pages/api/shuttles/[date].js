@@ -1,5 +1,5 @@
 import dbConnect from '../../../utils/dbConnect';
-let ShuttleActivity = require('../../../models/shuttle-activity');
+let ShuttleActivity = require('../../../models/ShuttleActivity');
 const { DateTime } = require('luxon');
 
 dbConnect();

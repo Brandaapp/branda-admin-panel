@@ -15,7 +15,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/announcement.json"
+                                "$ref": "#/components/schemas/Announcement.json"
                             },
                             "examples": {
                                 "announcement": {
@@ -34,7 +34,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/announcement.json"
+                                    "$ref": "#/components/schemas/Announcement.json"
                                 },
                                 "examples": {
                                     "announcement": {
@@ -53,7 +53,46 @@
                 }
             }
         },
-        "/api/announcements/{date}": {},
+        "/api/announcements/{date}": {
+            "get": {
+                "tags": ["announcements"],
+                "summary": "Returns all announcements that are active during the given date",
+                "responses": {
+                    "200": {
+                        "description": "Database was successfully queried for announcements",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Announcement.json"
+                                    }
+                                },
+                                "examples": {
+                                    "announcements": [
+                                        {
+                                            "type": "Branvan Schedule Change",
+                                            "content": "Branvan schedule after winter break has been changed. Please see website for details.",
+                                            "startTime": "2020-11-22T14:57:00.000+00:00",
+                                            "endTime": "2021-01-15T02:57:00.000+00:00"
+                                        },
+                                        {
+                                            "type": "Alert",
+                                            "content": "Rogue squirrel on the great lawn. Please stay in your dorm.",
+                                            "startTime": "2020-11-22T14:57:00.000+00:00",
+                                            "endTime": "2021-01-15T02:57:00.000+00:00"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error finding announcments"
+                    }
+                }
+            }
+        },
         "/api/schedules": {},
         "/api/schedules/{week}": {},
         "/api/schedules/{week}/{id}": {},

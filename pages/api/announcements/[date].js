@@ -1,5 +1,5 @@
 import dbConnect from '../../../utils/dbConnect';
-let Announcement = require('../../../models/announcement');
+let Announcement = require('../../../models/Announcement');
 
 dbConnect();
 

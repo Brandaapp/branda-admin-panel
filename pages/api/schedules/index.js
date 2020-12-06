@@ -1,5 +1,5 @@
 import dbConnect from '../../../utils/dbConnect';
-let PlaceSchedule = require('../../../models/place-schedule');
+let PlaceSchedule = require('../../../models/PlaceSchedule');
 
 dbConnect();
 
