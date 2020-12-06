@@ -13,6 +13,7 @@ export default function ScheduleView(props) {
     weekEnd: null,
     weekNum: -1,
     scheduleData: [],
+    updateNum: 0,
   });
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -25,8 +26,8 @@ export default function ScheduleView(props) {
           weekEnd: end,
           weekNum: num,
           scheduleData: response.data,
+          updateNum: state.updateNum + 1
         });
-        console.log(response);
       })
       .catch((err) => console.log("Error fetching schedule info", err));
     if (!props.dataFetched) props.setDataFetched(true);
@@ -41,9 +42,7 @@ export default function ScheduleView(props) {
 
   function renderRows() {
     return state.scheduleData.map((schedule) => {
-      return (
-       <WeekEditor schedule = {schedule}></WeekEditor>
-      );
+      return <WeekEditor schedule={schedule} updateNum={state.updateNum}></WeekEditor>;
     });
   }
 
@@ -65,7 +64,7 @@ export default function ScheduleView(props) {
     return (
       <div>
         <h5>
-          Week at a glance - current week is:
+          Current week is:
           <span style={{ marginLeft: "10px", fontWeight: "500" }}>
             {state.weekStart.toLocaleDateString("en-US")} -{" "}
             {state.weekEnd.toLocaleDateString("en-US")}
@@ -99,7 +98,7 @@ export default function ScheduleView(props) {
             lastDay={state.weekEnd}
           />
         </Popover>
-        <table style={{ width: "1150px" }}>
+        <table style={{ width: "1400px" }}>
           <thead>
             <tr>
               <th>Name</th>
@@ -110,6 +109,7 @@ export default function ScheduleView(props) {
               <th>Fri</th>
               <th>Sat</th>
               <th>Sun</th>
+              <th>Admin Options</th>
             </tr>
           </thead>
           <tbody>{renderRows()}</tbody>
