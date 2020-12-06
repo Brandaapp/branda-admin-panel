@@ -47,33 +47,46 @@ export default function ScheduleView(props) {
         >
           <td>{schedule.name}</td>
           <td>
-            {schedule.monday === "11:00am-11:01am" ? "Closed" : schedule.monday}
+            {schedule.monday === "11:00am-11:01am" ||
+            schedule.monday === "11:00pm-11:01pm"
+              ? "Closed"
+              : schedule.monday}
           </td>
           <td>
-            {schedule.tuesday === "11:00am-11:01am"
+            {schedule.tuesday === "11:00am-11:01am" ||
+            schedule.tuesday === "11:00pm-11:01pm"
               ? "Closed"
               : schedule.tuesday}
           </td>
           <td>
-            {schedule.wednesday === "11:00am-11:01am"
+            {schedule.wednesday === "11:00am-11:01am" ||
+            schedule.wednesday === "11:00pm-11:01pm"
               ? "Closed"
               : schedule.wednesday}
           </td>
           <td>
-            {schedule.thursday === "11:00am-11:01am"
+            {schedule.thursday === "11:00am-11:01am" ||
+            schedule.thursday === "11:00pm-11:01pm"
               ? "Closed"
               : schedule.thursday}
           </td>
           <td>
-            {schedule.friday === "11:00am-11:01am" ? "Closed" : schedule.friday}
+            {schedule.friday === "11:00am-11:01am" ||
+            schedule.friday === "11:00pm-11:01pm"
+              ? "Closed"
+              : schedule.friday}
           </td>
           <td>
-            {schedule.saturday === "11:00am-11:01am"
+            {schedule.saturday === "11:00am-11:01am" ||
+            schedule.saturday === "11:00pm-11:01pm"
               ? "Closed"
               : schedule.saturday}
           </td>
           <td>
-            {schedule.sunday === "11:00am-11:01am" ? "Closed" : schedule.sunday}
+            {schedule.sunday === "11:00am-11:01am" ||
+            schedule.sunday === "11:00pm-11:01pm"
+              ? "Closed"
+              : schedule.sunday}
           </td>
         </tr>
       );

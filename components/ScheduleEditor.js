@@ -35,7 +35,7 @@ export default function ScheduleView(props) {
 
   async function resetWeekSchedule() {
     await axios.get(`/api/schedules/${state.weekNum}`).then((response) => {
-      setState(prev => ({...prev, scheduleData: response.data}));
+      setState((prev) => ({ ...prev, scheduleData: response.data }));
     });
   }
 
@@ -77,7 +77,7 @@ export default function ScheduleView(props) {
     return (
       <div>
         <h5>
-          Current week is:
+          Schedule Editor - Current week is:
           <span style={{ marginLeft: "10px", fontWeight: "500" }}>
             {state.weekStart.toLocaleDateString("en-US")} -{" "}
             {state.weekEnd.toLocaleDateString("en-US")}

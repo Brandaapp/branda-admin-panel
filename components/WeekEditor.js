@@ -25,33 +25,22 @@ export default function WeekEditor(props) {
   function updateOnChange(date, hour, day, start) {
     hour = hour.toLowerCase();
     let newDate = getProperDate(hour);
-    let tempSched = undefined;
+    let tempStart = state.startTimes;
+    let tempEnd = state.endTimes;
     if (start) {
-      tempSched = state.startTimes;
-      tempSched[day] = newDate;
-      setState({
-        startTimes: tempSched,
-        endTimes: state.endTimes,
-        schedule: state.schedule,
-        ver: state.ver,
-      });
+      tempStart[day] = newDate;
     } else {
-      tempSched = state.endTimes;
-      tempSched[day] = newDate;
-      setState({
-        startTimes: state.startTimes,
-        endTimes: tempSched,
-        schedule: state.schedule,
-        ver: state.ver,
-      });
+      tempEnd[day] = newDate;
     }
+
+    setState((prev) => ({ ...prev, startTimes: tempStart, endTimes: tempEnd }));
   }
 
   function reset() {
     Materialize.toast(
       "Updates for " + state.schedule.name + " cleared",
       2500,
-      "red"
+      "#0d47a1 blue darken-4 rounded"
     );
     update(true); // want to manually override
   }
@@ -66,7 +55,19 @@ export default function WeekEditor(props) {
       .patch(`/api/schedules/${props.weekNum}/${state.schedule.name}`, data)
       .then((response) => {
         props.refresh();
-        Materialize.toast(state.schedule.name + " updated", 2500, "blue");
+        Materialize.toast(
+          state.schedule.name + " updated",
+          2500,
+          "green rounded"
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        Materialize.toast(
+          "Unable to update " + state.schedule.name,
+          2500,
+          "red rounded"
+        );
       });
   }
 
@@ -87,7 +88,6 @@ export default function WeekEditor(props) {
 
       let startString = format(start);
       let endString = format(end);
-      // startTime = startTime.substring(0, startTime.lastIndexOf(':'));
 
       temp[day] = startString + "-" + endString;
     }
@@ -179,7 +179,7 @@ export default function WeekEditor(props) {
       >
         <Button
           variant="contained"
-          color="primary"
+          style={{ backgroundColor: "#4caf50", color: "white" }}
           onClick={updateSchedule.bind(this)}
         >
           Update
@@ -187,7 +187,7 @@ export default function WeekEditor(props) {
 
         <Button
           variant="contained"
-          style={{ backgroundColor: "#e23a31", color: "white" }}
+          style={{ backgroundColor: "#0d47a1", color: "white" }}
           onClick={reset.bind(this)}
         >
           Clear Edits
