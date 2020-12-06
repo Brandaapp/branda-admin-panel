@@ -42,6 +42,7 @@ export default function ScheduleView(props) {
 
   function renderRows() {
     return state.scheduleData.map((schedule) => {
+      console.log(schedule);
       return <WeekEditor schedule={schedule} updateNum={state.updateNum}></WeekEditor>;
     });
   }
