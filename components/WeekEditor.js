@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import DayEditor from "./DayEditor";
 import { Button } from "@material-ui/core";
 
+const axios = require("axios");
+
 const days = [
   "monday",
   "tuesday",
@@ -58,23 +60,55 @@ export default function WeekEditor(props) {
     update(false);
   });
 
-  function updateSchedule() {}
+  async function updateSchedule() {
+    let data = mergeStartEndToSchedule();
+    await axios
+      .patch(`/api/schedules/${props.weekNum}/${state.schedule.name}`, data)
+      .then((response) => {
+        props.refresh();
+        Materialize.toast(state.schedule.name + " updated", 2500, "blue");
+      });
+  }
+
+  function mergeStartEndToSchedule() {
+    let temp = {};
+    temp["name"] = state.schedule.name;
+    for (var day of days) {
+      let start = state.startTimes[day];
+      let end = state.endTimes[day];
+
+      let format = (time) => {
+        let t = new Date(time).toLocaleTimeString().toLocaleLowerCase();
+        let parts = t.split(" ");
+        return (
+          parts[0].substring(parts[0], parts[0].lastIndexOf(":")) + parts[1]
+        );
+      };
+
+      let startString = format(start);
+      let endString = format(end);
+      // startTime = startTime.substring(0, startTime.lastIndexOf(':'));
+
+      temp[day] = startString + "-" + endString;
+    }
+    return temp;
+  }
 
   // override allows for setState not based on version number - used from reset()
   const update = (override) => {
-    let tempSched = props.schedule;
-    let tempStart = [];
-    let tempEnd = [];
-
-    for (var item in props.schedule) {
-      if (item !== "name") {
-        let tempTime = tempSched[item].split("-");
-        tempStart[item] = getProperDate(tempTime[0]);
-        tempEnd[item] = getProperDate(tempTime[1]);
-      }
-    }
-
     if (override || state.ver !== props.updateNum) {
+      let tempSched = props.schedule;
+      let tempStart = [];
+      let tempEnd = [];
+
+      for (var item in props.schedule) {
+        if (item !== "name") {
+          let tempTime = tempSched[item].split("-");
+          tempStart[item] = getProperDate(tempTime[0]);
+          tempEnd[item] = getProperDate(tempTime[1]);
+        }
+      }
+
       setState({
         startTimes: tempStart,
         endTimes: tempEnd,

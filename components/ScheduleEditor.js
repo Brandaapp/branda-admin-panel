@@ -26,11 +26,17 @@ export default function ScheduleView(props) {
           weekEnd: end,
           weekNum: num,
           scheduleData: response.data,
-          updateNum: state.updateNum + 1
+          updateNum: state.updateNum + 1,
         });
       })
       .catch((err) => console.log("Error fetching schedule info", err));
     if (!props.dataFetched) props.setDataFetched(true);
+  }
+
+  async function resetWeekSchedule() {
+    await axios.get(`/api/schedules/${state.weekNum}`).then((response) => {
+      setState(prev => ({...prev, scheduleData: response.data}));
+    });
   }
 
   useEffect(() => {
@@ -42,8 +48,14 @@ export default function ScheduleView(props) {
 
   function renderRows() {
     return state.scheduleData.map((schedule) => {
-      console.log(schedule);
-      return <WeekEditor schedule={schedule} updateNum={state.updateNum}></WeekEditor>;
+      return (
+        <WeekEditor
+          schedule={schedule}
+          updateNum={state.updateNum}
+          weekNum={state.weekNum}
+          refresh={resetWeekSchedule}
+        />
+      );
     });
   }
 
