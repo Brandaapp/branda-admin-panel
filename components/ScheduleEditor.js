@@ -3,6 +3,7 @@ import { weekStart, weekEnd, weekNum } from "../utils/dateUtils";
 import WeekPicker from "./WeekPicker";
 import Popover from "@material-ui/core/Popover";
 import Button from "@material-ui/core/Button";
+import WeekEditor from "./WeekEditor";
 
 const axios = require("axios");
 
@@ -12,6 +13,7 @@ export default function ScheduleView(props) {
     weekEnd: null,
     weekNum: -1,
     scheduleData: [],
+    updateNum: 0,
   });
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -24,11 +26,17 @@ export default function ScheduleView(props) {
           weekEnd: end,
           weekNum: num,
           scheduleData: response.data,
+          updateNum: state.updateNum + 1,
         });
-        console.log(response);
       })
       .catch((err) => console.log("Error fetching schedule info", err));
     if (!props.dataFetched) props.setDataFetched(true);
+  }
+
+  async function resetWeekSchedule() {
+    await axios.get(`/api/schedules/${state.weekNum}`).then((response) => {
+      setState((prev) => ({ ...prev, scheduleData: response.data }));
+    });
   }
 
   useEffect(() => {
@@ -41,54 +49,12 @@ export default function ScheduleView(props) {
   function renderRows() {
     return state.scheduleData.map((schedule) => {
       return (
-        <tr
-          className="schedule-row"
-          key={"_" + Math.random().toString(36).substr(2, 9)}
-        >
-          <td>{schedule.name}</td>
-          <td>
-            {schedule.monday === "11:00am-11:01am" ||
-            schedule.monday === "11:00pm-11:01pm"
-              ? "Closed"
-              : schedule.monday}
-          </td>
-          <td>
-            {schedule.tuesday === "11:00am-11:01am" ||
-            schedule.tuesday === "11:00pm-11:01pm"
-              ? "Closed"
-              : schedule.tuesday}
-          </td>
-          <td>
-            {schedule.wednesday === "11:00am-11:01am" ||
-            schedule.wednesday === "11:00pm-11:01pm"
-              ? "Closed"
-              : schedule.wednesday}
-          </td>
-          <td>
-            {schedule.thursday === "11:00am-11:01am" ||
-            schedule.thursday === "11:00pm-11:01pm"
-              ? "Closed"
-              : schedule.thursday}
-          </td>
-          <td>
-            {schedule.friday === "11:00am-11:01am" ||
-            schedule.friday === "11:00pm-11:01pm"
-              ? "Closed"
-              : schedule.friday}
-          </td>
-          <td>
-            {schedule.saturday === "11:00am-11:01am" ||
-            schedule.saturday === "11:00pm-11:01pm"
-              ? "Closed"
-              : schedule.saturday}
-          </td>
-          <td>
-            {schedule.sunday === "11:00am-11:01am" ||
-            schedule.sunday === "11:00pm-11:01pm"
-              ? "Closed"
-              : schedule.sunday}
-          </td>
-        </tr>
+        <WeekEditor
+          schedule={schedule}
+          updateNum={state.updateNum}
+          weekNum={state.weekNum}
+          refresh={resetWeekSchedule}
+        />
       );
     });
   }
@@ -111,7 +77,7 @@ export default function ScheduleView(props) {
     return (
       <div>
         <h5>
-          Week at a glance - current week is:
+          Schedule Editor - Current week is:
           <span style={{ marginLeft: "10px", fontWeight: "500" }}>
             {state.weekStart.toLocaleDateString("en-US")} -{" "}
             {state.weekEnd.toLocaleDateString("en-US")}
@@ -145,7 +111,7 @@ export default function ScheduleView(props) {
             lastDay={state.weekEnd}
           />
         </Popover>
-        <table style={{ width: "1150px" }}>
+        <table style={{ width: "1400px" }}>
           <thead>
             <tr>
               <th>Name</th>
@@ -156,6 +122,7 @@ export default function ScheduleView(props) {
               <th>Fri</th>
               <th>Sat</th>
               <th>Sun</th>
+              <th>Admin Options</th>
             </tr>
           </thead>
           <tbody>{renderRows()}</tbody>
