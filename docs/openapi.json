@@ -9,7 +9,7 @@
         "/api/announcements": {
             "post": {
                 "tags": ["announcements"],
-                "summary": "Creates a new announcement with the given form data",
+                "summary": "Creates a new announcement with the given data",
                 "requestBody": {
                     "description": "The announcement to add to the database",
                     "content": {
@@ -30,7 +30,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Announcement was successfully added to the database",
+                        "description": "Announcement was successfully added to the database - returns the announcement document",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -93,7 +93,101 @@
                 }
             }
         },
-        "/api/schedules": {},
+        "/api/schedules": {
+            "get": {
+                "tags": ["schedules"],
+                "summary": "Returns an array of objects representing all of the places that are currently active",
+                "responses": {
+                    "200": {
+                        "description": "Database was successfully queried for schedules",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "group": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "schedules": [
+                                        {
+                                            "name": "The Stein",
+                                            "group": "Dining"
+                                        },
+                                        {
+                                            "name": "Dunkin Donuts",
+                                            "group": "Dining"
+                                        },
+                                        {
+                                            "name": "Lower Usdan",
+                                            "group": "Dining"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error finding schedules"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["schedules"],
+                "summary": "Creates a new schedule with the given data",
+                "requestBody": {
+                    "description": "The schedule to create in the database",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PlaceSchedule.json"
+                            },
+                            "examples": {
+                                "schedule": {
+                                    "emp_id": "5b9b485dabd11f5920423a1c",
+                                    "Name": "Jim's Fried Chicken and Hand Grenades",
+                                    "group": "Dining",
+                                    "weeks": [],
+                                    "active": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Schedule was successfully added to database - returns the schedule document",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PlaceSchedule.json"
+                                },
+                                "examples": {
+                                    "schedule": {
+                                        "emp_id": "5b9b485dabd11f5920423a1c",
+                                        "Name": "Jim's Fried Chicken and Hand Grenades",
+                                        "group": "Dining",
+                                        "weeks": [],
+                                        "active": 1
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error adding schedule to database"
+                    }
+                }
+            }
+        },
         "/api/schedules/{week}": {},
         "/api/schedules/{week}/{id}": {},
         "/api/shuttles/{date}": {}

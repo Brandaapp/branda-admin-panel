@@ -25,7 +25,7 @@ export default (req, res) => {
                 res.status(500).send("Oop");
             } else {
                 let places = docs.map(place => {
-                    return { name: place.Name, group: place.group, active: place.active };
+                    return { name: place.Name, group: place.group };
                 });
                 res.send(places);
             }
