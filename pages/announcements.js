@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import AnnouncementsView from '../components/AnnouncementsView'
 
 export default function Announcements() {
   return (
@@ -9,6 +10,7 @@ export default function Announcements() {
       </Head>
 
       <main className={styles.main}>
+        <div className="row"><AnnouncementsView /></div>
       </main>
 
       <footer className={styles.footer}>

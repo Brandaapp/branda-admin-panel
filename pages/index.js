@@ -53,9 +53,6 @@ export default function Home() {
         <div className="row">
           <ScheduleView dataFetched={dataFetched} setDataFetched={setDataFetched} />
         </div>
-        <div className="row">
-          <AnnouncementsView dataFetched={dataFetched} />
-        </div>
       </main>
 
       <footer className={styles.footer}>
