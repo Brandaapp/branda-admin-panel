@@ -1,5 +1,5 @@
 import dbConnect from '../../../utils/dbConnect';
-let PlaceSchedule = require('../../../models/place-schedule');
+let PlaceSchedule = require('../../../models/PlaceSchedule');
 
 dbConnect();
 
@@ -25,7 +25,7 @@ export default (req, res) => {
                 res.status(500).send("Oop");
             } else {
                 let places = docs.map(place => {
-                    return { name: place.Name, group: place.group, active: place.active };
+                    return { name: place.Name, group: place.group };
                 });
                 res.send(places);
             }
