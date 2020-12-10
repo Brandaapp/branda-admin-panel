@@ -1,0 +1,49 @@
+{
+    "type": "object",
+    "required": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday"
+    ],
+    "properties": {
+        "monday": {
+            "type": "string"
+        },
+        "tuesday": {
+            "type": "string"
+        },
+        "wednesday": {
+            "type": "string"
+        },
+        "thursday": {
+            "type": "string"
+        },
+        "friday": {
+            "type": "string"
+        },
+        "saturday": {
+            "type": "string"
+        },
+        "sunday": {
+            "type": "string"
+        },
+        "week": {
+            "type": "integer",
+            "format": "int32"
+        }
+    },
+    "example": {
+        "sunday": "10:00am-9:00pm",
+        "saturday": "10:00am-5:00pm",
+        "friday": "8:00am-5:00pm",
+        "thursday": "8:00am-10:00pm",
+        "wednesday": "8:00am-10:00pm",
+        "tuesday": "8:00am-10:00pm",
+        "monday": "8:00am-10:00pm",
+        "week": 48
+    }
+}
