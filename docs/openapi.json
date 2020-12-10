@@ -188,8 +188,89 @@
                 }
             }
         },
-        "/api/schedules/{week}": {},
-        "/api/schedules/{week}/{id}": {},
+        "/api/schedules/{week}": {
+            "get": {
+                "tags": ["schedules"],
+                "summary": "Returns an array containing the hours of each active place during the given week",
+                "responses": {
+                    "200": {
+                        "description": "An array of objects where each object contains the hours of a given place",
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "monday": {
+                                            "type": "string"
+                                        },
+                                        "tuesday": {
+                                            "type": "string"
+                                        },
+                                        "wednesday": {
+                                            "type": "string"
+                                        },
+                                        "thursday": {
+                                            "type": "string"
+                                        },
+                                        "friday": {
+                                            "type": "string"
+                                        },
+                                        "saturday": {
+                                            "type": "string"
+                                        },
+                                        "sunday": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "schdules(week=48)": [
+                                    {
+                                        "name": "Einstein Bros. Bagels",
+                                        "sunday": "10:00am-9:00pm",
+                                        "saturday": "10:00am-5:00pm",
+                                        "friday": "8:00am-5:00pm",
+                                        "thursday": "8:00am-10:00pm",
+                                        "wednesday": "8:00am-10:00pm",
+                                        "tuesday": "8:00am-10:00pm",
+                                        "monday": "8:00am-10:00pm"
+                                    },
+                                    {
+                                        "name": "Dunkin Donuts",
+                                        "sunday": "8:00am-1:00pm",
+                                        "saturday": "8:00am-1:00pm",
+                                        "friday": "7:30am-4:00pm",
+                                        "thursday": "7:30am-4:00pm",
+                                        "wednesday": "7:30am-4:00pm",
+                                        "tuesday": "7:30am-4:00pm",
+                                        "monday": "7:30am-4:00pm"
+                                    },
+                                    {
+                                        "name": "Library",
+                                        "sunday": "9:00am-2:00am",
+                                        "saturday": "11:00am-11:01am",
+                                        "friday": "11:00am-11:01am",
+                                        "thursday": "11:00am-11:01am",
+                                        "wednesday": "7:30am-5:30pm",
+                                        "tuesday": "7:30am-2:00am",
+                                        "monday": "7:30am-2:00am"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error getting hours"
+                    }
+                }
+            }
+        },
+        "/api/schedules/{week}/{name}": {},
         "/api/shuttles/{date}": {}
     }
 }
