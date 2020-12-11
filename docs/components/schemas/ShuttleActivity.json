@@ -1,0 +1,67 @@
+{
+    "type": "object",
+    "required": [
+        "date",
+        "times"
+    ],
+    "properties": {
+        "date": {
+            "type": "date"
+        },
+        "times": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "start",
+                    "end",
+                    "busID",
+                    "busName",
+                    "route",
+                    "ID"
+                ],
+                "properties": {
+                    "start": {
+                        "type": "date"
+                    },
+                    "end": {
+                        "type": "date"
+                    },
+                    "busID": {
+                        "type": "string"
+                    },
+                    "busName": {
+                        "type": "string"
+                    },
+                    "route": {
+                        "type": "string"
+                    },
+                    "ID": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "example": {
+        "date": "2019-12-15T23:40:27.884+00:00",
+        "times": [
+            {
+                "start": "2019-12-14T05:01:00.000+00:00",
+                "end": "2019-12-14T07:30:00.000+00:00",
+                "busID": "212014918347301",
+                "route": "Campus",
+                "ID": "1576341408576",
+                "busName": "Van 56"
+            },
+            {
+                "start": "2019-12-14T05:01:00.000+00:00",
+                "end": "2019-12-14T07:45:00.000+00:00",
+                "busID": "212014918515926",
+                "route": "Waltham",
+                "ID": "1576341426603",
+                "busName": "Van 52"
+            }
+        ]
+    }
+}

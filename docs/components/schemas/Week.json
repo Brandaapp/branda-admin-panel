@@ -7,7 +7,8 @@
         "thursday",
         "friday",
         "saturday",
-        "sunday"
+        "sunday",
+        "week"
     ],
     "properties": {
         "monday": {

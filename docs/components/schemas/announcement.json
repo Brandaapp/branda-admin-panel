@@ -14,10 +14,10 @@
             "type": "string"
         },
         "startTime": {
-            "type": "string"
+            "type": "date"
         },
         "endTime": {
-            "type": "string"
+            "type": "date"
         }
     },
     "example": {
