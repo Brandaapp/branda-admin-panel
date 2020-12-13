@@ -5,7 +5,7 @@ dbConnect();
 
 export default (req, res) => {
   const {
-    query: { week, name },
+    query: { week, id },
   } = req;
   if (req.method === "PATCH") {
     const weekInfo = {
@@ -19,7 +19,7 @@ export default (req, res) => {
       week: parseInt(week),
     };
     PlaceSchedule.updateOne(
-      { Name: name },
+      { emp_id: id },
       { $set: { [`weeks.${week}`]: weekInfo } },
       (err, result) => {
         if (err) {
@@ -31,7 +31,7 @@ export default (req, res) => {
       }
     );
   } else {
-    PlaceSchedule.findOne({ Name: name }, (err, doc) => {
+    PlaceSchedule.findOne({ emp_id: id }, (err, doc) => {
       if (err) {
         console.log("Error finding schedule", err);
         res.status(500).send("Oop");

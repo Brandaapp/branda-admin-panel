@@ -52,7 +52,7 @@ export default function WeekEditor(props) {
   async function updateSchedule() {
     let data = mergeStartEndToSchedule();
     await axios
-      .patch(`/api/schedules/${props.weekNum}/${state.schedule.name}`, data)
+      .patch(`/api/schedules/${props.weekNum}/${state.schedule.emp_id}`, data)
       .then((response) => {
         props.refresh();
         Materialize.toast(
@@ -102,7 +102,7 @@ export default function WeekEditor(props) {
       let tempEnd = [];
 
       for (var item in props.schedule) {
-        if (item !== "name") {
+        if (item !== "name" && item !== "emp_id") {
           let tempTime = tempSched[item].split("-");
           tempStart[item] = getProperDate(tempTime[0]);
           tempEnd[item] = getProperDate(tempTime[1]);

@@ -1,5 +1,5 @@
-import dbConnect from '../../../utils/dbConnect';
-let ShuttleActivity = require('../../../models/ShuttleActivity');
+import dbConnect from '../../../../utils/dbConnect';
+let ShuttleActivity = require('../../../../models/ShuttleActivity');
 const { DateTime } = require('luxon');
 
 dbConnect();
@@ -26,12 +26,12 @@ export default (req, res) => {
         ShuttleActivity.updateOne(
             { date: { $gte: start, $lte: end }, "times.ID": { $ne: req.body.ID } },
             { $addToSet: { times: temp } },
-            (err, doc) => {
+            (err, result) => {
                 if (err) {
-                    console.log("Error adding shuttle");
+                    console.log("Error adding shuttle route");
                     res.status(500).send("Oop");
                 } else {
-                    res.send(doc);
+                    res.send(result);
                     
                     //TODO: connect to samsara api
                 }

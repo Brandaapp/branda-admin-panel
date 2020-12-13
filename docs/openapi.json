@@ -30,7 +30,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Announcement was successfully added to the database - returns the announcement document",
+                        "description": "The announcement document",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -59,7 +59,7 @@
                 "summary": "Returns all announcements that are active during the given date",
                 "responses": {
                     "200": {
-                        "description": "Database was successfully queried for announcements",
+                        "description": "Array of all announcements that are active during the given date",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -99,7 +99,7 @@
                 "summary": "Returns an array of objects representing all of the places that are currently active",
                 "responses": {
                     "200": {
-                        "description": "Database was successfully queried for schedules",
+                        "description": "An array of objects representing all of the places that are currently active",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -164,7 +164,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Schedule was successfully added to database - returns the schedule document",
+                        "description": "The schedule document",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -188,8 +188,310 @@
                 }
             }
         },
-        "/api/schedules/{week}": {},
-        "/api/schedules/{week}/{id}": {},
-        "/api/shuttles/{date}": {}
+        "/api/schedules/{week}": {
+            "get": {
+                "tags": ["schedules"],
+                "summary": "Returns an array containing the name, hours, and employee id of each active place during the given week",
+                "responses": {
+                    "200": {
+                        "description": "An array of objects where each object contains the name, hours, and employee of a given place",
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Week.json"
+                                }
+                            },
+                            "examples": {
+                                "schdules": [
+                                    {
+                                        "name": "Einstein Bros. Bagels",
+                                        "sunday": "10:00am-9:00pm",
+                                        "saturday": "10:00am-5:00pm",
+                                        "friday": "8:00am-5:00pm",
+                                        "thursday": "8:00am-10:00pm",
+                                        "wednesday": "8:00am-10:00pm",
+                                        "tuesday": "8:00am-10:00pm",
+                                        "monday": "8:00am-10:00pm",
+                                        "emp_id": "5b9b445daad11f3920023a1f"
+                                    },
+                                    {
+                                        "name": "Dunkin Donuts",
+                                        "sunday": "8:00am-1:00pm",
+                                        "saturday": "8:00am-1:00pm",
+                                        "friday": "7:30am-4:00pm",
+                                        "thursday": "7:30am-4:00pm",
+                                        "wednesday": "7:30am-4:00pm",
+                                        "tuesday": "7:30am-4:00pm",
+                                        "monday": "7:30am-4:00pm",
+                                        "emp_id": "5b9b4387f9974b333c04a2ec"
+                                    },
+                                    {
+                                        "name": "Library",
+                                        "sunday": "9:00am-2:00am",
+                                        "saturday": "11:00am-11:01am",
+                                        "friday": "11:00am-11:01am",
+                                        "thursday": "11:00am-11:01am",
+                                        "wednesday": "7:30am-5:30pm",
+                                        "tuesday": "7:30am-2:00am",
+                                        "monday": "7:30am-2:00am",
+                                        "emp_id": "5b9b493525547384f80a4119"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error getting places"
+                    }
+                }
+            }
+        },
+        "/api/schedules/{week}/{id}": {
+            "get": {
+                "tags": ["schedules"],
+                "summary": "Returns the hours for the specified week of the place with the specified employee id",
+                "responses": {
+                    "200": {
+                        "description": "The hours of operation of the given place during the given week",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Week.json"
+                                },
+                                "examples": {
+                                    "schedule": {
+                                        "sunday": "10:00am-9:00pm",
+                                        "saturday": "10:00am-5:00pm",
+                                        "friday": "8:00am-5:00pm",
+                                        "thursday": "8:00am-10:00pm",
+                                        "wednesday": "8:00am-10:00pm",
+                                        "tuesday": "8:00am-10:00pm",
+                                        "monday": "8:00am-10:00pm",
+                                        "week": 48
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Could not find a schedule with the given employee id"
+                    },
+                    "500": {
+                        "description": "Error finding hours"
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["schedules"],
+                "summary": "Updates the hours for the schedule with the specified employee id at the specified week with the given data",
+                "requestBody": {
+                    "description": "The data with which to update the schedule",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Week.json"
+                            },
+                            "examples": {
+                                "schedule": {
+                                    "sunday": "9:00am-10:00pm",
+                                    "saturday": "10:00am-5:00pm",
+                                    "friday": "8:00am-5:00pm",
+                                    "thursday": "8:00am-10:00pm",
+                                    "wednesday": "8:00am-10:00pm",
+                                    "tuesday": "8:00am-10:00pm",
+                                    "monday": "8:00am-10:00pm"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Either the week was successfully updated or a document with the specified employee id was not found"
+                    },
+                    "500": {
+                        "description": "Error updating week"
+                    }
+                }
+            }
+        },
+        "/api/shuttles/{date}": {
+            "get": {
+                "tags": ["shuttles"],
+                "summary": "Returns the shuttle schedule for the given date",
+                "responses": {
+                    "200": {
+                        "description": "The shuttle schedule for the given date",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ShuttleActivity.json"
+                                },
+                                "examples": {
+                                    "shuttle": {
+                                        "date": "2019-12-15T23:40:27.884+00:00",
+                                        "times": [
+                                            {
+                                                "start": "2019-12-14T05:01:00.000+00:00",
+                                                "end": "2019-12-14T07:30:00.000+00:00",
+                                                "busID": "212014918347301",
+                                                "route": "Campus",
+                                                "ID": "1576341408576",
+                                                "busName": "Van 56"
+                                            },
+                                            {
+                                                "start": "2019-12-14T05:01:00.000+00:00",
+                                                "end": "2019-12-14T07:45:00.000+00:00",
+                                                "busID": "212014918515926",
+                                                "route": "Waltham",
+                                                "ID": "1576341426603",
+                                                "busName": "Van 52"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Could not find shuttle schedule for the given date"
+                    },
+                    "500": {
+                        "description": "Error finding shuttle schedule"
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["shuttles"],
+                "summary": "Adds a shuttle time with the given data to the shuttle schedule for the specified date",
+                "requestBody": {
+                    "description": "The shuttle time to add to the shuttle schedule for the specified date",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ShuttleTime.json"
+                            },
+                            "examples": {
+                                "shuttle": {
+                                    "start": "2019-12-14T05:01:00.000+00:00",
+                                    "end": "2019-12-14T07:30:00.000+00:00",
+                                    "busID": "212014918347301",
+                                    "route": "Campus",
+                                    "ID": "1576341408576",
+                                    "busName": "Van 56"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Shuttle time successfully added"
+                    },
+                    "500": {
+                        "description": "Error adding shuttle time"
+                    }
+                }
+            }
+        },
+        "/api/shuttles/{date}/{id}": {
+            "get": {
+                "tags": ["shuttles"],
+                "summary": "Returns the shuttle time with the given id on the given date",
+                "responses": {
+                    "200": {
+                        "description": "The shuttle time object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ShuttleTime.json"
+                                },
+                                "examples": {
+                                    "shuttle": {
+                                        "start": "2019-12-14T05:01:00.000+00:00",
+                                        "end": "2019-12-14T07:30:00.000+00:00",
+                                        "busID": "212014918347301",
+                                        "route": "Campus",
+                                        "ID": "1576341408576",
+                                        "busName": "Van 56"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Could not find a shuttle time with the given id"
+                    },
+                    "500": {
+                        "description": "Error finding shuttle time"
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["shuttles"],
+                "summary": "Finds the shuttle time with the specified date and id and updates it with the given information",
+                "requestBody": {
+                    "description": "The information with which to update the specified shuttle time",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "start": {
+                                        "type": "date"
+                                    },
+                                    "end": {
+                                        "type": "date"
+                                    },
+                                    "busID": {
+                                        "type": "string"
+                                    },
+                                    "busName": {
+                                        "type": "string"
+                                    },
+                                    "route": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "update-route": {
+                                    "route": "Campus"
+                                },
+                                "update-busID-&-busName": {
+                                    "busName": "Van 25",
+                                    "busID": "212014918515746"
+                                },
+                                "update-startTime-&-endTime": {
+                                    "end": "2019-09-16T23:16:33.000+00:00",
+                                    "start": "2019-09-16T23:16:33.000+00:00"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Either the shuttle time was successfully updated or a shuttle time with the given date and id was not found"
+                    },
+                    "500": {
+                        "description": "Error updating shuttle time"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["shuttles"],
+                "summary": "Finds the shuttle time with the specified date and id and removes it from database",
+                "responses": {
+                    "200": {
+                        "description": "Shuttle time was successfully removed"
+                    },
+                    "500": {
+                        "description": "Error removing shuttle time"
+                    }
+                }
+            }
+        }
     }
 }

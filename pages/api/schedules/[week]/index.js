@@ -23,7 +23,8 @@ export default (req, res) => {
                         thursday: weekInfo.thursday,
                         wednesday: weekInfo.wednesday,
                         tuesday: weekInfo.tuesday,
-                        monday: weekInfo.monday
+                        monday: weekInfo.monday,
+                        emp_id: place.emp_id
                     });
                 }
             });
