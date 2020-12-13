@@ -11,35 +11,7 @@
         "times": {
             "type": "array",
             "items": {
-                "type": "object",
-                "required": [
-                    "start",
-                    "end",
-                    "busID",
-                    "busName",
-                    "route",
-                    "ID"
-                ],
-                "properties": {
-                    "start": {
-                        "type": "date"
-                    },
-                    "end": {
-                        "type": "date"
-                    },
-                    "busID": {
-                        "type": "string"
-                    },
-                    "busName": {
-                        "type": "string"
-                    },
-                    "route": {
-                        "type": "string"
-                    },
-                    "ID": {
-                        "type": "string"
-                    }
-                }
+                "$ref": "#/components/schemas/ShuttleRoute.json"
             }
         }
     },
