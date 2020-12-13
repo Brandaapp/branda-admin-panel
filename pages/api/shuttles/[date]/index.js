@@ -28,7 +28,7 @@ export default (req, res) => {
             { $addToSet: { times: temp } },
             (err, result) => {
                 if (err) {
-                    console.log("Error adding shuttle");
+                    console.log("Error adding shuttle route");
                     res.status(500).send("Oop");
                 } else {
                     res.send(result);
