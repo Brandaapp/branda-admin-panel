@@ -13,7 +13,7 @@ export default (req, res) => {
             { $pull: { times: { ID: id } } },
             (err, result) => {
                 if (err) {
-                    console.log("Error removing shuttle route");
+                    console.log("Error removing shuttle time");
                     res.status(500).send("Oop");
                 } else {
                     res.send(result);
@@ -33,7 +33,7 @@ export default (req, res) => {
             { $set: info },
             (err, result) => {
                 if (err) {
-                    console.log("Error updating bus route");
+                    console.log("Error updating shuttle time");
                     res.status(500).send("Oop");
                 } else {
                     res.send(result);
@@ -46,10 +46,10 @@ export default (req, res) => {
         ShuttleActivity.findOne({ date: { $gte: start, $lte: end }, "times.ID": { $eq: id } },
             (err, doc) => {
                 if (err) {
-                    console.log("Error finding shuttle route");
+                    console.log("Error finding shuttle time");
                     res.status(500).send("Oop");
                 } else if (!doc) {
-                    console.log("Could not find shuttle route");
+                    console.log("Could not find shuttle time");
                     res.status(404).send("Oop");
                 } else {
                     const route = doc.times.find((element) => { return element.ID === id });

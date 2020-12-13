@@ -308,7 +308,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Either the week was successfully updated or a document with the specified employee id did not exist"
+                        "description": "Either the week was successfully updated or a document with the specified employee id was not found"
                     },
                     "500": {
                         "description": "Error updating week"
@@ -364,13 +364,13 @@
             },
             "patch": {
                 "tags": ["shuttles"],
-                "summary": "Adds a shuttle route with the given data to the shuttle schedule for the specified date",
+                "summary": "Adds a shuttle time with the given data to the shuttle schedule for the specified date",
                 "requestBody": {
-                    "description": "The shuttle route to add to the shuttle schedule for the specified date",
+                    "description": "The shuttle time to add to the shuttle schedule for the specified date",
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/ShuttleRoute.json"
+                                "$ref": "#/components/schemas/ShuttleTime.json"
                             },
                             "examples": {
                                 "shuttle": {
@@ -387,10 +387,108 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Shuttle route successfully added"
+                        "description": "Shuttle time successfully added"
                     },
                     "500": {
-                        "description": "Error adding shuttle"
+                        "description": "Error adding shuttle time"
+                    }
+                }
+            }
+        },
+        "/api/shuttles/{date}/{id}": {
+            "get": {
+                "tags": ["shuttles"],
+                "summary": "Returns the shuttle time with the given id on the given date",
+                "responses": {
+                    "200": {
+                        "description": "The shuttle time object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ShuttleTime.json"
+                                },
+                                "examples": {
+                                    "shuttle": {
+                                        "start": "2019-12-14T05:01:00.000+00:00",
+                                        "end": "2019-12-14T07:30:00.000+00:00",
+                                        "busID": "212014918347301",
+                                        "route": "Campus",
+                                        "ID": "1576341408576",
+                                        "busName": "Van 56"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Could not find a shuttle time with the given id"
+                    },
+                    "500": {
+                        "description": "Error finding shuttle time"
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["shuttles"],
+                "summary": "Finds the shuttle time with the specified date and id and updates it with the given information",
+                "requestBody": {
+                    "description": "The information with which to update the specified shuttle time",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "start": {
+                                        "type": "date"
+                                    },
+                                    "end": {
+                                        "type": "date"
+                                    },
+                                    "busID": {
+                                        "type": "string"
+                                    },
+                                    "busName": {
+                                        "type": "string"
+                                    },
+                                    "route": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "update-route": {
+                                    "route": "Campus"
+                                },
+                                "update-busID-&-busName": {
+                                    "busName": "Van 25",
+                                    "busID": "212014918515746"
+                                },
+                                "update-startTime-&-endTime": {
+                                    "end": "2019-09-16T23:16:33.000+00:00",
+                                    "start": "2019-09-16T23:16:33.000+00:00"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Either the shuttle time was successfully updated or a shuttle time with the given date and id was not found"
+                    },
+                    "500": {
+                        "description": "Error updating shuttle time"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["shuttles"],
+                "summary": "Finds the shuttle time with the specified date and id and removes it from database",
+                "responses": {
+                    "200": {
+                        "description": "Shuttle time was successfully removed"
+                    },
+                    "500": {
+                        "description": "Error removing shuttle time"
                     }
                 }
             }
