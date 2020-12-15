@@ -46,7 +46,7 @@ Below are the libraries we will be using for this project. If you want to add a 
 
 * [Materialize](https://materializecss.com/) - Our main css library, provides things like buttons, tables, etc.
 
-* [Material-UI](https://material-ui.com/) and [Material-UI Pickers](https://material-ui-pickers.dev/) - Provides more complex UI elements such as Date/Time pickers
+* [Material-UI](https://material-ui.com/) and [Material-UI Pickers](https://material-ui-pickers.dev/) - Provides more complex UI elements such as Date/Time pickers, Popovers, ect.
 
 * [Axios](https://www.npmjs.com/package/axios) - Used for making http requests
 
