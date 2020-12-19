@@ -38,7 +38,7 @@ This api is documented using the [OpenApi Specification 3.0](https://github.com/
 
 ## Contributing
 
-We will be working on this project page by page, at least initially. If you decide you want to work on a page, please check out a new branch, open an issue in the [issues](https://github.com/elijahmiller237/branda-admin-panel/issues) tab, and then assign yourself to that issue. For now, we won't be working individually on the Push Notifications and Reservations pages. The reservations feature has not yet been fully implemented, and the Push Notifications page is something we're going to have to plan for and be very careful with.
+We will be working on this project page by page, at least initially. If you decide you want to work on a page, please check out a new branch, open an issue in the [issues](https://github.com/elijahmiller237/branda-admin-panel/issues) tab, and then assign yourself to that issue. For now, we won't be working on the Reservations page since the reservations feature has not yet been fully implemented.
 
 ### Libraries
 
