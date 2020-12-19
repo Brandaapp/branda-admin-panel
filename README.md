@@ -38,7 +38,7 @@ This api is documented using the [OpenApi Specification 3.0](https://github.com/
 
 ## Contributing
 
-We will be working on this project page by page, at least initially. If you decide you want to work on a page, please check out a new branch, open an issue in the [issues](https://github.com/elijahmiller237/branda-admin-panel/issues) tab, and then assign yourself to that issue. For now, we won't be working on the Reservations page since the reservations feature has not yet been fully implemented.
+We will be working on this project page by page, at least initially. If you decide you want to work on a page, please check out a new branch, create a card on our [Trello board](https://trello.com/invite/b/6CuK1xvu/955c8ee484139750e0ffcfdf5c3c5952/nextjs), and then assign yourself to that card. For now, we won't be working on the Reservations page since the reservations feature has not yet been fully implemented.
 
 ### Libraries
 
