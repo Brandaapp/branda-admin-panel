@@ -48,7 +48,7 @@ export default function Schedules() {
           <ScheduleEditor
             dataFetched={dataFetched}
             setDataFetched={setDataFetched}
-          ></ScheduleEditor>
+          />
         </div>
       </main>
 

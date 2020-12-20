@@ -165,11 +165,12 @@ export default function WeekEditor(props) {
             start={state.startTimes[day]}
             end={state.endTimes[day]}
             callback={updateOnChange}
+            key={"_" + Math.random().toString(36).substr(2, 9)}
           />
         );
       })}
 
-      <div
+      <td
         style={{
           display: "flex",
           flexDirection: "column",
@@ -192,7 +193,7 @@ export default function WeekEditor(props) {
         >
           Clear Edits
         </Button>
-      </div>
+      </td>
     </tr>
   );
 }

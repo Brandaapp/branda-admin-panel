@@ -7,7 +7,7 @@ import WeekEditor from "./WeekEditor";
 
 const axios = require("axios");
 
-export default function ScheduleView(props) {
+export default function ScheduleEditor(props) {
   const [state, setState] = useState({
     weekStart: null,
     weekEnd: null,
@@ -54,6 +54,7 @@ export default function ScheduleView(props) {
           updateNum={state.updateNum}
           weekNum={state.weekNum}
           refresh={resetWeekSchedule}
+          key={"_" + Math.random().toString(36).substr(2, 9)}
         />
       );
     });
