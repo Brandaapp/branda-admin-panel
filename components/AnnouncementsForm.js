@@ -84,7 +84,7 @@ export default function AnnouncementsForm(props) {
             </div>
             <button className="btn waves-effect waves-light" type="submit"
                 name="action" onClick={() => {props.create(state); handleChange(null, 'reset');}}
-                style={{ backgroundColor: "#1B4470", color: "white", marginTop: "40px", padding: "0 1.5rem" }}>
+                style={{ backgroundColor: "#1B4370", color: "white", marginTop: "40px", padding: "0 1.5rem" }}>
                 Submit
                 <i className="material-icons right">send</i>
             </button>

@@ -86,7 +86,7 @@ export default function ScheduleView(props) {
         <Button
           aria-describedby={id}
           variant="contained"
-          style={{ backgroundColor: "#1B4470", color: "white" }}
+          style={{ backgroundColor: "#1B4370", color: "white" }}
           onClick={handleClick}
         >
           Choose Week
