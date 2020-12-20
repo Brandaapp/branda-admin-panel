@@ -5,7 +5,7 @@ import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import LuxonUtils from '@date-io/luxon';
 import Navbar from '../components/Navbar';
 
-const inputTheme = createMuiTheme({ palette: { primary: { main: "#1A4370" } } });
+const inputTheme = createMuiTheme({ palette: { primary: { main: "#1B4370" } } });
 
 function App({ Component, pageProps }) {
   return (
