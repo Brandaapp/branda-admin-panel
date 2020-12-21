@@ -9,8 +9,8 @@ export default function Login() {
         <title>Branda - Login</title>
       </Head>
 
-      <main className={styles.main}>
-        <div><LoginForm /></div>
+      <main className={styles.main} style={{ width: "100%" }}>
+        <div className="row" style={{ width: "100%" }}><LoginForm /></div>
       </main>
 
       <footer className={styles.footer}>
