@@ -21,7 +21,7 @@ export default function ShuttleView() {
         return shuttles.times.map(time => {
             return (
                 <li>
-                    <div style={{ backgroundColor: "blue", border: "2px blue" }}>
+                    <div style={{ backgroundColor: "blue", border: "10px solid black" }}>
                         <div style={{ color: "white" }}>Bus: {time.busName}</div><br />
                         <div style={{ color: "white" }}>ID: {time.ID}</div><br />
                         <div style={{ color: "white" }}>Route: {time.route}</div><br />
