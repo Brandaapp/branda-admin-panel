@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import ShuttleView from '../components/ShuttleView';
 
 export default function ShuttlesManagement() {
   return (
@@ -9,6 +10,7 @@ export default function ShuttlesManagement() {
       </Head>
 
       <main className={styles.main}>
+        <ShuttleView />
       </main>
 
       <footer className={styles.footer}>
