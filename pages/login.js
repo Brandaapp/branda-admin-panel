@@ -10,11 +10,14 @@ export default function Login() {
       </Head>
 
       <main className={styles.main} style={{ width: "100%" }}>
+        <div className="row" style={{ textAlign: "center" }}>
+          <img src="/admin-logo.png" style={{ width: "15%", marginBottom: "10px" }} />
+        </div>
         <div className="row" style={{ width: "100%" }}><LoginForm /></div>
       </main>
 
       <footer className={styles.footer}>
       </footer>
     </div>
-  )
+  );
 }
