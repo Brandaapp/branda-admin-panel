@@ -11,7 +11,8 @@ export default function ShuttlesManagement() {
       </Head>
 
       <main className={styles.main}>
-        <div stle={{ textAlign: "center" }}>
+        <ShuttleView />
+        {/* <div stle={{ textAlign: "center" }}>
           <h>Shuttle Management</h>
           <p>Please choose a date</p>
           <WeekPicker />
@@ -67,7 +68,7 @@ export default function ShuttlesManagement() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </main>
 
       <footer className={styles.footer}></footer>
