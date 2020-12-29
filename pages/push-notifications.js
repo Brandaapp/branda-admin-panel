@@ -5,7 +5,7 @@ export default function PushNotifications() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Branda - Push Notifications</title>
+        <title>Branda - Testing Push Notifications</title>
       </Head>
 
       <main className={styles.main}>
