@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { signOut } from 'next-auth/client'
 
 export default function Navbar() {
   return (
@@ -71,7 +72,7 @@ export default function Navbar() {
               <ul id="dropdown1" className="dropdown-content">
                 <li>
                   {/* logout not yet implented */}
-                  <a className="black-text" href="/logout">
+                  <a className="black-text" onClick={signOut}>
                     Logout
                     <i className="material-icons right">exit_to_app</i>
                   </a>

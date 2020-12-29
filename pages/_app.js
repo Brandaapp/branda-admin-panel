@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { useRouter } from 'next/router';
+import { Provider } from 'next-auth/client';
 import LuxonUtils from '@date-io/luxon';
 import Navbar from '../components/Navbar';
 
@@ -27,12 +28,14 @@ function App({ Component, pageProps }) {
 
   return (
     <div>
-      <MuiPickersUtilsProvider utils={LuxonUtils}>
-        <ThemeProvider theme={inputTheme}>
-          {nav()}
-          <div className="row"><Component {...pageProps} /></div>
-        </ThemeProvider>
-      </MuiPickersUtilsProvider>
+      <Provider session={pageProps.session}>
+        <MuiPickersUtilsProvider utils={LuxonUtils}>
+          <ThemeProvider theme={inputTheme}>
+            {nav()}
+            <div className="row"><Component {...pageProps} /></div>
+          </ThemeProvider>
+        </MuiPickersUtilsProvider>
+      </Provider>
     </div>
   );
 }
