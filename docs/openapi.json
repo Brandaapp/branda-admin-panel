@@ -492,6 +492,101 @@
                     }
                 }
             }
+        },
+        "/api/places_management": {
+            "get": {
+                "tags": ["PlacesManagement"],
+                "summary": "Returns an array of objects representing all of the places that are currently active",
+                "responses": {
+                    "200": {
+                        "description": "An array of objects representing all of the places that are currently active",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "group": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "schedules": [
+                                        {
+                                            "name": "The Stein",
+                                            "group": "Dining"
+                                        },
+                                        {
+                                            "name": "Dunkin Donuts",
+                                            "group": "Dining"
+                                        },
+                                        {
+                                            "name": "Lower Usdan",
+                                            "group": "Dining"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error finding places"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["PlacesManagement"],
+                "summary": "Creates a new place with the given data",
+                "requestBody": {
+                    "description": "The place to create in the database",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PlacesManagement.json"
+                            },
+                            "examples": {
+                                "schedule": {
+                                    "emp_id": "5b9b485dabd11f5920423a1c",
+                                    "Name": "Jim's Fried Chicken and Hand Grenades",
+                                    "group": "Dining",
+                                    "weeks": [],
+                                    "active": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The places management document",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PlacesManagement.json"
+                                },
+                                "examples": {
+                                    "schedule": {
+                                        "emp_id": "5b9b485dabd11f5920423a1c",
+                                        "Name": "Jim's Fried Chicken and Hand Grenades",
+                                        "group": "Dining",
+                                        "weeks": [],
+                                        "active": 1
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error adding place to database"
+                    }
+                }
+            }
         }
     }
 }
