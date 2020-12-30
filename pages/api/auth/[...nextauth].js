@@ -39,8 +39,7 @@ const options = {
     session: { jwt: true },
     jwt: { secret: process.env.JWT_SECRET },
     pages: {
-        signIn: '/login',
-        signOut: '/login'
+        signIn: '/login'
     },
     callbacks: {
         session: async (session, user) => {

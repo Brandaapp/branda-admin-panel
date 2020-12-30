@@ -1,8 +1,10 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { signOut, useSession } from 'next-auth/client'
 
 export default function Navbar() {
   const [session, loading] = useSession()
+  const router = useRouter()
 
   if (session) return (
     <div className="fixed-top">
@@ -67,15 +69,15 @@ export default function Navbar() {
               </Link>
             </li>
             <li>
-              <a className="dropdown-trigger black-text" href="#" data-activates="dropdown1" data-beloworigin="true" style={{ textAlign: "center" }}>
-                Placeholder
-                <img className="circle circle-small" src={session.user.image}/>
+              <a className="dropdown-trigger black-text profile" href="#" data-activates="dropdown1" data-beloworigin="true">
+                {session.user.name}
+                <img className="circle circle-small" id="profile-pic" src={session.user.image}/>
               </a>
-              <ul id="dropdown1" className="dropdown-content">
+              <ul id="dropdown1" className="dropdown-content" style={{ minWidth: "135px" }}>
                 <li>
-                  <a className="black-text" onClick={signOut}>
+                  <a className="black-text" id="logout" onClick={async () => {await signOut(); router.push('/login')}}>
                     Logout
-                    <i className="material-icons right">exit_to_app</i>
+                    <i className="material-icons" style={{ margin: "0px" }}>exit_to_app</i>
                   </a>
                 </li>
               </ul>

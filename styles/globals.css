@@ -157,6 +157,23 @@ input:focus:not([read-only]) {
 	box-shadow: none!important;	
 }
 
+.profile {
+  display: flex;
+  justify-content: space-between;
+  /* vertical-align: middle; */
+}
+
+#profile-pic {
+  vertical-align: middle;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#logout {
+  display: flex;
+  justify-content: space-between;
+}
+
 /* .MuiPickersToolbar-toolbar {
   height: 100px;
   display: flex;
