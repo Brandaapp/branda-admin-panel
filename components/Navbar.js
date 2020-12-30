@@ -1,8 +1,10 @@
 import Link from 'next/link'
-import { signOut } from 'next-auth/client'
+import { signOut, useSession } from 'next-auth/client'
 
 export default function Navbar() {
-  return (
+  const [session, loading] = useSession()
+
+  if (session) return (
     <div className="fixed-top">
       <nav>
         <div className="nav-wrapper grey lighten-5">
@@ -67,11 +69,10 @@ export default function Navbar() {
             <li>
               <a className="dropdown-trigger black-text" href="#" data-activates="dropdown1" data-beloworigin="true" style={{ textAlign: "center" }}>
                 Placeholder
-                <img className="circle circle-small" src="/placeholder-avatar.png"/>
+                <img className="circle circle-small" src={session.user.image}/>
               </a>
               <ul id="dropdown1" className="dropdown-content">
                 <li>
-                  {/* logout not yet implented */}
                   <a className="black-text" onClick={signOut}>
                     Logout
                     <i className="material-icons right">exit_to_app</i>
@@ -83,5 +84,6 @@ export default function Navbar() {
         </div>
       </nav>
     </div>
-  );
+  )
+  else return null
 }

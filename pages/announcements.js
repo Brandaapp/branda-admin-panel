@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import { getSession } from 'next-auth/client'
 import AnnouncementsView from '../components/AnnouncementsView'
 
 export default function Announcements() {
@@ -17,4 +18,17 @@ export default function Announcements() {
       </footer>
     </div>
   )
+}
+
+export async function getServerSideProps({ req, res }) {
+  const session = await getSession({ req });
+  if (session) {
+    return {
+      props: { session }
+    }
+  } else {
+    res.writeHead(302, { Location: '/login' });
+    res.end();
+    return { props: {} }
+  }
 }

@@ -37,10 +37,31 @@ const options = {
     ],
     secret: process.env.SECRET,
     session: { jwt: true },
-    jwt: { secret: "9D4F7DA9B5A707F03C88791DFADA6AF870633204E84C8E39F57760D60768E476" },
+    jwt: { secret: process.env.JWT_SECRET },
     pages: {
         signIn: '/login',
         signOut: '/login'
+    },
+    callbacks: {
+        session: async (session, user) => {
+            if (session) {
+                session.user.id = user.id
+                session.user.name = user.name
+                session.user.type = user.type
+                session.user.image = user.image
+            }
+            return Promise.resolve(session)
+        },
+        jwt: async (token, user, account, profile, isNewUser) => {
+            const isSignIn = (user) ? true : false
+            if (isSignIn) {
+                token.id = user._id
+                token.name = user.username
+                token.type = user.userType
+                token.image = user.picture
+            }
+            return Promise.resolve(token)
+        }
     }
 }
 

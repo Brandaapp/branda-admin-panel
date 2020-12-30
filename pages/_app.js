@@ -1,29 +1,29 @@
-import '../styles/globals.css';
-import '../styles/materialize.css';
-import { useEffect } from 'react';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { useRouter } from 'next/router';
-import { Provider } from 'next-auth/client';
-import LuxonUtils from '@date-io/luxon';
-import Navbar from '../components/Navbar';
+import '../styles/globals.css'
+import '../styles/materialize.css'
+import { useEffect } from 'react'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import { useRouter } from 'next/router'
+import { Provider } from 'next-auth/client'
+import LuxonUtils from '@date-io/luxon'
+import Navbar from '../components/Navbar'
 
-const inputTheme = createMuiTheme({ palette: { primary: { main: "#1B4370" } } });
+const inputTheme = createMuiTheme({ palette: { primary: { main: "#1B4370" } } })
 
 function App({ Component, pageProps }) {
-  const router = useRouter();
+  const router = useRouter()
 
   useEffect(() => {
-    const jssStyles = document.querySelector('#jss-server-side');
+    const jssStyles = document.querySelector('#jss-server-side')
     if (jssStyles) {
-      jssStyles.parentElement.removeChild(jssStyles);
+      jssStyles.parentElement.removeChild(jssStyles)
     }
   }, []);
   
   function nav() {
     if (router.pathname !== '/login' && router.pathname !== '/register') {
-      return (<div className="row"><Navbar /></div>);
-    } else return null;
+      return (<div className="row"><Navbar /></div>)
+    } else return null
   }
 
   return (
@@ -40,4 +40,4 @@ function App({ Component, pageProps }) {
   );
 }
 
-export default App;
+export default App
