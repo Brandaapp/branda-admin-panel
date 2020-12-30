@@ -1,0 +1,33 @@
+{
+    "type": "object",
+    "required": [
+        "emp_id",
+        "Name",
+        "group"
+    ],
+    "properties": {
+        "emp_id": {
+            "type": "string"
+        },
+        "Name": {
+            "type": "string"
+        },
+        "group": {
+            "type": "string"
+        },
+        "weeks": {
+            "type": "array"
+        },
+        "active": {
+            "type": "integer",
+            "format": "int32"
+        }
+    },
+    "example": {
+        "emp_id": "5b9b485dabd11f5920423a1c",
+        "Name": "Jim's Fried Chicken and Hand Grenades",
+        "group": "Dining",
+        "weeks": [],
+        "active": 1
+    }
+}
