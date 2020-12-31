@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import { getSession } from 'next-auth/client'
 
 export default function Reservations() {
   return (
@@ -15,4 +16,17 @@ export default function Reservations() {
       </footer>
     </div>
   )
+}
+
+export async function getServerSideProps({ req, res }) {
+  const session = await getSession({ req });
+  if (session) {
+    return {
+      props: { session }
+    }
+  } else {
+    res.writeHead(302, { Location: '/login' });
+    res.end();
+    return { props: {} }
+  }
 }

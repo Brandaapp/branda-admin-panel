@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { getSession } from 'next-auth/client';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import ScheduleView from '../components/ScheduleView';
-import AnnouncementsView from '../components/AnnouncementsView';
 
 export default function Home() {
   const [dataFetched, setDataFetched] = useState(false);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -59,4 +60,17 @@ export default function Home() {
       </footer>
     </div>
   )
+}
+
+export async function getServerSideProps({ req, res }) {
+  const session = await getSession({ req });
+  if (session) {
+    return {
+      props: { session }
+    }
+  } else {
+    res.writeHead(302, { Location: '/login' });
+    res.end();
+    return { props: {} }
+  }
 }

@@ -1,7 +1,12 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { signOut, useSession } from 'next-auth/client'
 
 export default function Navbar() {
-  return (
+  const [session, loading] = useSession()
+  const router = useRouter()
+
+  if (session) return (
     <div className="fixed-top">
       <nav>
         <div className="nav-wrapper grey lighten-5">
@@ -64,16 +69,15 @@ export default function Navbar() {
               </Link>
             </li>
             <li>
-              <a className="dropdown-trigger black-text" href="#" data-activates="dropdown1" data-beloworigin="true" style={{ textAlign: "center" }}>
-                Placeholder
-                <img className="circle circle-small" src="/placeholder-avatar.png"/>
+              <a className="dropdown-trigger black-text profile" href="#" data-activates="dropdown1" data-beloworigin="true">
+                {session.user.name}
+                <img className="circle circle-small" id="profile-pic" src={session.user.image}/>
               </a>
-              <ul id="dropdown1" className="dropdown-content">
+              <ul id="dropdown1" className="dropdown-content" style={{ minWidth: "135px" }}>
                 <li>
-                  {/* logout not yet implented */}
-                  <a className="black-text" href="/logout">
+                  <a className="black-text" id="logout" onClick={async () => {await signOut(); router.push('/login')}}>
                     Logout
-                    <i className="material-icons right">exit_to_app</i>
+                    <i className="material-icons" style={{ margin: "0px" }}>exit_to_app</i>
                   </a>
                 </li>
               </ul>
@@ -83,4 +87,5 @@ export default function Navbar() {
       </nav>
     </div>
   )
+  else return null
 }

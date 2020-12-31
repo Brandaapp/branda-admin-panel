@@ -1,0 +1,40 @@
+{
+    "type": "object",
+    "required": [
+        "username",
+        "email",
+        "userType",
+        "picture",
+        "salt",
+        "hash"
+    ],
+    "properties": {
+        "username": {
+            "type": "string"
+        },
+        "email": {
+            "type": "string"
+        },
+        "userType": {
+            "type": "string"
+        },
+        "picture": {
+            "type": "string"
+        },
+        "salt": {
+            "type": "string"
+        },
+        "hash": {
+            "type": "string"
+        }
+    },
+    "example": {
+        "username": "SteveThaMngr",
+        "email": "steve@brandeis.edu",
+        "userType": "manager",
+        "picture": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Roman_S.svg/1200px-Roman_S.svg.png",
+        "salt": "6dbe9be92e9bbe7f870fd1da25cd03d7f50036d220723dbf9c593a9bfece5e97",
+        "hash": "0eb538af6c1606bc99a78ce6dc3dfe12649efb4cbbd9e7481b733da89b34aa9..."
+    }
+    
+}
