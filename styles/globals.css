@@ -115,7 +115,7 @@ body {
 }
 
 .pushnotif-form {
-  border: 5px solid #1B4370;
+  /* border: 5px solid #1B4370; */
   border-radius: 25px;
   width: 700px;
   height: 700px;

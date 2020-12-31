@@ -68,7 +68,7 @@ export default function PushNotifsForm(props) {
   }
 
   function validate() {
-      return !state.validLink || state.message === "" || state.title === "";
+      return !state.validLink || state.message === "" || state.title === "" || state.club === "";
   }
 
   if (!state.clubData) {
@@ -138,7 +138,7 @@ export default function PushNotifsForm(props) {
         </div>
         <div
           style={{
-            width: "100%",
+            width: "80%",
             display: "flex",
             justifyContent: "flex-end",
             paddingBottom: "20px",
@@ -148,7 +148,7 @@ export default function PushNotifsForm(props) {
             onClick={submitForm}
             disabled={validate()}
             style={{
-              backgroundColor: "#1B4370",
+              backgroundColor: validate() ? "#5482B6" : "#1B4370",
               color: "white",
               width: "200px",
               height: "150%",
