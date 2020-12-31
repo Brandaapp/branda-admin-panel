@@ -28,7 +28,10 @@ const options = {
                     } else {
                         if (checkPassword(credentials.password, user.salt, user.hash)) {
                             result = Promise.resolve(user);
-                        } else result = Promise.resolve(null);
+                        } else {
+                            console.log("Incorrect password")
+                            result = Promise.resolve(null);
+                        }
                     }
                 });
                 return result;

@@ -24,44 +24,43 @@ export default function Login({ csrfToken }) {
         </div>
         <div className="row" style={{ width: "100%" }}>
           <div className="login-card">
-              <h5 className="login-header">Login</h5>
-              {/* Necessary to wrap in a form so the redirect to homepage after login works correctly */}
-              <form action="/api/auth/callback/credentials" method="post">
-                <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-                <div className="login-label">Username</div>
-                <div className="login-input">
-                    <Input
-                        placeholder="Enter username"
-                        size="small"
-                        variant="outlined"
-                        type="text"
-                        value={username}
-                        name="username"
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </div>
-                <div className="login-label">Password</div>
-                <div className="login-input">
-                    <Input
-                        placeholder="Enter password"
-                        size="small"
-                        variant="outlined"
-                        type="text"
-                        value={password}
-                        name="password"
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
-                <div className="login-input">
-                    <button className="btn waves-effect waves-light login-btn" type="submit"
-                    name="action">
-                        Login
-                    </button>
-                </div>
-              </form>
-              <div style={{ marginBottom: "5px" }}>
-                  Don't have an account? <Link href="/register">Sign Up</Link>
+            <h5 className="login-header">Login</h5>
+            {/* Necessary to wrap in a form so the redirect to homepage after login works correctly */}
+            <form action="/api/auth/callback/credentials" method="post">
+              <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+              <div className="login-label">Username</div>
+              <div className="login-input">
+                <Input
+                  placeholder="Enter username"
+                  size="small"
+                  variant="outlined"
+                  type="text"
+                  value={username}
+                  name="username"
+                  onChange={(e) => setUsername(e.target.value)}
+                />
               </div>
+              <div className="login-label">Password</div>
+              <div className="login-input">
+                <Input
+                  placeholder="Enter password"
+                  size="small"
+                  variant="outlined"
+                  type="text"
+                  value={password}
+                  name="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <div className="login-input">
+                <button className="btn waves-effect waves-light login-btn" type="submit">
+                  Login
+                </button>
+              </div>
+            </form>
+            <div style={{ marginBottom: "5px" }}>
+              Don't have an account? <Link href="/register">Sign Up</Link>
+            </div>
           </div>
         </div>
       </main>

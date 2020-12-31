@@ -131,6 +131,16 @@ body {
   margin: 70px auto 10px auto;
 }
 
+.login-btn-sm {
+  background-color: #1B4370 !important;
+  color: white;
+  padding: 0 1.5rem;
+  border-radius: 3px !important;
+  font-weight: 500;
+  letter-spacing: 0.7px !important;
+  margin: 40px auto 10px auto;
+}
+
 .login-label {
   margin-top: 20px;
   margin-bottom: 2px;
