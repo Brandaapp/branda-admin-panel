@@ -16,16 +16,8 @@ export default function PushNotifsForm(props) {
   });
 
   useEffect(() => {
-    axios.get(`/api/brandeisClubs/Approved`).then((response) => {
-      console.log(response);
-      let data = [];
-      response.data.forEach((club) => {
-        if (club.name) {
-          data.push({ name: club.name });
-        }
-      });
-
-      setState((prev) => ({ ...prev, clubData: data }));
+    axios.get(`/api/brandeisClubs`).then((response) => {
+      setState((prev) => ({ ...prev, clubData: response.data }));
     });
   }, []);
 
@@ -68,7 +60,12 @@ export default function PushNotifsForm(props) {
   }
 
   function validate() {
-      return !state.validLink || state.message === "" || state.title === "" || state.club === "";
+    return (
+      !state.validLink ||
+      state.message === "" ||
+      state.title === "" ||
+      state.club === ""
+    );
   }
 
   if (!state.clubData) {
@@ -77,7 +74,7 @@ export default function PushNotifsForm(props) {
     );
   } else {
     return (
-      <div className="pushnotif-form">
+      <form className="pushnotif-form" method="POST">
         <h4 style={{ color: "#1B4370" }}>Send Push Notification</h4>
         <div
           style={{
@@ -87,6 +84,7 @@ export default function PushNotifsForm(props) {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "space-between",
+            // border: "1px solid black"
           }}
         >
           <TextField
@@ -140,8 +138,9 @@ export default function PushNotifsForm(props) {
           style={{
             width: "80%",
             display: "flex",
-            justifyContent: "flex-end",
+            justifyContent: "center",
             paddingBottom: "20px",
+            // border: "1px solid black"
           }}
         >
           <Button
@@ -158,7 +157,7 @@ export default function PushNotifsForm(props) {
             send
           </Button>
         </div>
-      </div>
+      </form>
     );
   }
 }
