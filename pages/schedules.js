@@ -1,11 +1,10 @@
-import { useState } from "react";
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import { getSession } from 'next-auth/client'
-import ScheduleEditor from "../components/ScheduleEditor";
+import { useState } from "react"
+import Head from "next/head"
+import styles from "../styles/Home.module.css"
+import ScheduleEditor from "../components/ScheduleEditor"
 
 export default function Schedules() {
-  const [dataFetched, setDataFetched] = useState(false);
+  const [dataFetched, setDataFetched] = useState(false)
 
   return (
     <div className={styles.container}>
@@ -58,15 +57,3 @@ export default function Schedules() {
   );
 }
 
-export async function getServerSideProps({ req, res }) {
-  const session = await getSession({ req });
-  if (session) {
-    return {
-      props: { session }
-    }
-  } else {
-    res.writeHead(302, { Location: '/login' });
-    res.end();
-    return { props: {} }
-  }
-}
