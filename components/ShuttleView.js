@@ -1,8 +1,9 @@
 import shadows from "@material-ui/core/styles/shadows";
 import { useState, useEffect } from "react";
-import ShuttleList from './ShuttleList';
-import WeekPicker from './WeekPicker';
+import ShuttleList from "./ShuttleList";
 import styles from "../styles/Home.module.css";
+import Daypicker from "./DayPicker";
+import { KeyboardDatePicker } from "@material-ui/pickers";
 
 const axios = require("axios");
 
@@ -22,21 +23,51 @@ export default function ShuttleView() {
     }
   });
 
+  const campus = [];
+  const waltham = [];
+  const boston = [];
+  if (shuttles != null) {
+    shuttles.times.forEach((shuttle) => {
+      if (shuttle.route === "campus") campus.push(shuttle);
+      if (shuttle.route === "Waltham") waltham.push(shuttle);
+      if (shuttle.route === "Boston") boston.push(shuttle);
+    });
+  }
+
+  console.log(date);
+
   return (
     <div>
       <div className="row">
-        <div stle={{ textAlign: "center" }}>
-          <h>Shuttle Management</h>
-          <p>Please choose a date</p>
-          <WeekPicker />
+        <div
+          id="title"
+          style={{
+            textAlign: "center",
+            align_items: "center",
+            justify_content: "center",
+          }}
+        >
+          <h5>Shuttle Management</h5>
+
+          <KeyboardDatePicker
+            clearable
+            placeholder="Enter Date"
+            onChange={(newDate) => setDate(newDate)}
+            format="MM/dd/yyyy"
+          />
         </div>
       </div>
       <div className="row">
-        <div className="col m4"><ShuttleList route={"Campus"} shuttles={shuttles} /></div>
-        <div className="col m4"><ShuttleList route={"Waltham"} shuttles={shuttles} /></div>
-        <div className="col m4"><ShuttleList route={"Boston"} shuttles={shuttles} /></div>
+        <div className="col m4">
+          <ShuttleList route={"Campus"} shuttles={campus} />
+        </div>
+        <div className="col m4">
+          <ShuttleList route={"Waltham"} shuttles={waltham} />
+        </div>
+        <div className="col m4">
+          <ShuttleList route={"Boston"} shuttles={boston} />
+        </div>
       </div>
     </div>
-  )
-
+  );
 }
