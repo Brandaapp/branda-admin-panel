@@ -4,9 +4,9 @@ export default function ShuttleList(props) {
   function renderShuttles() {
     return props.shuttles.map((time) => {
       return (
-        <li>
+        <li key={"_" + Math.random().toString(36).substr(2, 9)}>
           <div className={styles.shuttleCard}>
-            <div class="valign-wrapper">
+            <div className="valign-wrapper">
               <i className="material-icons fa-3x">directions_bus</i>
             </div>
             <div>
@@ -28,7 +28,7 @@ export default function ShuttleList(props) {
   if (props.shuttles !== null) {
     return (
       <div className={styles.shuttleCard}>
-        <div>
+        <div style={{ width: "100%" }}>
           <div className="card-panel">
             <div className="row  lighten-5">
               <div className="col s12 center">

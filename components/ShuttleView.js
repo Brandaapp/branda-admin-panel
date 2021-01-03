@@ -12,25 +12,23 @@ export default function ShuttleView() {
   const [shuttles, setShuttles] = useState(null);
 
   useEffect(async () => {
-    if (shuttles === null) {
-      await axios
-        .get(`/api/shuttles/${date.toISOString()}`)
-        .then((response) => {
-          console.log(response.data);
-          setShuttles(response.data);
-        })
-        .catch((err) => console.log("Error getting shuttles", err));
-    }
-  });
+    await axios
+      .get(`/api/shuttles/${date.toISOString()}`)
+      .then((response) => {
+        console.log(response.data);
+        setShuttles(response.data);
+      })
+      .catch((err) => console.log("Error getting shuttles", err));
+  }, [date]);
 
   const campus = [];
   const waltham = [];
   const boston = [];
-  if (shuttles != null) {
+  if (shuttles !== null) {
     shuttles.times.forEach((shuttle) => {
-      if (shuttle.route === "campus") campus.push(shuttle);
-      if (shuttle.route === "Waltham") waltham.push(shuttle);
-      if (shuttle.route === "Boston") boston.push(shuttle);
+      if (shuttle.route === "Campus" || shuttle.route === "campus") campus.push(shuttle);
+      if (shuttle.route === "Waltham" || shuttle.route === "waltham") waltham.push(shuttle);
+      if (shuttle.route === "Boston" || shuttle.route === "boston") boston.push(shuttle);
     });
   }
 
@@ -52,7 +50,8 @@ export default function ShuttleView() {
           <KeyboardDatePicker
             clearable
             placeholder="Enter Date"
-            onChange={(newDate) => setDate(newDate)}
+            value={date}
+            onChange={(newDate) => setDate(newDate.toJSDate())}
             format="MM/dd/yyyy"
           />
         </div>
