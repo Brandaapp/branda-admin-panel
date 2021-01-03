@@ -6,6 +6,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { useRouter } from 'next/router'
 import { Provider, getSession } from 'next-auth/client'
+import { access } from '../utils/rolesUtils'
 import LuxonUtils from '@date-io/luxon'
 import Navbar from '../components/Navbar'
 
@@ -45,8 +46,13 @@ TLApp.getInitialProps = async (appContext) => {
   const session = await getSession(appContext)
   const appProps = await App.getInitialProps(appContext)
   if (typeof window === "undefined" && appContext.ctx.res.writeHead) {
-    if (!session && appContext.router.pathname !== "/login") {
-      appContext.ctx.res.writeHead(302, { Location: "/login" })
+    if (!session) {
+      if (appContext.router.pathname !== "/login") {
+        appContext.ctx.res.writeHead(302, { Location: "/login" })
+        appContext.ctx.res.end()
+      }
+    } else if (!access[session.user.type].allowed.has(appContext.router.pathname)) {
+      appContext.ctx.res.writeHead(302, { Location: access[session.user.type].redirectTo })
       appContext.ctx.res.end()
     }
   }
