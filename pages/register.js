@@ -1,7 +1,5 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -26,14 +24,6 @@ export default function Register() {
     showError: false,
     submitted: false
   })
-  /* const [username, setUsername] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [passwordMatch, setPasswordMatch] = useState("")
-  const [type, setType] = useState("employee")
-  const [showError, setShowError] = useState(false)
-  const [submitted, setSubmitted] = useState(false) */
-  const router = useRouter()
 
   async function submit() {
     if (state.username === ""
