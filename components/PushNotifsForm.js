@@ -12,7 +12,7 @@ export default function PushNotifsForm(props) {
     link: "",
     club: "",
     clubData: null,
-    validLink: true,
+    validLink: true
   });
 
   useEffect(() => {
@@ -52,7 +52,10 @@ export default function PushNotifsForm(props) {
     return url.protocol === "http:" || url.protocol === "https:";
   }
 
-  function submitForm() {
+  async function submitForm() {
+
+    console.log("here")
+
     let data = {
       "title": state.title,
       "message": state.message,
@@ -60,17 +63,22 @@ export default function PushNotifsForm(props) {
       "organization_name": state.club,
     }
 
-    axios.patch(`/api/sendpushnotifications`, data).then((response) => {
+    await axios.patch(`/api/sendpushnotification`, data).then((response) => {
       console.log(response);
-    })
+      // Materialize.toast(
+      //   "Push notification send to: " + state.club,
+      //   2500,
+      //   "#0d47a1 blue darken-4 rounded"
+      // );
+    });
 
   }
 
   function validate() {
     return (
       !state.validLink ||
-      state.message === "" ||
-      state.title === "" ||
+      state.message.lenght < 5 ||
+      state.title.length < 3 ||
       state.club === ""
     );
   }
@@ -102,7 +110,7 @@ export default function PushNotifsForm(props) {
             error={false}
             onChange={titleChange}
             style={{ width: "90%" }}
-            helperText={`Up to 140 characters (${state.title.length}/${140})`}
+            helperText={`Between 3 and 140 characters (${state.title.length}/${140})`}
             inputProps={{ maxLength: 140 }}
           />
 
@@ -114,6 +122,7 @@ export default function PushNotifsForm(props) {
             onChange={messageChange}
             multiline={true}
             rows={4}
+            helperText={"More than 5 characters"}
             style={{ width: "90%" }}
           />
 
@@ -138,7 +147,7 @@ export default function PushNotifsForm(props) {
               <TextField {...params} label="Club" variant="outlined" />
             )}
             onChange={(event, value) => clubChange(value)}
-            getOptionSelected={(option, value) => option.iname === value.name}
+            getOptionSelected={(option, value) => option.name === value.name}
           />
         </div>
         <div
