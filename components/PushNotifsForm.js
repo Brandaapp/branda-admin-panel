@@ -53,10 +53,17 @@ export default function PushNotifsForm(props) {
   }
 
   function submitForm() {
-    console.log(state.title);
-    console.log(state.message);
-    console.log(state.link);
-    console.log(state.club);
+    let data = {
+      "title": state.title,
+      "message": state.message,
+      "httpLink": state.link,
+      "organization_name": state.club,
+    }
+
+    axios.patch(`/api/sendpushnotifications`, data).then((response) => {
+      console.log(response);
+    })
+
   }
 
   function validate() {
