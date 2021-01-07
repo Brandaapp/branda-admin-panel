@@ -74,7 +74,7 @@ export default function PushNotifsForm(props) {
     );
   } else {
     return (
-      <form className="pushnotif-form" method="POST">
+      <div className="pushnotif-form">
         <h4 style={{ color: "#1B4370" }}>Send Push Notification</h4>
         <div
           style={{
@@ -131,7 +131,7 @@ export default function PushNotifsForm(props) {
               <TextField {...params} label="Club" variant="outlined" />
             )}
             onChange={(event, value) => clubChange(value)}
-            getOptionSelected={(option, value) => option.name === value.name}
+            getOptionSelected={(option, value) => option.iname === value.name}
           />
         </div>
         <div
@@ -153,11 +153,12 @@ export default function PushNotifsForm(props) {
               height: "150%",
               borderRadius: "15px",
             }}
+            type="submit"
           >
-            send
+            Send
           </Button>
         </div>
-      </form>
+      </div>
     );
   }
 }
