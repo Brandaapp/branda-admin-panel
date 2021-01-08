@@ -7,7 +7,7 @@ dbConnect();
 
 export default (req, res) => {
   // here we are checking the lngths of the notifcation body request
-  console.log(req.body.httpLink)
+  console.log(req.body.httpLink);
   if (req.body.title.length < 3) {
     res.json({
       error: true,
@@ -61,6 +61,8 @@ export default (req, res) => {
             "Content-Type": "application/json",
           };
 
+          // to get link to open correctly, had to log out and then log in again on expo launched version of app
+
           let promises = [];
           myArrayOfData.forEach(function (singleElement, index) {
             //console.log(index);
@@ -85,13 +87,13 @@ export default (req, res) => {
           Promise.all(promises).then(function (results) {
             results.forEach(function (response) {
               //mainObject[response.identifier] = response.value;
-              console.log(response.status)
+              console.log(response.status);
               if (response.status !== 200) {
                 // res.status(500).send("Oop - error sending push notification");
-                console.log('error')
+                console.log("error");
               }
             });
-            res.status(200); // sending OK response
+            res.status(200).redirect("/"); // sending OK response
           });
         } else {
           // otherwise send a response saying \/

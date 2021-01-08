@@ -12,8 +12,10 @@ export default function PushNotifsForm(props) {
     link: "",
     club: "",
     clubData: null,
-    validLink: true
+    validLink: true,
   });
+
+  const [sending, setSending] = useState(false);
 
   useEffect(() => {
     axios.get(`/api/brandeisClubs`).then((response) => {
@@ -40,46 +42,61 @@ export default function PushNotifsForm(props) {
     setState((prev) => ({ ...prev, club: name }));
   }
 
-  function isValidHttpUrl(string) {
+  function isValidHttpUrl(str) {
+    let pattern = new RegExp(
+      "^(https?:\\/\\/)?" + // protocol
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+        "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+        "(\\#[-a-z\\d_]*)?$",
+      "i"
+    ); // fragment locator
+
     let url;
 
     try {
-      url = new URL(string);
+      url = new URL(str);
     } catch (_) {
       return false;
     }
 
-    return url.protocol === "http:" || url.protocol === "https:";
+    return (
+      (url.protocol === "http:" || url.protocol === "https:") &&
+      !!pattern.test(str)
+    );
   }
 
   async function submitForm() {
 
-    console.log("here")
+    setSending(true);
 
     let data = {
-      "title": state.title,
-      "message": state.message,
-      "httpLink": state.link,
-      "organization_name": state.club,
-    }
+      title: state.title,
+      message: state.message,
+      httpLink: state.link,
+      organization_name: state.club,
+    };
 
     await axios.patch(`/api/sendpushnotification`, data).then((response) => {
+      // keep an eye on missing notifications (maybe based on phone type or expo problem => what screen is open)
       console.log(response);
-      // Materialize.toast(
-      //   "Push notification send to: " + state.club,
-      //   2500,
-      //   "#0d47a1 blue darken-4 rounded"
-      // );
+      Materialize.toast(
+        "Push notification send to: " + state.club,
+        2500,
+        "#0d47a1 blue darken-4 rounded"
+      );
+      setSending(false);
     });
-
   }
 
   function validate() {
     return (
       !state.validLink ||
-      state.message.lenght < 5 ||
+      state.message.length < 5 ||
       state.title.length < 3 ||
-      state.club === ""
+      state.club === "" ||
+      sending
     );
   }
 
@@ -107,14 +124,17 @@ export default function PushNotifsForm(props) {
             label="Title"
             variant="filled"
             required
-            error={false}
+            error={state.title.length < 3}
             onChange={titleChange}
             style={{ width: "90%" }}
-            helperText={`Between 3 and 140 characters (${state.title.length}/${140})`}
+            helperText={`Between 3 and 140 characters (${
+              state.title.length
+            }/${140})`}
             inputProps={{ maxLength: 140 }}
           />
 
           <TextField
+            error={state.message.length < 5}
             id="message"
             label="Message"
             variant="filled"
@@ -160,7 +180,7 @@ export default function PushNotifsForm(props) {
           }}
         >
           <Button
-            onClick={submitForm}
+            onClick={submitForm.bind(this)}
             disabled={validate()}
             style={{
               backgroundColor: validate() ? "#5482B6" : "#1B4370",
@@ -171,7 +191,7 @@ export default function PushNotifsForm(props) {
             }}
             type="submit"
           >
-            Send
+            {sending ? "Sending..." : "Send"}
           </Button>
         </div>
       </div>
