@@ -82,7 +82,7 @@ export default function PushNotifsForm(props) {
       // keep an eye on missing notifications (maybe based on phone type or expo problem => what screen is open)
       console.log(response);
       Materialize.toast(
-        "Push notification send to: " + state.club,
+        "Push notification sent to: " + state.club,
         2500,
         "#0d47a1 blue darken-4 rounded"
       );
@@ -124,7 +124,7 @@ export default function PushNotifsForm(props) {
             label="Title"
             variant="filled"
             required
-            error={state.title.length < 3}
+            error={state.title !== "" && state.title.length < 3}
             onChange={titleChange}
             style={{ width: "90%" }}
             helperText={`Between 3 and 140 characters (${
@@ -134,7 +134,7 @@ export default function PushNotifsForm(props) {
           />
 
           <TextField
-            error={state.message.length < 5}
+            error={state.message !== "" &&state.message.length < 5}
             id="message"
             label="Message"
             variant="filled"
