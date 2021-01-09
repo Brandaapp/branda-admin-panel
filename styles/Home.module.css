@@ -122,7 +122,7 @@
 }
 
 .shuttleCard {
-  width: 100%;
+  width: 350px;
   text-align: left;
   display: flex;
   flex-direction: row;

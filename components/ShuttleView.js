@@ -1,8 +1,6 @@
-import shadows from "@material-ui/core/styles/shadows";
 import { useState, useEffect } from "react";
 import ShuttleList from "./ShuttleList";
 import styles from "../styles/Home.module.css";
-import Daypicker from "./DayPicker";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
 const axios = require("axios");
@@ -26,16 +24,19 @@ export default function ShuttleView() {
   const boston = [];
   if (shuttles !== null) {
     shuttles.times.forEach((shuttle) => {
-      if (shuttle.route === "Campus" || shuttle.route === "campus") campus.push(shuttle);
-      if (shuttle.route === "Waltham" || shuttle.route === "waltham") waltham.push(shuttle);
-      if (shuttle.route === "Boston" || shuttle.route === "boston") boston.push(shuttle);
+      if (shuttle.route === "Campus" || shuttle.route === "campus")
+        campus.push(shuttle);
+      if (shuttle.route === "Waltham" || shuttle.route === "waltham")
+        waltham.push(shuttle);
+      if (shuttle.route === "Boston" || shuttle.route === "boston")
+        boston.push(shuttle);
     });
   }
 
   console.log(date);
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <div className="row">
         <div
           id="title"
@@ -56,14 +57,14 @@ export default function ShuttleView() {
           />
         </div>
       </div>
-      <div className="row">
-        <div className="col m4">
+      <div className="row" style={{ display: "flex", flexDirection: "row" }}>
+        <div className={styles.shuttleCard}>
           <ShuttleList route={"Campus"} shuttles={campus} />
         </div>
-        <div className="col m4">
+        <div className={styles.shuttleCard}>
           <ShuttleList route={"Waltham"} shuttles={waltham} />
         </div>
-        <div className="col m4">
+        <div className={styles.shuttleCard}>
           <ShuttleList route={"Boston"} shuttles={boston} />
         </div>
       </div>

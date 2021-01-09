@@ -1,42 +1,28 @@
 import styles from "../styles/Home.module.css";
+import Remove from "@material-ui/icons/Remove";
+import Fab from "@material-ui/core/Fab";
+import ShuttleComponent from "./ShuttleComponent";
+
+const axios = require("axios");
 
 export default function ShuttleList(props) {
-  function renderShuttles() {
-    return props.shuttles.map((time) => {
-      return (
-        <li key={"_" + Math.random().toString(36).substr(2, 9)}>
-          <div className={styles.shuttleCard}>
-            <div className="valign-wrapper">
-              <i className="material-icons fa-3x">directions_bus</i>
-            </div>
-            <div>
-              <div className={styles.shuttleName}>
-                <h5>{time.busName}</h5>
-              </div>
-              <div className={styles.shuttleDetail}>
-                <sub>ID: {time.ID}</sub>
-                <br />
-                <sub>Route: {time.route}</sub>
-              </div>
-            </div>
-          </div>
-        </li>
-      );
-    });
-  }
-
   if (props.shuttles !== null) {
     return (
-      <div className={styles.shuttleCard}>
-        <div style={{ width: "100%" }}>
-          <div className="card-panel">
-            <div className="row  lighten-5">
-              <div className="col s12 center">
-                <h4 className="blue-text text-darken-1">{props.route}</h4>
-              </div>
+      <div style={{ width: "100%" }}>
+        <div className="card-panel">
+          <div className="row  lighten-5">
+            <div className="col s12 center">
+              <h4 className="blue-text text-darken-1">{props.route}</h4>
+            </div>
+            <div class="center-align" style={{ paddingTop: "50px" }}>
+              <a class="btn-floating waves-effect waves-light blue">
+                <i class="material-icons">add</i>
+              </a>
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <ul>{renderShuttles()}</ul>
+              {props.shuttles.map((time, index) => {
+                return <ShuttleComponent time={time} key={index} />;
+              })}
             </div>
           </div>
         </div>
