@@ -2,9 +2,11 @@ import styles from "../styles/Home.module.css";
 import Remove from "@material-ui/icons/Remove";
 import Fab from "@material-ui/core/Fab";
 
+const { DateTime } = require('luxon')
+
 const axios = require("axios");
 
-export default function ShuttleList(props) {
+export default function ShuttleCard(props) {
   console.log(props);
   const time = props.time;
 
@@ -20,9 +22,7 @@ export default function ShuttleList(props) {
               <h5>{time.busName}</h5>
             </div>
             <div className={styles.shuttleDetail}>
-              <sub>ID: {time.ID}</sub>
-              <br />
-              <sub>Route: {time.route}</sub>
+              <div className="shuttle-details">Time in Route: {DateTime.fromISO(time.start).toLocaleString(DateTime.TIME_SIMPLE) + " - " + DateTime.fromISO(time.end).toLocaleString(DateTime.TIME_SIMPLE)}</div>
             </div>
           </div>
           <div className="valign-wrapper">
@@ -41,8 +41,9 @@ export default function ShuttleList(props) {
                 onClick={() => {
                   console.log("delete");
                   axios
-                    .delete(`/api/shuttles/${time.start}`)
+                    .delete(`/api/shuttles/${props.date.toISOString()}/${time.ID}`)
                     .then((response) => {
+                      props.getShuttles(props.date)
                       console.log(response);
                     });
                 }}
@@ -54,5 +55,9 @@ export default function ShuttleList(props) {
     );
   }
 
-  return <ul>{renderShuttles()}</ul>;
+  return (
+    <div>
+      <ul>{renderShuttles()}</ul>
+    </div>
+  );
 }

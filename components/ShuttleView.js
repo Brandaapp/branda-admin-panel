@@ -9,7 +9,7 @@ export default function ShuttleView() {
   const [date, setDate] = useState(new Date("2019-09-16T22:40:27.884+00:00"));
   const [shuttles, setShuttles] = useState(null);
 
-  useEffect(async () => {
+  async function getShuttles(date) {
     await axios
       .get(`/api/shuttles/${date.toISOString()}`)
       .then((response) => {
@@ -17,6 +17,10 @@ export default function ShuttleView() {
         setShuttles(response.data);
       })
       .catch((err) => console.log("Error getting shuttles", err));
+  }
+
+  useEffect(async () => {
+    await getShuttles(date)
   }, [date]);
 
   const campus = [];
@@ -59,13 +63,13 @@ export default function ShuttleView() {
       </div>
       <div className="row" style={{ display: "flex", flexDirection: "row" }}>
         <div className={styles.shuttleCard}>
-          <ShuttleList route={"Campus"} shuttles={campus} />
+          <ShuttleList route={"Campus"} getShuttles={getShuttles} date={date} shuttles={campus} />
         </div>
         <div className={styles.shuttleCard}>
-          <ShuttleList route={"Waltham"} shuttles={waltham} />
+          <ShuttleList route={"Waltham"} getShuttles={getShuttles} date={date} shuttles={waltham} />
         </div>
         <div className={styles.shuttleCard}>
-          <ShuttleList route={"Boston"} shuttles={boston} />
+          <ShuttleList route={"Boston"} getShuttles={getShuttles} date={date} shuttles={boston} />
         </div>
       </div>
     </div>

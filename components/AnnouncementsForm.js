@@ -70,7 +70,7 @@ export default function AnnouncementsForm(props) {
                         format="MM/dd/yyyy"
                     />
                 </div>
-                <div className="col 6">
+                <div className="col s6">
                     <div>End Date</div>
                     <KeyboardDatePicker
                         clearable
