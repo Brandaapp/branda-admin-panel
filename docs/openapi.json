@@ -492,6 +492,132 @@
                     }
                 }
             }
-        }
+        },
+        "/api/users": {
+            "get": {
+                "tags": ["users"],
+                "summary": "Returns a list of objects representing each user in the database",
+                "responses": {
+                    "200": {
+                        "description": "An array of shortened user objects",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "_id": {
+                                                "type": "string"
+                                            },
+                                            "username": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "userType": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "users": [
+                                        {
+                                            "_id": "5fedfffd1412d319a82f0a5c",
+                                            "username": "testmngr",
+                                            "email": "testmnger@mngr.com",
+                                            "userType": "manager"
+                                        },
+                                        {
+                                            "_id": "5fee156936cf4436b874978a",
+                                            "username": "testmngr2",
+                                            "email": "testmngr2@mngr.com",
+                                            "userType": "manager"
+                                        },
+                                        {
+                                            "_id": "5fee179923def939185af4b0",
+                                            "username": "testemp",
+                                            "email": "testemp@emp.com",
+                                            "userType": "employee"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error getting users"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["users"],
+                "summary": "Creates a new user with the given information",
+                "requestBody": {
+                    "description": "The user to create in the database",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "userType": {
+                                        "type": "string"
+                                    },
+                                    "picture": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "user": {
+                                    "username": "SteveThaMngr",
+                                    "email": "stevethemngr@mngr.com",
+                                    "password": "iamthemngr1234!",
+                                    "userType": "manager",
+                                    "picture": "https://raw.githubusercontent.com/..."
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The newly created user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User.json"
+                                },
+                                "examples": {
+                                    "user": {
+                                        "username": "SteveThaMngr",
+                                        "email": "stevethemngr@mngr.com",
+                                        "userType": "manager",
+                                        "picture": "https://raw.githubusercontent.com/...",
+                                        "salt": "6dbe9be92e9bbe7f870fd1da25cd03d7f50036d...",
+                                        "hash": "0eb538af6c1606bc99a78ce6dc3dfe12649efb4..."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error creating user"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {}
     }
 }

@@ -58,9 +58,6 @@ export default function Login({ csrfToken }) {
                 </button>
               </div>
             </form>
-            <div style={{ marginBottom: "5px" }}>
-              Don't have an account? <Link href="/register">Sign Up</Link>
-            </div>
           </div>
         </div>
       </main>
