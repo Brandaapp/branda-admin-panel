@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
+import { getSession } from 'next-auth/client'
 import ScheduleEditor from "../components/ScheduleEditor";
 
 export default function Schedules() {
@@ -48,11 +49,24 @@ export default function Schedules() {
           <ScheduleEditor
             dataFetched={dataFetched}
             setDataFetched={setDataFetched}
-          ></ScheduleEditor>
+          />
         </div>
       </main>
 
       <footer className={styles.footer}></footer>
     </div>
   );
+}
+
+export async function getServerSideProps({ req, res }) {
+  const session = await getSession({ req });
+  if (session) {
+    return {
+      props: { session }
+    }
+  } else {
+    res.writeHead(302, { Location: '/login' });
+    res.end();
+    return { props: {} }
+  }
 }
