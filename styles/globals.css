@@ -114,6 +114,18 @@ body {
   line-height: 2;
 }
 
+.pushnotif-form {
+  /* border: 1px solid black; */
+  border-radius: 25px;
+  width: 600px;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .login-header {
   color: #4B5563;
   font-weight: 600;
