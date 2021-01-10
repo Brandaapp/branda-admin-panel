@@ -20,7 +20,7 @@ export default function ShuttleView() {
   }
 
   useEffect(async () => {
-    await getShuttles(date)
+    await getShuttles(date);
   }, [date]);
 
   const campus = [];
@@ -37,7 +37,7 @@ export default function ShuttleView() {
     });
   }
 
-  console.log(date);
+  //console.log(date);
 
   return (
     <div style={{ width: "100%" }}>
@@ -63,13 +63,28 @@ export default function ShuttleView() {
       </div>
       <div className="row" style={{ display: "flex", flexDirection: "row" }}>
         <div className={styles.shuttleCard}>
-          <ShuttleList route={"Campus"} getShuttles={getShuttles} date={date} shuttles={campus} />
+          <ShuttleList
+            route={"Campus"}
+            getShuttles={getShuttles}
+            date={date}
+            shuttles={campus}
+          />
         </div>
         <div className={styles.shuttleCard}>
-          <ShuttleList route={"Waltham"} getShuttles={getShuttles} date={date} shuttles={waltham} />
+          <ShuttleList
+            route={"Waltham"}
+            getShuttles={getShuttles}
+            date={date}
+            shuttles={waltham}
+          />
         </div>
         <div className={styles.shuttleCard}>
-          <ShuttleList route={"Boston"} getShuttles={getShuttles} date={date} shuttles={boston} />
+          <ShuttleList
+            route={"Boston"}
+            getShuttles={getShuttles}
+            date={date}
+            shuttles={boston}
+          />
         </div>
       </div>
     </div>
