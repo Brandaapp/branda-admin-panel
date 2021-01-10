@@ -30,7 +30,7 @@ export default function ShuttleList(props) {
             </div>
           </div>
         </div>
-        {props.route === "Campus" || props.route === "campus" ? <ShuttleForm date={props.date} setShow={setShow} show={show} route={props.route} /> : null}
+        <ShuttleForm date={props.date} setShow={setShow} show={show} getShuttles={props.getShuttles}route={props.route} />
       </div>
     );
   } else return null;
