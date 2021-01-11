@@ -6,14 +6,14 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 const axios = require("axios");
 
 export default function ShuttleView() {
-  const [date, setDate] = useState(new Date("2019-09-16T22:40:27.884+00:00"));
+  const [date, setDate] = useState(new Date());
   const [shuttles, setShuttles] = useState(null);
 
   async function getShuttles(date) {
     await axios
       .get(`/api/shuttles/${date.toISOString()}`)
       .then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
         setShuttles(response.data);
       })
       .catch((err) => console.log("Error getting shuttles", err));

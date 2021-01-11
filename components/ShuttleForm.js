@@ -38,10 +38,11 @@ export default function ShuttleForm(props) {
         route: props.route,
       })
       .then((response) => {
-        console.log(response);
-        console.log("Adding a new shuttle:", state);
-        cancel()
+        //console.log(response);
+        //console.log("Adding a new shuttle:", state);
+        cancel();
         props.getShuttles(props.date);
+        window.location.reload();
       })
       .catch((err) => console.log("Error creating new shuttles", err));
   }
