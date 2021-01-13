@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
-import ScheduleView from '../components/ScheduleView';
-import AnnouncementsView from '../components/AnnouncementsView';
+import { useState } from 'react'
+import Head from 'next/head'
+import styles from '../styles/Home.module.css'
+import ScheduleView from '../components/ScheduleView'
 
 export default function Home() {
-  const [dataFetched, setDataFetched] = useState(false);
+  const [dataFetched, setDataFetched] = useState(false)
+
   return (
     <div className={styles.container}>
       <Head>

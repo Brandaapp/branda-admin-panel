@@ -114,6 +114,18 @@ body {
   line-height: 2;
 }
 
+.pushnotif-form {
+  /* border: 1px solid black; */
+  border-radius: 25px;
+  width: 600px;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .login-header {
   color: #4B5563;
   font-weight: 600;
@@ -129,6 +141,16 @@ body {
   letter-spacing: 0.7px !important;
   width: 100%;
   margin: 70px auto 10px auto;
+}
+
+.login-btn-sm {
+  background-color: #1B4370 !important;
+  color: white;
+  padding: 0 1.5rem;
+  border-radius: 3px !important;
+  font-weight: 500;
+  letter-spacing: 0.7px !important;
+  margin: 40px auto 10px auto;
 }
 
 .login-label {
@@ -240,6 +262,23 @@ input:focus:not([read-only]) {
 }
 
 .btn-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile {
+  display: flex;
+  justify-content: space-between;
+  /* vertical-align: middle; */
+}
+
+#profile-pic {
+  vertical-align: middle;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#logout {
   display: flex;
   justify-content: space-between;
 }

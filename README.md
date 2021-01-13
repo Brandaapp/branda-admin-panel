@@ -51,3 +51,5 @@ Below are the libraries we will be using for this project. If you want to add a 
 * [Axios](https://www.npmjs.com/package/axios) - Used for making http requests
 
 * [Luxon](https://moment.github.io/luxon/) - Date library that provides functionality beyond vanilla JS's Date class
+
+* [NextAuth.js](https://next-auth.js.org/) - Authentication library designed for serverless, Next.js applications
