@@ -179,6 +179,93 @@ input:focus:not([read-only]) {
 	box-shadow: none!important;	
 }
 
+.shuttle-details {
+  font-size: 1rem;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  line-height: 1.75;
+  letter-spacing: 0.00938em;
+}
+
+.popup-form-bg {
+  z-index: 1031;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #6B7280;
+  height: 100%;
+  width: 100%;
+  opacity: 0.5;
+}
+
+.popup-form-wrapper {
+  display: flex;
+  justify-content: space-around;
+  vertical-align: middle;
+  z-index: 1032;
+  top: 0;
+  left: 0;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
+
+.popup-form {
+  background-color: white;
+  margin: auto;
+  padding: 20px 30px 20px 30px;
+  border-radius: 5px;
+  width: 25%;
+}
+
+.shuttle-form-header {
+  color: #4B5563;
+  font-weight: 600;
+  text-align: center;
+}
+
+.shuttle-form-label {
+  margin-top: 20px;
+  margin-bottom: 2px;
+  font-size: 1.2rem;
+  line-height: 2;
+  font-weight: 600;
+  color: #6B7280;
+}
+
+.shuttle-form-input {
+  text-align: center;
+}
+
+.shuttle-form-btn {
+  background-color: #1B4370 !important;
+  color: white;
+  padding: 0 1.5rem;
+  border-radius: 3px !important;
+  font-weight: 500;
+  letter-spacing: 0.7px !important;
+  margin-top: 40px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.shuttle-form-cancel-btn {
+  background-color: white !important;
+  color: #4B5563 !important;
+  padding: 0 1.5rem;
+  border-radius: 3px !important;
+  font-weight: 500;
+  letter-spacing: 0.7px !important;
+  margin-top: 40px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+}
+
 .profile {
   display: flex;
   justify-content: space-between;
