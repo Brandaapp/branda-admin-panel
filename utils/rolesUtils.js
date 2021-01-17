@@ -3,6 +3,7 @@ export const access = {
         allowed: new Set([
             "/announcements",
             "/",
+            "/docs",
             "/login",
             "/places-management",
             "/push-notifications",

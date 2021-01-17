@@ -1,0 +1,28 @@
+type: object
+required:
+    - start
+    - end
+    - busID
+    - busName
+    - route
+    - ID
+properties:
+    start:
+        type: date
+    end:
+        type: date
+    busID:
+        type: string
+    busName:
+        type: string
+    route:
+        type: string
+    ID:
+        type: string
+example:
+    start: '2019-12-14T05:01:00.000+00:00'
+    end: '2019-12-14T07:30:00.000+00:00'
+    busID: '212014918347301'
+    route: Campus
+    ID: '1576341408576'
+    busName: 'Van 56'

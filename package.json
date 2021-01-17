@@ -15,14 +15,23 @@
     "@material-ui/pickers": "^3.2.10",
     "axios": "^0.21.0",
     "cheerio": "^1.0.0-rc.5",
+    "core-js": "^3.8.2",
     "luxon": "^1.25.0",
     "materialize-css": "^1.0.0-rc.2",
+    "mobx": "^6.0.4",
     "mongodb": "^3.6.3",
     "mongoose": "^5.10.16",
     "next": "^10.0.2",
     "next-auth": "^3.1.0",
-    "react": "17.0.1",
+    "react": "^17.0.1",
     "react-day-picker": "^7.4.8",
-    "react-dom": "17.0.1"
+    "react-dom": "^17.0.1",
+    "redoc": "^2.0.0-rc.45",
+    "styled-components": "^5.2.1",
+    "swagger-jsdoc": "^6.0.1",
+    "swagger-ui": "^3.40.0"
+  },
+  "devDependencies": {
+    "yaml-loader": "^0.6.0"
   }
 }

@@ -23,7 +23,7 @@ function TLApp({ Component, pageProps }) {
   }, []);
   
   function nav() {
-    if (pageProps.session) {
+    if (pageProps.session && router.pathname !== "/docs") {
       return (<div className="row"><Navbar /></div>)
     } else return null
   }
@@ -47,11 +47,14 @@ TLApp.getInitialProps = async (appContext) => {
   const appProps = await App.getInitialProps(appContext)
   if (typeof window === "undefined" && appContext.ctx.res.writeHead) {
     if (!session) {
-      if (appContext.router.pathname !== "/login") {
+      if (appContext.router.pathname !== "/login" && appContext.router.pathname !== "/docs") {
         appContext.ctx.res.writeHead(302, { Location: "/login" })
         appContext.ctx.res.end()
       }
-    } else if (!access[session.user.type].allowed.has(appContext.router.pathname)) {
+    } else if (
+        !access[session.user.type].allowed.has(appContext.router.pathname) &&
+        appContext.router.pathname !== "/docs"
+      ) {
       appContext.ctx.res.writeHead(302, { Location: access[session.user.type].redirectTo })
       appContext.ctx.res.end()
     }

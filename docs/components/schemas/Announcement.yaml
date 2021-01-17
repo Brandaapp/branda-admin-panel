@@ -1,0 +1,20 @@
+type: object
+required:
+    - type
+    - content
+    - startTime
+    - endTime
+properties:
+    type:
+        type: string
+    content:
+        type: string
+    startTime:
+        type: date
+    endTime:
+        type: date
+example:
+    type: 'Branvan Schedule Change'
+    content: 'Branvan schedule after winter break has been changed. Please see website for details.'
+    startTime: '2020-11-22T14:57:00.000+00:00'
+    endTime: '2021-01-15T02:57:00.000+00:00'
