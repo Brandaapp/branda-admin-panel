@@ -7,7 +7,8 @@ const UserSchema = new Schema({
 	userType: String,
 	picture: String,
 	salt: String,
-	hash: String
+	hash: String,
+	organizations: [String]
 });
 
 module.exports = mongoose.models.User || mongoose.model("User", UserSchema);
