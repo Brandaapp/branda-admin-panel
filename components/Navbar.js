@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Manager from './navs/Manager'
 import PublicSafety from './navs/PublicSafety'
 import Joseph from './navs/Joseph'
+import OrganizationAdmin from './navs/OrganizationAdmin'
 import { access } from '../utils/rolesUtils'
 import { useRouter } from 'next/router'
 import { signOut, useSession } from 'next-auth/client'
@@ -15,6 +16,7 @@ export default function Navbar() {
     else if (session.user.type === "employee") return null
     else if (session.user.type === "publicsafety") return (<PublicSafety />)
     else if (session.user.type === "joseph") return (<Joseph />)
+    else if (session.user.type === "organizationAdmin") return (<OrganizationAdmin />)
   }
 
   if (session) return (

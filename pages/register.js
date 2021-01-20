@@ -11,7 +11,8 @@ const types = [
   { key: "employee", label: "Employee" },
   { key: "manager", label: "Manager" },
   { key: "publicsafety", label: "Public Safety" },
-  { key: "joseph", label: "Joseph" }
+  { key: "joseph", label: "Joseph" },
+  { key: "organizationAdmin", label: "Organization Admin"}
 ]
 
 export default function Register() {

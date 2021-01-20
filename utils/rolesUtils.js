@@ -35,5 +35,12 @@ export const access = {
             "/shuttles-management"
         ]),
         redirectTo: "/shuttles-management"
+    },
+    organizationAdmin: {
+        allowed: new Set([
+            "/login",
+            "/push-notifications"
+        ]),
+        redirectTo: "/push-notifications"
     }
 }
