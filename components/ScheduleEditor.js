@@ -14,6 +14,7 @@ export default function ScheduleEditor(props) {
     weekNum: -1,
     scheduleData: [],
     updateNum: 0,
+    weeks: undefined,
   });
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -39,29 +40,38 @@ export default function ScheduleEditor(props) {
     });
   }
 
+  // useEffect(() => {
+    
+  // }, [anchorEl, setAnchorEl]);
+
   useEffect(() => {
     if (state.weekNum === -1) {
       const day = new Date();
       setWeek(weekStart(day), weekEnd(day), weekNum(day));
     }
-  });
+  }, [state.weekNum]);
 
   /*
   "_" + Math.random().toString(36).substr(2, 9) was previously used for the key
   but was causing weekeditor components to reset state briefly
   */
   function renderRows() {
-    return state.scheduleData.map((schedule) => {
+    const weeks = state.scheduleData.map((schedule) => {
       return (
         <WeekEditor
           schedule={schedule}
           updateNum={state.updateNum}
           weekNum={state.weekNum}
           refresh={resetWeekSchedule}
-          key={schedule.name} 
+          key={schedule.name}
         />
       );
     });
+
+    // weeks are now cached locally to avoid re-rendering on popup opening
+    setState((prev) => ({ ...prev, weeks: weeks })); 
+
+    return weeks;
   }
 
   function handleClick(event) {
@@ -130,7 +140,7 @@ export default function ScheduleEditor(props) {
               <th>Admin Options</th>
             </tr>
           </thead>
-          <tbody>{renderRows()}</tbody>
+          <tbody>{state.weeks || renderRows()}</tbody>
         </table>
       </div>
     );
