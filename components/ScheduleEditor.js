@@ -54,7 +54,7 @@ export default function ScheduleEditor(props) {
           updateNum={state.updateNum}
           weekNum={state.weekNum}
           refresh={resetWeekSchedule}
-          key={"_" + Math.random().toString(36).substr(2, 9)}
+          key={"_" + Math.random().toString(36).substr(2, 9)} // this line is causing issues with week picker flickering
         />
       );
     });
