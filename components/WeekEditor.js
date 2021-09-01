@@ -52,7 +52,7 @@ export default function WeekEditor(props) {
   });
 
   async function updateSchedule() {
-    let data = mergeStartEndToSchedule(state.schedule, state.startTimes, state.endTimes);
+    let data = mergeStartEndToSchedule(state.schedule, state.startTimes, state.endTimes, days);
     await axios
       .patch(`/api/schedules/${props.weekNum}/${state.schedule.emp_id}`, data)
       .then((response) => {

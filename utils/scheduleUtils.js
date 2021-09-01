@@ -1,4 +1,4 @@
-function mergeStartEndToSchedule(schedule, startTimes, endTimes) {
+function mergeStartEndToSchedule(schedule, startTimes, endTimes, days) {
   let temp = {};
   temp["name"] = schedule.name;
   for (var day of days) {
