@@ -40,16 +40,12 @@ export default function ScheduleEditor(props) {
     });
   }
 
-  // useEffect(() => {
-    
-  // }, [anchorEl, setAnchorEl]);
-
   useEffect(() => {
     if (state.weekNum === -1) {
       const day = new Date();
       setWeek(weekStart(day), weekEnd(day), weekNum(day));
     }
-  }, [state.weekNum]);
+  }, [state.weekNum]); // will only update when weekNum is changed (and defaulted to -1)
 
   /*
   "_" + Math.random().toString(36).substr(2, 9) was previously used for the key
