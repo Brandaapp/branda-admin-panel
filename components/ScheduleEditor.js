@@ -46,6 +46,10 @@ export default function ScheduleEditor(props) {
     }
   });
 
+  /*
+  "_" + Math.random().toString(36).substr(2, 9) was previously used for the key
+  but was causing weekeditor components to reset state briefly
+  */
   function renderRows() {
     return state.scheduleData.map((schedule) => {
       return (
@@ -54,7 +58,7 @@ export default function ScheduleEditor(props) {
           updateNum={state.updateNum}
           weekNum={state.weekNum}
           refresh={resetWeekSchedule}
-          key={"_" + Math.random().toString(36).substr(2, 9)} // this line is causing issues with week picker flickering
+          key={schedule.name} 
         />
       );
     });
