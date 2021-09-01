@@ -68,7 +68,6 @@ export default function PushNotifsForm(props) {
   }
 
   async function submitForm() {
-
     setSending(true);
 
     let data = {
@@ -107,18 +106,12 @@ export default function PushNotifsForm(props) {
   } else {
     return (
       <div className="pushnotif-form">
-        <h4 style={{ color: "#1B4370" }}>Send Push Notification</h4>
-        <div
-          style={{
-            width: "90%",
-            height: "60%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "space-between",
-            // border: "1px solid black"
-          }}
-        >
+        <div className="pushnotif-header">
+          <h4 style={{ color: "#1B4370"}}>
+            Send Push Notification
+          </h4>
+        </div>
+        <div className="pushnotif-inputs">
           <TextField
             id="title"
             label="Title"
@@ -134,13 +127,13 @@ export default function PushNotifsForm(props) {
           />
 
           <TextField
-            error={state.message !== "" &&state.message.length < 5}
-            id="message"
+            error={state.message !== "" && state.message.length < 5}
+            id="content"
             label="Message"
             variant="filled"
             required
             onChange={messageChange}
-            multiline={true}
+            multiline
             rows={4}
             helperText={"More than 5 characters"}
             style={{ width: "90%" }}
@@ -170,15 +163,7 @@ export default function PushNotifsForm(props) {
             getOptionSelected={(option, value) => option.name === value.name}
           />
         </div>
-        <div
-          style={{
-            width: "80%",
-            display: "flex",
-            justifyContent: "center",
-            paddingBottom: "20px",
-            // border: "1px solid black"
-          }}
-        >
+        <div className="pushnotif-button">
           <Button
             onClick={submitForm.bind(this)}
             disabled={validate()}
