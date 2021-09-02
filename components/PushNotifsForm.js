@@ -1,7 +1,10 @@
 import { Button } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { useEffect, useState } from "react";
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+
+const Input = withStyles({ root: { width: "100% !important" } })(TextField);
 
 const axios = require("axios");
 
@@ -21,7 +24,7 @@ export default function PushNotifsForm(props) {
     axios.get(`/api/brandeisClubs`).then((response) => {
       setState((prev) => ({ ...prev, clubData: response.data }));
     });
-  }, []);
+  }, [state.clubData]);
 
   function titleChange(event) {
     setState((prev) => ({ ...prev, title: event.target.value }));
@@ -106,7 +109,7 @@ export default function PushNotifsForm(props) {
   } else {
     return (
       <div className="pushnotif-form">
-        <div className="pushnotif-header">
+        <div>
           <h4 style={{ color: "#1B4370"}}>
             Send Push Notification
           </h4>
@@ -115,7 +118,8 @@ export default function PushNotifsForm(props) {
           <TextField
             id="title"
             label="Title"
-            variant="filled"
+            variant="outlined"
+            type="text"
             required
             error={state.title !== "" && state.title.length < 3}
             onChange={titleChange}
@@ -130,7 +134,8 @@ export default function PushNotifsForm(props) {
             error={state.message !== "" && state.message.length < 5}
             id="content"
             label="Message"
-            variant="filled"
+            variant="outlined"
+            type="text"
             required
             onChange={messageChange}
             multiline
@@ -141,8 +146,9 @@ export default function PushNotifsForm(props) {
 
           <TextField
             id="link"
-            label="Link"
-            variant="filled"
+            placeholder="Link"
+            variant="outlined"
+            type="text"
             onChange={linkChange}
             error={!state.validLink}
             style={{ width: "90%" }}
@@ -163,7 +169,7 @@ export default function PushNotifsForm(props) {
             getOptionSelected={(option, value) => option.name === value.name}
           />
         </div>
-        <div className="pushnotif-button">
+        <div>
           <Button
             onClick={submitForm.bind(this)}
             disabled={validate()}
@@ -171,8 +177,7 @@ export default function PushNotifsForm(props) {
               backgroundColor: validate() ? "#5482B6" : "#1B4370",
               color: "white",
               width: "200px",
-              height: "150%",
-              borderRadius: "15px",
+              borderRadius: "5px",
             }}
             type="submit"
           >
