@@ -3,6 +3,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { useEffect, useState } from "react";
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import { isValidHttpUrl } from "../utils/httpUtils";
 
 const Input = withStyles({ root: { width: "100% !important" } })(TextField);
 
@@ -26,48 +27,15 @@ export default function PushNotifsForm(props) {
     });
   }, [state.clubData]);
 
-  function titleChange(event) {
-    setState((prev) => ({ ...prev, title: event.target.value }));
-  }
-
-  function messageChange(event) {
-    setState((prev) => ({ ...prev, message: event.target.value }));
-  }
-
   function linkChange(event) {
-    var userLink = event.target.value;
-    var valid = userLink === "" || isValidHttpUrl(userLink);
+    const userLink = event.target.value;
+    const valid = !userLink || isValidHttpUrl(userLink);
     setState((prev) => ({ ...prev, link: userLink, validLink: valid }));
   }
 
   function clubChange(event) {
     var name = event ? event.name : "";
     setState((prev) => ({ ...prev, club: name }));
-  }
-
-  function isValidHttpUrl(str) {
-    let pattern = new RegExp(
-      "^(https?:\\/\\/)?" + // protocol
-        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-        "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-        "(\\#[-a-z\\d_]*)?$",
-      "i"
-    ); // fragment locator
-
-    let url;
-
-    try {
-      url = new URL(str);
-    } catch (_) {
-      return false;
-    }
-
-    return (
-      (url.protocol === "http:" || url.protocol === "https:") &&
-      !!pattern.test(str)
-    );
   }
 
   async function submitForm() {
@@ -122,7 +90,7 @@ export default function PushNotifsForm(props) {
             type="text"
             required
             error={state.title !== "" && state.title.length < 3}
-            onChange={titleChange}
+            onChange={(event) => setState((prev) => ({ ...prev, title: event.target.value }))}
             style={{ width: "90%" }}
             helperText={`Between 3 and 140 characters (${
               state.title.length
@@ -137,7 +105,7 @@ export default function PushNotifsForm(props) {
             variant="outlined"
             type="text"
             required
-            onChange={messageChange}
+            onChange={(event) => setState((prev) => ({ ...prev, message: event.target.value }))}
             multiline
             rows={4}
             helperText={"More than 5 characters"}
