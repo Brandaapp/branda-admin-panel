@@ -100,7 +100,7 @@ export default function PushNotifsForm(props) {
 
           <TextField
             error={state.message !== "" && state.message.length < 5}
-            id="content"
+            id="message"
             label="Message"
             variant="outlined"
             type="text"
