@@ -124,18 +124,14 @@ body {
   justify-content: space-around;
   align-items: center;
   padding-bottom: 15px;
-  /* border: 1px solid black; */
 }
 
 .pushnotif-inputs {
-  /* border: 1px solid black; */
   height: 450px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  /* padding-top: 30px;
-  padding-bottom: 30px; */
 }
 
 .login-header {
