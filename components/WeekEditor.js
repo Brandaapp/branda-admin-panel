@@ -24,7 +24,7 @@ export default function WeekEditor(props) {
     ver: -1,
   });
 
-  function updateOnChange(date, hour, day, start) {
+  const updateOnChange = (date, hour, day, start) => {
     hour = hour.toLowerCase();
     let newDate = getProperDate(hour);
     let tempStart = state.startTimes;
@@ -38,7 +38,7 @@ export default function WeekEditor(props) {
     setState((prev) => ({ ...prev, startTimes: tempStart, endTimes: tempEnd }));
   }
 
-  function reset() {
+  const reset = () => {
     Materialize.toast(
       "Updates for " + state.schedule.name + " cleared",
       2500,
@@ -51,7 +51,7 @@ export default function WeekEditor(props) {
     update(false);
   });
 
-  async function updateSchedule() {
+  const updateSchedule = async () => {
     let data = mergeStartEndToSchedule(state.schedule, state.startTimes, state.endTimes, days);
     await axios
       .patch(`/api/schedules/${props.weekNum}/${state.schedule.emp_id}`, data)
@@ -127,7 +127,7 @@ export default function WeekEditor(props) {
         <Button
           variant="contained"
           style={{ backgroundColor: "#4caf50", color: "white" }}
-          onClick={updateSchedule.bind(this)}
+          onClick={updateSchedule}
         >
           Update
         </Button>
@@ -135,7 +135,7 @@ export default function WeekEditor(props) {
         <Button
           variant="contained"
           style={{ backgroundColor: "#0d47a1", color: "white" }}
-          onClick={reset.bind(this)}
+          onClick={reset}
         >
           Clear Edits
         </Button>

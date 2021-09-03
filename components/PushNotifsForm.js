@@ -67,7 +67,7 @@ export default function PushNotifsForm(props) {
     );
   }
 
-  async function submitForm() {
+  const submitForm = async () => {
 
     setSending(true);
 
@@ -180,7 +180,7 @@ export default function PushNotifsForm(props) {
           }}
         >
           <Button
-            onClick={submitForm.bind(this)}
+            onClick={submitForm}
             disabled={validate()}
             style={{
               backgroundColor: validate() ? "#5482B6" : "#1B4370",
