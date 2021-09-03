@@ -6,12 +6,12 @@ orbs:
 workflows:
   ci:
     jobs:
-      install:
+      - install:
         steps:
           - run:
               name: Install Dependencies
               command: npm ci
-      build:
+      - build:
         requires:
           - install
         steps:
@@ -22,5 +22,5 @@ workflows:
           requires:
             - build
           record: true # record results on Cypress Dashboard
-          group: 'all tests' # name this group "all tests" on the dashboard
-          start: 'npm start' # start server before running tests
+          group: "all tests" # name this group "all tests" on the dashboard
+          start: "npm start" # start server before running tests
