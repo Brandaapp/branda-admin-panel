@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import DayEditor from "./DayEditor";
 import { Button } from "@material-ui/core";
+import { getProperDate } from "../utils/dateUtils";
+import { mergeStartEndToSchedule } from "../utils/scheduleUtils";
 
 const axios = require("axios");
 
@@ -22,7 +24,7 @@ export default function WeekEditor(props) {
     ver: -1,
   });
 
-  function updateOnChange(date, hour, day, start) {
+  const updateOnChange = (date, hour, day, start) => {
     hour = hour.toLowerCase();
     let newDate = getProperDate(hour);
     let tempStart = state.startTimes;
@@ -36,7 +38,7 @@ export default function WeekEditor(props) {
     setState((prev) => ({ ...prev, startTimes: tempStart, endTimes: tempEnd }));
   }
 
-  function reset() {
+  const reset = () => {
     Materialize.toast(
       "Updates for " + state.schedule.name + " cleared",
       2500,
@@ -49,8 +51,8 @@ export default function WeekEditor(props) {
     update(false);
   });
 
-  async function updateSchedule() {
-    let data = mergeStartEndToSchedule();
+  const updateSchedule = async () => {
+    let data = mergeStartEndToSchedule(state.schedule, state.startTimes, state.endTimes, days);
     await axios
       .patch(`/api/schedules/${props.weekNum}/${state.schedule.emp_id}`, data)
       .then((response) => {
@@ -69,29 +71,6 @@ export default function WeekEditor(props) {
           "red rounded"
         );
       });
-  }
-
-  function mergeStartEndToSchedule() {
-    let temp = {};
-    temp["name"] = state.schedule.name;
-    for (var day of days) {
-      let start = state.startTimes[day];
-      let end = state.endTimes[day];
-
-      let format = (time) => {
-        let t = new Date(time).toLocaleTimeString().toLocaleLowerCase();
-        let parts = t.split(" ");
-        return (
-          parts[0].substring(parts[0], parts[0].lastIndexOf(":")) + parts[1]
-        );
-      };
-
-      let startString = format(start);
-      let endString = format(end);
-
-      temp[day] = startString + "-" + endString;
-    }
-    return temp;
   }
 
   // override allows for setState not based on version number - used from reset()
@@ -117,39 +96,6 @@ export default function WeekEditor(props) {
       });
     }
   };
-
-  function getProperDate(time) {
-    let am = time.indexOf("am") > -1;
-    const date = new Date();
-
-    let strippedTime = undefined;
-
-    if (am) {
-      strippedTime = time.substring(0, time.indexOf("am")).trim();
-    } else {
-      strippedTime = time.substring(0, time.indexOf("pm")).trim();
-    }
-
-    let partition = strippedTime.split(":");
-    let hour = partition[0];
-    let minute = partition[1] === undefined ? "00" : partition[1];
-
-    if (am) {
-      if (hour === "12") {
-        hour = "0";
-      }
-    } else {
-      if (hour !== "12") {
-        let n = parseInt(hour) + 12;
-        hour = n.toString();
-      }
-    }
-
-    date.setHours(hour);
-    date.setMinutes(minute);
-
-    return date;
-  }
 
   return (
     <tr
@@ -181,7 +127,7 @@ export default function WeekEditor(props) {
         <Button
           variant="contained"
           style={{ backgroundColor: "#4caf50", color: "white" }}
-          onClick={updateSchedule.bind(this)}
+          onClick={updateSchedule}
         >
           Update
         </Button>
@@ -189,7 +135,7 @@ export default function WeekEditor(props) {
         <Button
           variant="contained"
           style={{ backgroundColor: "#0d47a1", color: "white" }}
-          onClick={reset.bind(this)}
+          onClick={reset}
         >
           Clear Edits
         </Button>

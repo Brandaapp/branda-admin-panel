@@ -38,7 +38,8 @@ export default function PushNotifsForm(props) {
     setState((prev) => ({ ...prev, club: name }));
   }
 
-  async function submitForm() {
+  const submitForm = async () => {
+    
     setSending(true);
 
     let data = {
@@ -139,7 +140,7 @@ export default function PushNotifsForm(props) {
         </div>
         <div>
           <Button
-            onClick={submitForm.bind(this)}
+            onClick={submitForm}
             disabled={validate()}
             style={{
               backgroundColor: validate() ? "#5482B6" : "#1B4370",
