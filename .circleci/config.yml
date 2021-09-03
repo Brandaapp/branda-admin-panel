@@ -3,22 +3,32 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@1
 
+jobs:
+  install:
+    docker:
+      - image: cimg/node:16.8.0
+    steps:
+      - run:
+          name: Install Dependencies
+          command: npm ci
+  build:
+    docker:
+      - image: cimg/node:16.8.0
+    steps:
+      - run:
+          name: Build
+          command: npm run build
+
 workflows:
   ci:
     jobs:
-      install:
-        steps:
-          - run:
-              name: Install Dependencies
-              command: npm ci
-      build:
-        requires: install
-        steps:
-          - run:
-              name: Build
-              command: npm run build
-      cypress/run:
-        requires: build
-        record: true # record results on Cypress Dashboard
-        group: "all tests" # name this group "all tests" on the dashboard
-        start: "npm start" # start server before running tests
+      - install
+      - build:
+          requires:
+            - install
+      - cypress/run:
+          requires:
+            - build
+          record: true # record results on Cypress Dashboard
+          group: "all tests" # name this group "all tests" on the dashboard
+          start: "npm start" # start server before running tests
