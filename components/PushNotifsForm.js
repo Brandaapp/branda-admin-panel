@@ -1,7 +1,11 @@
 import { Button } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { useEffect, useState } from "react";
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import { isValidHttpUrl } from "../utils/httpUtils";
+
+const Input = withStyles({ root: { width: "100% !important" } })(TextField);
 
 const axios = require("axios");
 
@@ -21,19 +25,11 @@ export default function PushNotifsForm(props) {
     axios.get(`/api/brandeisClubs`).then((response) => {
       setState((prev) => ({ ...prev, clubData: response.data }));
     });
-  }, []);
-
-  function titleChange(event) {
-    setState((prev) => ({ ...prev, title: event.target.value }));
-  }
-
-  function messageChange(event) {
-    setState((prev) => ({ ...prev, message: event.target.value }));
-  }
+  }, [state.clubData]);
 
   function linkChange(event) {
-    var userLink = event.target.value;
-    var valid = userLink === "" || isValidHttpUrl(userLink);
+    const userLink = event.target.value;
+    const valid = !userLink || isValidHttpUrl(userLink);
     setState((prev) => ({ ...prev, link: userLink, validLink: valid }));
   }
 
@@ -42,33 +38,8 @@ export default function PushNotifsForm(props) {
     setState((prev) => ({ ...prev, club: name }));
   }
 
-  function isValidHttpUrl(str) {
-    let pattern = new RegExp(
-      "^(https?:\\/\\/)?" + // protocol
-        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-        "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-        "(\\#[-a-z\\d_]*)?$",
-      "i"
-    ); // fragment locator
-
-    let url;
-
-    try {
-      url = new URL(str);
-    } catch (_) {
-      return false;
-    }
-
-    return (
-      (url.protocol === "http:" || url.protocol === "https:") &&
-      !!pattern.test(str)
-    );
-  }
-
   const submitForm = async () => {
-
+    
     setSending(true);
 
     let data = {
@@ -107,25 +78,20 @@ export default function PushNotifsForm(props) {
   } else {
     return (
       <div className="pushnotif-form">
-        <h4 style={{ color: "#1B4370" }}>Send Push Notification</h4>
-        <div
-          style={{
-            width: "90%",
-            height: "60%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "space-between",
-            // border: "1px solid black"
-          }}
-        >
+        <div>
+          <h4 style={{ color: "#1B4370"}}>
+            Send Push Notification
+          </h4>
+        </div>
+        <div className="pushnotif-inputs">
           <TextField
             id="title"
             label="Title"
-            variant="filled"
+            variant="outlined"
+            type="text"
             required
             error={state.title !== "" && state.title.length < 3}
-            onChange={titleChange}
+            onChange={(event) => setState((prev) => ({ ...prev, title: event.target.value }))}
             style={{ width: "90%" }}
             helperText={`Between 3 and 140 characters (${
               state.title.length
@@ -134,13 +100,14 @@ export default function PushNotifsForm(props) {
           />
 
           <TextField
-            error={state.message !== "" &&state.message.length < 5}
+            error={state.message !== "" && state.message.length < 5}
             id="message"
             label="Message"
-            variant="filled"
+            variant="outlined"
+            type="text"
             required
-            onChange={messageChange}
-            multiline={true}
+            onChange={(event) => setState((prev) => ({ ...prev, message: event.target.value }))}
+            multiline
             rows={4}
             helperText={"More than 5 characters"}
             style={{ width: "90%" }}
@@ -148,8 +115,9 @@ export default function PushNotifsForm(props) {
 
           <TextField
             id="link"
-            label="Link"
-            variant="filled"
+            placeholder="Link"
+            variant="outlined"
+            type="text"
             onChange={linkChange}
             error={!state.validLink}
             style={{ width: "90%" }}
@@ -170,15 +138,7 @@ export default function PushNotifsForm(props) {
             getOptionSelected={(option, value) => option.name === value.name}
           />
         </div>
-        <div
-          style={{
-            width: "80%",
-            display: "flex",
-            justifyContent: "center",
-            paddingBottom: "20px",
-            // border: "1px solid black"
-          }}
-        >
+        <div>
           <Button
             onClick={submitForm}
             disabled={validate()}
@@ -186,8 +146,7 @@ export default function PushNotifsForm(props) {
               backgroundColor: validate() ? "#5482B6" : "#1B4370",
               color: "white",
               width: "200px",
-              height: "150%",
-              borderRadius: "15px",
+              borderRadius: "5px",
             }}
             type="submit"
           >
