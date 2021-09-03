@@ -10,6 +10,9 @@ jobs:
     steps:
       - run:
           name: Install Dependencies
+          command: npm install
+      - run:
+          name: Run CI
           command: npm ci
   build: #build application
     docker:
