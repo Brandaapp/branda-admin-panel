@@ -1,5 +1,8 @@
 version: 2.1
 
+executors:
+  project-executor:
+
 orbs:
   cypress: cypress-io/cypress@1
 
@@ -10,7 +13,7 @@ jobs:
     steps:
       - run:
           name: Install Dependencies
-          command: npm install
+          command: npm ci
   build: #build application
     docker:
       - image: cimg/node:16.8.0
