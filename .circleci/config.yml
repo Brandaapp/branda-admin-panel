@@ -20,6 +20,7 @@ jobs:
       - run:
           name: All Ls
           command: ls ../.. -R
+      - checkout
       - run:
           name: Al
           command: ls -al
