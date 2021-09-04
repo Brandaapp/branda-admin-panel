@@ -17,6 +17,9 @@ jobs:
       - run:
           name: Root Ls
           command: ls /
+      - run:
+          name: All Ls
+          command: ls -R
   install:
     docker:
       - image: cimg/node:16.8.0
