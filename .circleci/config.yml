@@ -19,7 +19,7 @@ jobs:
           command: ls /
       - run:
           name: All Ls
-          command: ls / -R
+          command: ls ../.. -R
   install:
     docker:
       - image: cimg/node:16.8.0
