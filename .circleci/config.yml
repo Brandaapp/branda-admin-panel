@@ -22,7 +22,7 @@ jobs:
 workflows:
   ci:
     jobs:
-      - build:
+      - build
       - cypress/run:
           requires:
             - build
