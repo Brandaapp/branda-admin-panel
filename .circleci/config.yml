@@ -1,12 +1,16 @@
 version: 2.1
 
-executors:
-  project-executor:
-
 orbs:
   cypress: cypress-io/cypress@1
 
 jobs:
+  pwd:
+    docker:
+      - image: cimg/node:16.8.0
+    steps:
+      - run:
+          name: Pwd
+          command: pwd
   install:
     docker:
       - image: cimg/node:16.8.0
@@ -25,7 +29,10 @@ jobs:
 workflows:
   ci:
     jobs:
-      - install
+      - pwd
+      - install:
+          requires:
+            - pwd
       - build:
           requires:
             - install
