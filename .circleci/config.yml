@@ -20,13 +20,16 @@ jobs:
       - run:
           name: All Ls
           command: ls ../.. -R
+      - run:
+          name: Al
+          command: ls -al
   install:
     docker:
       - image: cimg/node:16.8.0
     steps:
       - run:
           name: Install Dependencies
-          command: npm install
+          command: npm ci
   build:
     docker:
       - image: cimg/node:16.8.0
