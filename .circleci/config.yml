@@ -13,7 +13,7 @@ jobs:
     steps:
       - run:
           name: Install Dependencies
-          command: npm ci
+          command: npm install
   build: #build application
     docker:
       - image: cimg/node:16.8.0
