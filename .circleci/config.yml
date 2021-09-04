@@ -4,30 +4,14 @@ orbs:
   cypress: cypress-io/cypress@1
 
 jobs:
-  info:
-    docker:
-      - image: cimg/node:16.8.0
-    steps:
-      - run:
-          name: Pwd
-          command: pwd
-      - run:
-          name: Ls
-          command: ls
-      - run:
-          name: Root Ls
-          command: ls /
-      - run:
-          name: All Ls
-          command: ls ../.. -R
-      - checkout
-      - run:
-          name: Al
-          command: ls -al
   install:
     docker:
       - image: cimg/node:16.8.0
     steps:
+      - checkout
+      - run:
+          name: Branch Contents
+          command: ls -al
       - run:
           name: Install Dependencies
           command: npm ci
@@ -42,10 +26,7 @@ jobs:
 workflows:
   ci:
     jobs:
-      - info
       - install:
-          requires:
-            - info
       - build:
           requires:
             - install
