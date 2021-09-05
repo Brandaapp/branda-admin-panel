@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: cimg/node:16.8.0
     steps:
-      = run:
+      - run:
         name: Greeting
         command: echo "Hello"
 
