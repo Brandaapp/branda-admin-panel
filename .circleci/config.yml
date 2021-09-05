@@ -6,8 +6,8 @@ jobs:
       - image: cimg/node:16.8.0
     steps:
       - run:
-        name: Greeting
-        command: echo "Hello"
+          name: Greeting
+          command: echo "Hello"
 
 workflows:
   example-workflow:
