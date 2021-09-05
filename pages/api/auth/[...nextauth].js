@@ -6,7 +6,7 @@ import dbConnect from '../../../utils/dbConnect';
 let User = require('../../../models/User');
 
 const options = {
-    database: process.env.DATABASE_URL,
+    database: process.env.ADMIN_PANEL_DATABASE_URL,
     providers: [
         Providers.Credentials({
             name: 'Credentials',
@@ -38,9 +38,9 @@ const options = {
             }
         })
     ],
-    secret: process.env.SECRET,
+    secret: process.env.ADMIN_PANEL_SECRET,
     session: { jwt: true },
-    jwt: { secret: process.env.JWT_SECRET },
+    jwt: { secret: process.env.ADMIN_PANEL_JWT_SECRET },
     pages: {
         signIn: '/login'
     },
