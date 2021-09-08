@@ -1,5 +1,9 @@
 version: 2.1
 
+orbs:
+  cypress: cypress-io/cypress@1
+  heroku: circleci/heroku@1.2.6
+
 jobs:
   greeting:
     docker:
@@ -8,8 +12,20 @@ jobs:
       - run:
           name: Greeting
           command: echo "Hello"
+  deploy:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git
 
 workflows:
-  example-workflow:
+  ci:
     jobs:
       - greeting
+      - deploy:
+          requires:
+            - greeting
+          filters:
+            branches:
+              only: main
