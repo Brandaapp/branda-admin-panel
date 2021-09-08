@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "cypress": "^8.3.1",
+    "eslint": "^7.32.0",
     "yaml-loader": "^0.6.0"
   }
 }
