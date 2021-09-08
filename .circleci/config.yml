@@ -17,8 +17,7 @@ jobs:
     steps:
       - checkout
       - heroku/install
-      - heroku/deploy-via-git:
-          app-name: branda-admin-panel-ci-test
+      - heroku/deploy-via-git
 
 workflows:
   ci:
@@ -27,6 +26,6 @@ workflows:
       - deploy:
           requires:
             - greeting
-          filters:
-            branches:
-              only: main
+          # filters:
+          # branches:
+          # only: main
