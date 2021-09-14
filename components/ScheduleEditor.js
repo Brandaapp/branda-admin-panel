@@ -5,7 +5,7 @@ import Popover from "@material-ui/core/Popover";
 import Button from "@material-ui/core/Button";
 import WeekEditor from "./WeekEditor";
 
-const axios = require("axios");
+import axios from "axios"
 
 export default function ScheduleEditor(props) {
   const [state, setState] = useState({
@@ -65,7 +65,7 @@ export default function ScheduleEditor(props) {
     });
 
     // weeks are now cached locally to avoid re-rendering on popup opening
-    setState((prev) => ({ ...prev, weeks: weeks })); 
+    setState((prev) => ({ ...prev, weeks: weeks }));
 
     return weeks;
   }
@@ -87,21 +87,31 @@ export default function ScheduleEditor(props) {
   else
     return (
       <div>
-        <h5>
+        <h5 style={{ paddingBottom: "20px" }}>
           Schedule Editor - Current week is:
           <span style={{ marginLeft: "10px", fontWeight: "500" }}>
-            {state.weekStart.toLocaleDateString("en-US")} -{" "}
+            {state.weekStart.toLocaleDateString("en-US")}-{" "}
             {state.weekEnd.toLocaleDateString("en-US")}
           </span>
         </h5>
-        <Button
-          aria-describedby={id}
-          variant="contained"
-          style={{ backgroundColor: "#1B4370", color: "white" }}
-          onClick={handleClick}
-        >
-          Choose Week
-        </Button>
+        <div style={{ paddingBottom: "20px", display: "flex", width: "25%", justifyContent: "space-between" }}>
+          <Button
+            aria-describedby={id}
+            variant="contained"
+            style={{ backgroundColor: "#1B4370", color: "white", width: "40%" }}
+            onClick={handleClick}
+          >
+            Choose Week
+          </Button>
+          <Button
+            aria-describedby={id}
+            variant="contained"
+            style={{ backgroundColor: "#1B4370", color: "white", width: "40%" }}
+            onClick={() => alert("clicked")}
+          >
+            Add Place
+          </Button>
+        </div>
         <Popover
           id={id}
           open={open}
