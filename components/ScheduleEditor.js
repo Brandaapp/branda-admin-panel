@@ -4,6 +4,10 @@ import WeekPicker from "./WeekPicker";
 import Popover from "@material-ui/core/Popover";
 import Button from "@material-ui/core/Button";
 import WeekEditor from "./WeekEditor";
+import Modal from "@material-ui/core/Modal";
+import Fade from "@material-ui/core/Fade";
+import AddPlaceForm from "./AddPlaceForm";
+import Backdrop from '@material-ui/core/Backdrop';
 
 import axios from "axios"
 
@@ -17,6 +21,7 @@ export default function ScheduleEditor(props) {
     weeks: undefined,
   });
   const [anchorEl, setAnchorEl] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   async function setWeek(start, end, num) {
     await axios
@@ -107,7 +112,7 @@ export default function ScheduleEditor(props) {
             aria-describedby={id}
             variant="contained"
             style={{ backgroundColor: "#1B4370", color: "white", width: "40%" }}
-            onClick={() => alert("clicked")}
+            onClick={() => setModalOpen(true)}
           >
             Add Place
           </Button>
@@ -132,6 +137,20 @@ export default function ScheduleEditor(props) {
             lastDay={state.weekEnd}
           />
         </Popover>
+        <Modal
+          open={modalOpen}
+          style={{display: "flex", justifyContent: "center", alignItems: "center"}}
+          onClose={() => setModalOpen(false)}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={modalOpen}>
+            <AddPlaceForm onSubmit={() => setModalOpen(false)}/>
+          </Fade>
+        </Modal>
         <table style={{ width: "1400px" }}>
           <thead>
             <tr>
