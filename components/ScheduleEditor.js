@@ -6,11 +6,11 @@ import Button from "@material-ui/core/Button";
 import WeekEditor from "./WeekEditor";
 import Modal from "@material-ui/core/Modal";
 // import Fade from "@material-ui/core/Fade";
-import AddPlaceForm from "./AddPlaceForm";
+import AddPlaceForm from "./addplace/AddPlaceForm";
 // import Backdrop from '@material-ui/core/Backdrop';
 
 import axios from "axios";
-import createTable from "../utils/renderUtils/tableGenerator"
+import createTable from "../utils/renderUtils/tableGenerator";
 
 export default function ScheduleEditor(props) {
   const [state, setState] = useState({
@@ -24,7 +24,17 @@ export default function ScheduleEditor(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const labels = ["Name", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun", "Admin Option"];
+  const labels = [
+    "Name",
+    "Mon",
+    "Tues",
+    "Wed",
+    "Thurs",
+    "Fri",
+    "Sat",
+    "Sun",
+    "Admin Option",
+  ];
 
   async function setWeek(start, end, num) {
     await axios
@@ -102,7 +112,14 @@ export default function ScheduleEditor(props) {
             {state.weekEnd.toLocaleDateString("en-US")}
           </span>
         </h5>
-        <div style={{ paddingBottom: "20px", display: "flex", width: "25%", justifyContent: "space-between" }}>
+        <div
+          style={{
+            paddingBottom: "20px",
+            display: "flex",
+            width: "25%",
+            justifyContent: "space-between",
+          }}
+        >
           <Button
             aria-describedby={id}
             variant="contained"
@@ -142,12 +159,21 @@ export default function ScheduleEditor(props) {
         </Popover>
         <Modal
           open={modalOpen}
-          style={{display: "flex", justifyContent: "center", alignItems: "center"}}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
           onClose={() => setModalOpen(false)}
         >
-          <AddPlaceForm onSubmit={() => setModalOpen(false)}/>
+          <AddPlaceForm
+            onSubmit={() => {
+              setModalOpen(false);
+              resetWeekSchedule();
+            }}
+          />
         </Modal>
-        {createTable({width: "1400px"}, labels, state.weeks || renderRows())}
+        {createTable({ width: "1400px" }, labels, state.weeks || renderRows())}
       </div>
     );
 }

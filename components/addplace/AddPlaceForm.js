@@ -1,44 +1,27 @@
 import { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import DayEditor from "./DayEditor";
-import createTable from "../utils/renderUtils/tableGenerator";
-import { getDefaultWeekTimes } from "../utils/dateUtils";
+import DayEditor from "../DayEditor";
+import createTable from "../../utils/renderUtils/tableGenerator";
+import { getDefaultWeekTimes, getProperDate } from "../../utils/dateUtils";
 
 import axios from "axios";
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: "1px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-    height: "80%",
-    width: "80%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
+import { useStyles } from "./styles";
+
+const defaultTimes = getDefaultWeekTimes();
 
 export default function AddPlaceForm(props) {
   const classes = useStyles();
 
-  const [name, setName] = useState("");
-  const [group, setGroup] = useState("Dining");
-  const [times, setTimes] = useState([]);
+  const [state, setState] = useState({
+    name: "",
+    group: "Dining",
+    times: defaultTimes,
+  });
 
   const { onSubmit } = props;
   const options = ["Dining", "Sport", "Library"];
@@ -53,24 +36,37 @@ export default function AddPlaceForm(props) {
     "sunday",
   ];
 
-  const post = async () => {
+  const post = () => {
     const data = {
-      name: name,
-      group: group,
+      name: state.name,
+      group: state.group,
     };
 
+    const times = state.times;
+    const json = {};
+    Object.keys(times).forEach((day) => {
+      json[day] = times[day].start + "-" + times[day].end;
+    });
+    const weeks = [];
+    for (let i = 0; i < 54; i++) {
+      weeks.push(json);
+    }
+
     axios.post(`api/places/add`, data).then((response) => {
-      console.log(response);
       const emp_id = response.data._id;
-      axios.post(`api/schedules`, { ...data, emp_id }).then((response) => {
-        console.log(response);
+      axios.post(`api/schedules`, { ...data, emp_id, weeks, ...json }).then((response) => {
         onSubmit();
       });
     });
   };
 
-  const updateTimes = (_date, hour, day, start) => {};
-  console.log(group);
+  const updateTimes = (_date, hour, day, start) => {
+    hour = hour.toLowerCase().replace(/\s/g, "");
+    const tempTimes = state.times;
+    tempTimes[day][start ? "start" : "end"] = hour;
+    setState((prev) => ({ ...prev, times: tempTimes }));
+  };
+  
   return (
     <div className={classes.paper}>
       <h4 style={{ color: "#1B4370" }}>Add Place</h4>
@@ -87,7 +83,7 @@ export default function AddPlaceForm(props) {
           type="text"
           required
           onChange={(event) => {
-            setName(event.target.value);
+            setState((prev) => ({ ...prev, name: event.target.value }));
           }}
         />
       </div>
@@ -101,8 +97,10 @@ export default function AddPlaceForm(props) {
           <Select
             labelId="group-select-label"
             id="group-select"
-            value={group}
-            onChange={(event) => setGroup(event.target.value)}
+            value={state.group}
+            onChange={(event) =>
+              setState((prev) => ({ ...prev, group: event.target.value }))
+            }
             variant="outlined"
           >
             {options.map((group) => (
@@ -126,7 +124,9 @@ export default function AddPlaceForm(props) {
                 <td>
                   <DayEditor
                     day={day}
-                    callback={() => console.log("update")}
+                    start={getProperDate(state.times[day].start)}
+                    end={getProperDate(state.times[day].end)}
+                    callback={updateTimes}
                     key={"_" + Math.random().toString(36).substr(2, 9)}
                   />
                 </td>
@@ -137,8 +137,13 @@ export default function AddPlaceForm(props) {
       </div>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <Button
-          style={{ backgroundColor: "#1B4370", color: "white", width: "20%" }}
+          style={{
+            backgroundColor: !state.name ? "#5482B6" : "#1B4370",
+            color: "white",
+            width: "20%",
+          }}
           onClick={post}
+          disabled={!state.name}
         >
           Submit
         </Button>

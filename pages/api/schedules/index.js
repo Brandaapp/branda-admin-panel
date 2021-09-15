@@ -10,7 +10,14 @@ export default (req, res) => {
             Name: req.body.name,
             group: req.body.group,
             active: (req.body.active ? req.body.active : 1),
-            weeks: (req.body.weeks ? req.body.weeks : [])
+            weeks: (req.body.weeks ? req.body.weeks : []),
+            monday: req.body.monday,
+            tuesday: req.body.tuesday,
+            wednesday: req.body.wednesday,
+            thursday: req.body.thursday,
+            friday: req.body.friday,
+            saturday: req.body. saturday,
+            sunday: req.body.sunday
         });
         temp.save((err, doc) => {
             if (err) {

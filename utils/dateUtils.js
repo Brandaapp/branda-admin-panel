@@ -60,14 +60,14 @@ export function getProperDate(time) {
   return date;
 }
 
-export default function getDefaultWeekTimes() {
+export function getDefaultWeekTimes() {
   return {
-    monday: "7:30am-2:00am",
-    tuesday: "7:30am-2:00am",
-    wednesday: "7:30am-2:00am",
-    thursday: "7:30am-2:00am",
-    friday: "7:30am-10:00pm",
-    saturday: "9:00am-10:00pm",
-    sunday: "9:00am-2:00am",
+    monday: { start: "7:30am", end: "2:00am" },
+    tuesday: { start: "7:30am", end: "2:00am" },
+    wednesday: { start: "7:30am", end: "2:00am" },
+    thursday: { start: "7:30am", end: "2:00am" },
+    friday: { start: "7:30am", end: "2:00am" },
+    saturday: { start: "7:30am", end: "2:00am" },
+    sunday: { start: "7:30am", end: "2:00am" },
   };
 }
