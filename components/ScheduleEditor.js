@@ -5,11 +5,12 @@ import Popover from "@material-ui/core/Popover";
 import Button from "@material-ui/core/Button";
 import WeekEditor from "./WeekEditor";
 import Modal from "@material-ui/core/Modal";
-import Fade from "@material-ui/core/Fade";
+// import Fade from "@material-ui/core/Fade";
 import AddPlaceForm from "./AddPlaceForm";
-import Backdrop from '@material-ui/core/Backdrop';
+// import Backdrop from '@material-ui/core/Backdrop';
 
-import axios from "axios"
+import axios from "axios";
+import createTable from "../utils/renderUtils/tableGenerator"
 
 export default function ScheduleEditor(props) {
   const [state, setState] = useState({
@@ -22,6 +23,8 @@ export default function ScheduleEditor(props) {
   });
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const labels = ["Name", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun", "Admin Option"];
 
   async function setWeek(start, end, num) {
     await axios
@@ -141,32 +144,10 @@ export default function ScheduleEditor(props) {
           open={modalOpen}
           style={{display: "flex", justifyContent: "center", alignItems: "center"}}
           onClose={() => setModalOpen(false)}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
         >
-          <Fade in={modalOpen}>
-            <AddPlaceForm onSubmit={() => setModalOpen(false)}/>
-          </Fade>
+          <AddPlaceForm onSubmit={() => setModalOpen(false)}/>
         </Modal>
-        <table style={{ width: "1400px" }}>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Mon</th>
-              <th>Tues</th>
-              <th>Wed</th>
-              <th>Thurs</th>
-              <th>Fri</th>
-              <th>Sat</th>
-              <th>Sun</th>
-              <th>Admin Options</th>
-            </tr>
-          </thead>
-          <tbody>{state.weeks || renderRows()}</tbody>
-        </table>
+        {createTable({width: "1400px"}, labels, state.weeks || renderRows())}
       </div>
     );
 }
