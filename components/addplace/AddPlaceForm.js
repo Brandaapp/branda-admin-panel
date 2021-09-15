@@ -23,7 +23,9 @@ export default function AddPlaceForm(props) {
     times: defaultTimes,
   });
 
-  const { onSubmit } = props;
+  const [sending, setSending] = useState(false);
+
+  const { onSubmit, onError } = props;
   const options = ["Dining", "Sport", "Library"];
   const labels = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
   const days = [
@@ -37,6 +39,8 @@ export default function AddPlaceForm(props) {
   ];
 
   const post = () => {
+    setSending(true);
+
     const data = {
       name: state.name,
       group: state.group,
@@ -52,12 +56,19 @@ export default function AddPlaceForm(props) {
       weeks.push(json);
     }
 
-    axios.post(`api/places/add`, data).then((response) => {
-      const emp_id = response.data._id;
-      axios.post(`api/schedules`, { ...data, emp_id, weeks, ...json }).then((response) => {
-        onSubmit();
-      });
-    });
+    axios
+      .post(`api/places/add`, data)
+      .then((response) => {
+        const emp_id = response.data._id;
+        axios
+          .post(`api/schedules`, { ...data, emp_id, weeks, ...json })
+          .then((response) => {
+            setSending(false);
+            onSubmit(state.name + " added as a new place.");
+          })
+          .catch((err) => onError(`FAILED: add place: ${err}`));
+      })
+      .catch((err) => onError(`FAILED: add place: ${err}`));
   };
 
   const updateTimes = (_date, hour, day, start) => {
@@ -66,7 +77,7 @@ export default function AddPlaceForm(props) {
     tempTimes[day][start ? "start" : "end"] = hour;
     setState((prev) => ({ ...prev, times: tempTimes }));
   };
-  
+
   return (
     <div className={classes.paper}>
       <h4 style={{ color: "#1B4370" }}>Add Place</h4>
@@ -145,7 +156,7 @@ export default function AddPlaceForm(props) {
           onClick={post}
           disabled={!state.name}
         >
-          Submit
+          {sending ? "Submitting..." : "Submit"}
         </Button>
       </div>
     </div>

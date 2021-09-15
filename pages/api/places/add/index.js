@@ -5,20 +5,18 @@ dbConnect();
 
 export default function (req, res) {
   if (req.method === "POST") {
-    Place.create(
-        {
-          Name: req.body.name,
-          group: req.body.group,
-        },
-        (err, doc) => {
-          if (err) {
-            console.err(err);
-          } else {
-            res.send(doc);
-          }
-        }
-      );
+    const newPlace = new Place({
+      Name: req.body.name,
+      group: req.body.group,
+    });
+    newPlace.save((err) => {
+      if (err) {
+        console.err(err);
+      } else {
+        res.send(newPlace);
+      }
+    });
   } else {
-      res.status(405); // incorrect http request for this route
+    res.status(405); // incorrect http request for this route
   }
 }

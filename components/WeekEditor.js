@@ -139,6 +139,13 @@ export default function WeekEditor(props) {
         >
           Clear Edits
         </Button>
+        <Button
+          variant="contained"
+          style={{ backgroundColor: "#cc0000", color: "white" }}
+          onClick={() => {}}
+        >
+          Delete
+        </Button>
       </td>
     </tr>
   );

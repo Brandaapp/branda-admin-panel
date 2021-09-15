@@ -5,9 +5,7 @@ import Popover from "@material-ui/core/Popover";
 import Button from "@material-ui/core/Button";
 import WeekEditor from "./WeekEditor";
 import Modal from "@material-ui/core/Modal";
-// import Fade from "@material-ui/core/Fade";
 import AddPlaceForm from "./addplace/AddPlaceForm";
-// import Backdrop from '@material-ui/core/Backdrop';
 
 import axios from "axios";
 import createTable from "../utils/renderUtils/tableGenerator";
@@ -60,6 +58,7 @@ export default function ScheduleEditor(props) {
 
   useEffect(() => {
     if (state.weekNum === -1) {
+      // setState((prev) => ({ ...prev, weeks: undefined }));
       const day = new Date();
       setWeek(weekStart(day), weekEnd(day), weekNum(day));
     }
@@ -164,12 +163,20 @@ export default function ScheduleEditor(props) {
             justifyContent: "center",
             alignItems: "center",
           }}
-          onClose={() => setModalOpen(false)}
+          onClose={() => {
+            setModalOpen(false);
+          }}
         >
           <AddPlaceForm
-            onSubmit={() => {
+            onSubmit={(msg) => {
+              Materialize.toast(msg, 2500, "green rounded");
               setModalOpen(false);
-              resetWeekSchedule();
+              console.log('msg is: ', msg, '*')
+              if (msg) setState((prev) => ({ ...prev, weekNum: -1 }));
+            }}
+            onError={(msg) => {
+              Materialize.toast(msg, 2500, "red rounded");
+              setModalOpen(false);
             }}
           />
         </Modal>
