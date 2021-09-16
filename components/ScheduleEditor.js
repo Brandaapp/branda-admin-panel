@@ -58,7 +58,6 @@ export default function ScheduleEditor(props) {
 
   useEffect(() => {
     if (state.weekNum === -1) {
-      // setState((prev) => ({ ...prev, weeks: undefined }));
       const day = new Date();
       setWeek(weekStart(day), weekEnd(day), weekNum(day));
     }
@@ -171,8 +170,7 @@ export default function ScheduleEditor(props) {
             onSubmit={(msg) => {
               Materialize.toast(msg, 2500, "green rounded");
               setModalOpen(false);
-              console.log('msg is: ', msg, '*')
-              if (msg) setState((prev) => ({ ...prev, weekNum: -1 }));
+              resetWeekSchedule();
             }}
             onError={(msg) => {
               Materialize.toast(msg, 2500, "red rounded");

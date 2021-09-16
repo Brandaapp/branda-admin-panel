@@ -21,6 +21,7 @@ export default function AddPlaceForm(props) {
     name: "",
     group: "Dining",
     times: defaultTimes,
+    row: undefined,
   });
 
   const [sending, setSending] = useState(false);
@@ -75,7 +76,27 @@ export default function AddPlaceForm(props) {
     hour = hour.toLowerCase().replace(/\s/g, "");
     const tempTimes = state.times;
     tempTimes[day][start ? "start" : "end"] = hour;
-    setState((prev) => ({ ...prev, times: tempTimes }));
+    setState((prev) => ({ ...prev, times: tempTimes, row: undefined }));
+  };
+
+  const createRow = () => {
+    const row = days.map((day) => {
+      return (
+        <td>
+          <DayEditor
+            day={day}
+            start={getProperDate(state.times[day].start)}
+            end={getProperDate(state.times[day].end)}
+            callback={updateTimes}
+            key={"_" + Math.random().toString(36).substr(2, 9)}
+          />
+        </td>
+      );
+    });
+
+    setState((prev) => ({...prev, row: row}));
+
+    return row;
   };
 
   return (
@@ -126,25 +147,7 @@ export default function AddPlaceForm(props) {
         >
           Enter Hours
         </div>
-        {createTable(
-          { width: "1400 px" },
-          labels,
-          <tr>
-            {days.map((day) => {
-              return (
-                <td>
-                  <DayEditor
-                    day={day}
-                    start={getProperDate(state.times[day].start)}
-                    end={getProperDate(state.times[day].end)}
-                    callback={updateTimes}
-                    key={"_" + Math.random().toString(36).substr(2, 9)}
-                  />
-                </td>
-              );
-            })}
-          </tr>
-        )}
+        {createTable({ width: "1400 px" }, labels, <tr>{state.row || createRow()}</tr>)}
       </div>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <Button
@@ -154,7 +157,7 @@ export default function AddPlaceForm(props) {
             width: "20%",
           }}
           onClick={post}
-          disabled={!state.name}
+          disabled={!state.name || sending}
         >
           {sending ? "Submitting..." : "Submit"}
         </Button>
