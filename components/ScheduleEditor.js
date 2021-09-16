@@ -6,7 +6,8 @@ import Button from "@material-ui/core/Button";
 import WeekEditor from "./WeekEditor";
 import Modal from "@material-ui/core/Modal";
 import AddPlaceForm from "./addplace/AddPlaceForm";
-import {Fade} from "./addplace/Fade";
+import Fade from '@material-ui/core/Fade';
+import Backdrop from '@material-ui/core/Backdrop';
 
 import axios from "axios";
 import createTable from "../utils/renderUtils/tableGenerator";
@@ -62,7 +63,7 @@ export default function ScheduleEditor(props) {
       const day = new Date();
       setWeek(weekStart(day), weekEnd(day), weekNum(day));
     }
-  }, [state.weekNum]); // will only update when weekNum is changed (and defaulted to -1)
+  }, [state.weekNum, state.scheduleData]); // will only update when weekNum is changed (and defaulted to -1)
 
   /*
   "_" + Math.random().toString(36).substr(2, 9) was previously used for the key
@@ -171,7 +172,7 @@ export default function ScheduleEditor(props) {
             onSubmit={(msg) => {
               Materialize.toast(msg, 2500, "green rounded");
               setModalOpen(false);
-              resetWeekSchedule();
+              setState((prev) => ({ ...prev, weekNum: -1 }))
             }}
             onError={(msg) => {
               Materialize.toast(msg, 2500, "red rounded");

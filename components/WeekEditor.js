@@ -4,7 +4,7 @@ import { Button } from "@material-ui/core";
 import { getProperDate } from "../utils/dateUtils";
 import { mergeStartEndToSchedule } from "../utils/scheduleUtils";
 
-const axios = require("axios");
+import axios from "axios";
 
 const days = [
   "monday",
@@ -53,7 +53,7 @@ export default function WeekEditor(props) {
 
   const updateSchedule = async () => {
     let data = mergeStartEndToSchedule(state.schedule, state.startTimes, state.endTimes, days);
-    await axios
+    axios
       .patch(`/api/schedules/${props.weekNum}/${state.schedule.emp_id}`, data)
       .then((response) => {
         props.refresh();
@@ -96,6 +96,19 @@ export default function WeekEditor(props) {
       });
     }
   };
+
+  const remove = () => {
+    const data = {
+      id: props.schedule.emp_id,
+      emp_id: props.schedule.emp_id
+    }
+    axios.patch(`/api/places/delete`, data).then((response) => {
+      console.log(response);
+      axios.patch(`/api/schedules/delete`, data).then((response) => {
+        console.log(response);
+      }).catch((e) => console.err(e));
+    }).catch((e) => console.err(e));
+  }
 
   return (
     <tr
@@ -142,7 +155,7 @@ export default function WeekEditor(props) {
         <Button
           variant="contained"
           style={{ backgroundColor: "#cc0000", color: "white" }}
-          onClick={() => {console.log(props.schedule)}}
+          onClick={remove}
         >
           Delete
         </Button>
