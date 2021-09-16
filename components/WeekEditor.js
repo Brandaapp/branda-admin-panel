@@ -142,7 +142,7 @@ export default function WeekEditor(props) {
         <Button
           variant="contained"
           style={{ backgroundColor: "#cc0000", color: "white" }}
-          onClick={() => {}}
+          onClick={() => {console.log(props.schedule)}}
         >
           Delete
         </Button>

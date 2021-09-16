@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import WeekEditor from "./WeekEditor";
 import Modal from "@material-ui/core/Modal";
 import AddPlaceForm from "./addplace/AddPlaceForm";
+import {Fade} from "./addplace/Fade";
 
 import axios from "axios";
 import createTable from "../utils/renderUtils/tableGenerator";
