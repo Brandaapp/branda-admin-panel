@@ -16,7 +16,7 @@ workflows:
   ci:
     jobs:
       - cypress/install:
-          build: npm run build
+          build: npm run build # build application
           filters:
             branches:
               ignore: main
