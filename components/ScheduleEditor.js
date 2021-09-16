@@ -6,13 +6,23 @@ import Button from "@material-ui/core/Button";
 import WeekEditor from "./WeekEditor";
 import Modal from "@material-ui/core/Modal";
 import AddPlaceForm from "./addplace/AddPlaceForm";
-import Fade from '@material-ui/core/Fade';
 import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import axios from "axios";
 import createTable from "../utils/renderUtils/tableGenerator";
 
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));
+
 export default function ScheduleEditor(props) {
+  const classes = useStyles();
   const [state, setState] = useState({
     weekStart: null,
     weekEnd: null,
@@ -37,6 +47,7 @@ export default function ScheduleEditor(props) {
   ];
 
   async function setWeek(start, end, num) {
+    props.setDataFetched(false);
     await axios
       .get(`/api/schedules/${num}`)
       .then((response) => {
@@ -46,10 +57,11 @@ export default function ScheduleEditor(props) {
           weekNum: num,
           scheduleData: response.data,
           updateNum: state.updateNum + 1,
+          weeks: undefined
         });
+        props.setDataFetched(true);
       })
       .catch((err) => console.log("Error fetching schedule info", err));
-    if (!props.dataFetched) props.setDataFetched(true);
   }
 
   async function resetWeekSchedule() {
@@ -63,23 +75,31 @@ export default function ScheduleEditor(props) {
       const day = new Date();
       setWeek(weekStart(day), weekEnd(day), weekNum(day));
     }
-  }, [state.weekNum, state.scheduleData]); // will only update when weekNum is changed (and defaulted to -1)
+  }, [state.weekNum]); // will only update when weekNum is changed (and defaulted to -1)
 
   /*
   "_" + Math.random().toString(36).substr(2, 9) was previously used for the key
   but was causing weekeditor components to reset state briefly
   */
   function renderRows() {
-    const weeks = state.scheduleData.map((schedule) => {
-      return (
+    const weeks = [];
+    state.scheduleData.forEach((schedule) => {
+      weeks.unshift((
         <WeekEditor
           schedule={schedule}
           updateNum={state.updateNum}
           weekNum={state.weekNum}
           refresh={resetWeekSchedule}
           key={schedule.name}
+          onDeleteSuccess={(msg) => {
+            setWeek(state.weekStart, state.weekEnd, state.weekNum);
+            Materialize.toast(msg, 2500, "green rounded");
+          }}
+          onDeleteError={(msg) => {
+            Materialize.toast(msg, 2500, "red rounded");
+          }}
         />
-      );
+      ));
     });
 
     // weeks are now cached locally to avoid re-rendering on popup opening
@@ -105,6 +125,9 @@ export default function ScheduleEditor(props) {
   else
     return (
       <div>
+        <Backdrop className={classes.backdrop} open={!props.dataFetched}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
         <h5 style={{ paddingBottom: "20px" }}>
           Schedule Editor - Current week is:
           <span style={{ marginLeft: "10px", fontWeight: "500" }}>
@@ -170,9 +193,9 @@ export default function ScheduleEditor(props) {
         >
           <AddPlaceForm
             onSubmit={(msg) => {
-              Materialize.toast(msg, 2500, "green rounded");
+              setWeek(state.weekStart, state.weekEnd, state.weekNum);
               setModalOpen(false);
-              setState((prev) => ({ ...prev, weekNum: -1 }))
+              Materialize.toast(msg, 2500, "green rounded");
             }}
             onError={(msg) => {
               Materialize.toast(msg, 2500, "red rounded");
