@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { useRouter } from 'next/router'
-import { Provider, getSession } from 'next-auth/client'
+import { Provider, signIn, useSession } from 'next-auth/client'
 import { access } from '../utils/rolesUtils'
 import LuxonUtils from '@date-io/luxon'
 import Navbar from '../components/Navbar'
@@ -31,18 +31,38 @@ function TLApp({ Component, pageProps }) {
   return (
     <div>
       <Provider session={pageProps.session}>
-        <MuiPickersUtilsProvider utils={LuxonUtils}>
-          <ThemeProvider theme={inputTheme}>
-            {nav()}
-            <div className="row"><Component {...pageProps} /></div>
-          </ThemeProvider>
-        </MuiPickersUtilsProvider>
+        <Auth>
+          <MuiPickersUtilsProvider utils={LuxonUtils}>
+            <ThemeProvider theme={inputTheme}>
+              {nav()}
+              <div className="row"><Component {...pageProps} /></div>
+            </ThemeProvider>
+          </MuiPickersUtilsProvider>
+        </Auth>
       </Provider>
     </div>
   );
 }
 
-TLApp.getInitialProps = async (appContext) => {
+function Auth({ children }) {
+  const [session, loading] = useSession()
+  const router = useRouter()
+  const isUser = !!session?.user
+  useEffect(() => {
+    if (loading) return // Do nothing while loading
+    if (!isUser && router.pathname !== "/login") signIn() // If not authenticated, force log in
+  }, [isUser, loading])
+
+  if (isUser || router.pathname === "/login") {
+    return children
+  }
+
+  // Session is being fetched, or no user.
+  // If no user, useEffect() will redirect.
+  return <div>Loading...</div>
+}
+
+/* TLApp.getInitialProps = async (appContext) => {
   const session = await getSession(appContext)
   const appProps = await App.getInitialProps(appContext)
   if (typeof window === "undefined" && appContext.ctx.res.writeHead) {
@@ -61,6 +81,6 @@ TLApp.getInitialProps = async (appContext) => {
   }
   appProps.pageProps.session = session
   return { ...appProps }
-}
+} */
 
 export default TLApp
