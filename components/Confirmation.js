@@ -23,10 +23,10 @@ export default function Confirmation(props) {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleCancel} color="primary">
+                <Button onClick={handleCancel} color="primary" autoFocus>
                     Cancel
                 </Button>
-                <Button onClick={handleConfirm} color="primary" autoFocus>
+                <Button onClick={handleConfirm} color="primary">
                     Confirm
                 </Button>
             </DialogActions>
