@@ -6,18 +6,18 @@ import Button from "@material-ui/core/Button";
 import WeekEditor from "./WeekEditor";
 import Modal from "@material-ui/core/Modal";
 import AddPlaceForm from "./addplace/AddPlaceForm";
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import axios from "axios";
 import createTable from "../utils/renderUtils/tableGenerator";
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
+    color: "#fff",
   },
 }));
 
@@ -57,7 +57,7 @@ export default function ScheduleEditor(props) {
           weekNum: num,
           scheduleData: response.data,
           updateNum: state.updateNum + 1,
-          weeks: undefined
+          weeks: undefined,
         });
         props.setDataFetched(true);
       })
@@ -84,7 +84,7 @@ export default function ScheduleEditor(props) {
   function renderRows() {
     const weeks = [];
     state.scheduleData.forEach((schedule) => {
-      weeks.unshift((
+      weeks.unshift(
         <WeekEditor
           schedule={schedule}
           updateNum={state.updateNum}
@@ -99,7 +99,7 @@ export default function ScheduleEditor(props) {
             Materialize.toast(msg, 2500, "red rounded");
           }}
         />
-      ));
+      );
     });
 
     // weeks are now cached locally to avoid re-rendering on popup opening
@@ -162,7 +162,7 @@ export default function ScheduleEditor(props) {
         </div>
         <Popover
           id={id}
-          open={open ^ !props.dataFetched}
+          open={open ? props.dataFetched : !props.dataFetched}
           anchorEl={anchorEl}
           onClose={handleClose}
           anchorOrigin={{
