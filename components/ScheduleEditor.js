@@ -162,7 +162,7 @@ export default function ScheduleEditor(props) {
         </div>
         <Popover
           id={id}
-          open={open ? props.dataFetched : !props.dataFetched}
+          open={open ? props.dataFetched : false}
           anchorEl={anchorEl}
           onClose={handleClose}
           anchorOrigin={{

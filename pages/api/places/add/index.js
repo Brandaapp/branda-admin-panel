@@ -4,19 +4,31 @@ import Place from "../../../../models/Place";
 dbConnect();
 
 export default function (req, res) {
-  if (req.method === "POST") {
-    const newPlace = new Place({
-      Name: req.body.name,
-      group: req.body.group,
-    });
-    newPlace.save((err) => {
-      if (err) {
-        console.err(err);
-      } else {
-        res.send(newPlace);
-      }
-    });
-  } else {
-    res.status(405); // incorrect http request for this route
-  }
+  return new Promise((resolve, reject) => {
+    if (req.method === "POST") {
+      Place.findOne({ Name: req.body.name }, (err, doc) => {
+        console.log(err, doc)
+        if (!!err) {
+          // the place should not have been found
+          const newPlace = new Place({
+            Name: req.body.name,
+            group: req.body.group,
+          });
+          newPlace.save((err) => {
+            if (err) {
+              console.err(err);
+              reject(err);
+            } else {
+              res.send(newPlace);
+              return resolve();
+            }
+          });
+        } else {  
+          return reject("Place already exists");
+        }
+      });
+    } else {
+      return reject("Incorrect HTTP request");
+    }
+  });
 }

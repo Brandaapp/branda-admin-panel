@@ -60,10 +60,11 @@ export default function AddPlaceForm(props) {
     axios
       .post(`api/places/add`, data)
       .then((response) => {
+        console.log(response)
         const emp_id = response.data._id;
         axios
           .post(`api/schedules`, { ...data, emp_id, weeks, ...json })
-          .then((response) => {
+          .then((_response) => {
             setSending(false);
             onSubmit(state.name + " added as a new place.");
           })
