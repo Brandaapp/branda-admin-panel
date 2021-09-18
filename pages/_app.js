@@ -1,12 +1,11 @@
 import '../styles/globals.css'
 import '../styles/materialize.css'
-import App from 'next/app'
 import { useEffect } from 'react'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import { useRouter } from 'next/router'
-import { Provider, signIn, useSession } from 'next-auth/client'
 import { access } from '../utils/rolesUtils'
+import { useRouter } from 'next/router'
+import { getSession, Provider, signIn, useSession } from 'next-auth/client'
 import LuxonUtils from '@date-io/luxon'
 import Navbar from '../components/Navbar'
 
@@ -23,7 +22,7 @@ function TLApp({ Component, pageProps }) {
   }, []);
   
   function nav() {
-    if (pageProps.session && router.pathname !== "/docs") {
+    if (router.pathname !== "/docs") {
       return (<div className="row"><Navbar /></div>)
     } else return null
   }
@@ -51,6 +50,14 @@ function Auth({ children }) {
   useEffect(() => {
     if (loading) return // Do nothing while loading
     if (!isUser && router.pathname !== "/login") signIn() // If not authenticated, force log in
+    if (isUser) {
+      if (access[session.user.type] === undefined) {
+        console.error("Unrecognized user type")
+      }
+      if (!access[session.user.type].allowed.has(router.pathname)) {
+        router.push(access[session.user.type].redirectTo)
+      }
+    }
   }, [isUser, loading])
 
   if (isUser || router.pathname === "/login") {
@@ -62,25 +69,12 @@ function Auth({ children }) {
   return <div>Loading...</div>
 }
 
-/* TLApp.getInitialProps = async (appContext) => {
-  const session = await getSession(appContext)
-  const appProps = await App.getInitialProps(appContext)
-  if (typeof window === "undefined" && appContext.ctx.res.writeHead) {
-    if (!session) {
-      if (appContext.router.pathname !== "/login" && appContext.router.pathname !== "/docs") {
-        appContext.ctx.res.writeHead(302, { Location: "/login" })
-        appContext.ctx.res.end()
-      }
-    } else if (
-        !access[session.user.type].allowed.has(appContext.router.pathname) &&
-        appContext.router.pathname !== "/docs"
-      ) {
-      appContext.ctx.res.writeHead(302, { Location: access[session.user.type].redirectTo })
-      appContext.ctx.res.end()
+export async function getServerSideProps(ctx) {
+  return {
+    props: {
+      session: await getSession(ctx)
     }
   }
-  appProps.pageProps.session = session
-  return { ...appProps }
-} */
+}
 
 export default TLApp
