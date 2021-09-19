@@ -5,7 +5,6 @@ export const access = {
             "/",
             "/docs",
             "/login",
-            "/places-management",
             "/push-notifications",
             "/register",
             "/reservations",
