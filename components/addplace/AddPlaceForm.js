@@ -45,7 +45,7 @@ export default function AddPlaceForm(props) {
       group: state.group,
     };
 
-    const weeks = populateWeeksArray(state.times);
+    const { weeks, json } = populateWeeksArray(state.times);
 
     axios
       .post(`api/places/add`, data)

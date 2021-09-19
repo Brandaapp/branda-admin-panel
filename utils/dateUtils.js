@@ -78,8 +78,9 @@ export function populateWeeksArray(times) {
     json[day] = times[day].start + "-" + times[day].end;
   });
   const weeks = [];
-  for (let i = 0; i < 54; i++) { // overpopulate array
+  for (let i = 0; i < 54; i++) {
+    // overpopulate array
     weeks.push(json);
   }
-  return weeks;
+  return { weeks, json };
 }
