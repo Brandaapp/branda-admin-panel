@@ -57,9 +57,9 @@ export default function AddPlaceForm(props) {
             setSending(false);
             onSubmit(state.name + " added as a new place.");
           })
-          .catch((err) => onError(`FAILED to add place: ${err.response.data}`));
+          .catch((err) => onError(`Failed to add place: ${err.response.data}`));
       })
-      .catch((err) => onError(`FAILED to add place: ${err.response.data}`));
+      .catch((err) => onError(`Failed to add place: ${err.response.data}`));
   };
 
   const updateTimes = (_date, hour, day, start) => {
