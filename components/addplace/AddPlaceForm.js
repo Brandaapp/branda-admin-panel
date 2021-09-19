@@ -28,7 +28,15 @@ export default function AddPlaceForm(props) {
 
   const { onSubmit, onError } = props;
   const options = ["Dining", "Sport", "Library"];
-  const labels = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
+  const labels = [
+    { key: "mon", label: "Mon" },
+    { key: "tues", label: "Tues" },
+    { key: "wed", label: "Wednesday" },
+    { key: "thurs", label: "Thurs" },
+    { key: "fri", label: "Fri" },
+    { key: "sat", label: "Sat" },
+    { key: "sun", label: "Sun" },
+  ];
   const days = [
     "monday",
     "tuesday",
@@ -64,12 +72,13 @@ export default function AddPlaceForm(props) {
         axios
           .post(`api/schedules`, { ...data, emp_id, weeks, ...json })
           .then((_response) => {
+            console.log('here')
             setSending(false);
             onSubmit(state.name + " added as a new place.");
           })
-          .catch((err) => onError(`FAILED: add place: ${err}`));
+          .catch((err) => onError(`FAILED to add place: ${err.response.data}`));
       })
-      .catch((err) => onError(`FAILED: add place: ${err.response.data}`));
+      .catch((err) => onError(`FAILED to add place: ${err.response.data}`));
   };
 
   const updateTimes = (_date, hour, day, start) => {
@@ -82,15 +91,13 @@ export default function AddPlaceForm(props) {
   const createRow = () => {
     const row = days.map((day) => {
       return (
-        <td>
-          <DayEditor
-            day={day}
-            start={getProperDate(state.times[day].start)}
-            end={getProperDate(state.times[day].end)}
-            callback={updateTimes}
-            key={"_" + Math.random().toString(36).substr(2, 9)}
-          />
-        </td>
+        <DayEditor
+          day={day}
+          start={getProperDate(state.times[day].start)}
+          end={getProperDate(state.times[day].end)}
+          callback={updateTimes}
+          key={"_" + Math.random().toString(36).substr(2, 9)}
+        />
       );
     });
 
@@ -136,7 +143,7 @@ export default function AddPlaceForm(props) {
             variant="outlined"
           >
             {options.map((group) => (
-              <MenuItem value={group}>{group}</MenuItem>
+              <MenuItem key={group} value={group}>{group}</MenuItem>
             ))}
           </Select>
         </FormControl>

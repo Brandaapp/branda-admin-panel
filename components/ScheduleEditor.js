@@ -35,20 +35,20 @@ export default function ScheduleEditor(props) {
   const [modalOpen, setModalOpen] = useState(false);
 
   const labels = [
-    "Name",
-    "Mon",
-    "Tues",
-    "Wed",
-    "Thurs",
-    "Fri",
-    "Sat",
-    "Sun",
-    "Admin Option",
+    { key: "name", label: "Name" },
+    { key: "mon", label: "Mon" },
+    { key: "tues", label: "Tues" },
+    { key: "wed", label: "Wed" },
+    { key: "thurs", label: "Thurs" },
+    { key: "fri", label: "Fri" },
+    { key: "sat", label: "Sat" },
+    { key: "sun", label: "Sun" },
+    { key: "adops", label: "Admin Option" },
   ];
 
-  async function setWeek(start, end, num) {
+  function setWeek(start, end, num) {
     props.setDataFetched(false);
-    await axios
+    axios
       .get(`/api/schedules/${num}`)
       .then((response) => {
         setState({
@@ -157,7 +157,7 @@ export default function ScheduleEditor(props) {
             style={{ backgroundColor: "#1B4370", color: "white", width: "40%" }}
             onClick={() => setModalOpen(true)}
           >
-            Add Place
+            Add New Place
           </Button>
         </div>
         <Popover
@@ -199,7 +199,7 @@ export default function ScheduleEditor(props) {
                 Materialize.toast(msg, 2500, "green rounded");
               }}
               onError={(msg) => {
-                Materialize.toast(msg, 2500, "red rounded");
+                Materialize.toast(msg, 3000, "red rounded");
                 setModalOpen(false);
               }}
             />

@@ -7,6 +7,7 @@ export default function (req, res) {
   return new Promise((resolve, _reject) => {
     if (req.method === "POST") {
       Place.findOne({ Name: req.body.name }, (err, doc) => {
+        console.log(!doc)
         if (!doc) {
           // the place should not have been found
           const newPlace = new Place({
@@ -17,7 +18,7 @@ export default function (req, res) {
             if (err) {
               console.err(err);
             } else {
-              res.send(() => newPlace);
+              res.send(newPlace);
             }
           });
         } else {

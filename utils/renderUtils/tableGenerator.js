@@ -3,7 +3,9 @@ export default function createTable(style, labels, rows) {
     <table style={style}>
       <thead>
         <tr>
-          {labels.map(label => <th key={label}>{label}</th>)}
+          {labels.map((item) => (
+            <th key={item.key}>{item.label}</th>
+          ))}
         </tr>
       </thead>
       <tbody>{rows}</tbody>
