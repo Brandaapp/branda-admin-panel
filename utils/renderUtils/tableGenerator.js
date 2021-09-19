@@ -3,7 +3,7 @@ export default function createTable(style, labels, rows) {
     <table style={style}>
       <thead>
         <tr>
-          {labels.map(label => <th>{label}</th>)}
+          {labels.map(label => <th key={label}>{label}</th>)}
         </tr>
       </thead>
       <tbody>{rows}</tbody>

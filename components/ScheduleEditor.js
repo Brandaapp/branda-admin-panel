@@ -191,17 +191,19 @@ export default function ScheduleEditor(props) {
             setModalOpen(false);
           }}
         >
-          <AddPlaceForm
-            onSubmit={(msg) => {
-              setWeek(state.weekStart, state.weekEnd, state.weekNum);
-              setModalOpen(false);
-              Materialize.toast(msg, 2500, "green rounded");
-            }}
-            onError={(msg) => {
-              Materialize.toast(msg, 2500, "red rounded");
-              setModalOpen(false);
-            }}
-          />
+          <div>
+            <AddPlaceForm
+              onSubmit={(msg) => {
+                setWeek(state.weekStart, state.weekEnd, state.weekNum);
+                setModalOpen(false);
+                Materialize.toast(msg, 2500, "green rounded");
+              }}
+              onError={(msg) => {
+                Materialize.toast(msg, 2500, "red rounded");
+                setModalOpen(false);
+              }}
+            />
+          </div>
         </Modal>
         {createTable({ width: "1400px" }, labels, state.weeks || renderRows())}
       </div>
