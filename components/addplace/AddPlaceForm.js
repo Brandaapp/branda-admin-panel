@@ -6,11 +6,17 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import DayEditor from "../DayEditor";
 import createTable from "../../utils/renderUtils/tableGenerator";
-import { getDefaultWeekTimes, getProperDate } from "../../utils/dateUtils";
+import {
+  getDefaultWeekTimes,
+  getProperDate,
+  populateWeeksArray,
+} from "../../utils/dateUtils";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import axios from "axios";
 
 import { useStyles } from "./styles";
+import constants from "./constants";
 
 const defaultTimes = getDefaultWeekTimes();
 
@@ -21,31 +27,15 @@ export default function AddPlaceForm(props) {
     name: "",
     group: "Dining",
     times: defaultTimes,
-    row: undefined,
+    row: undefined, // cache of row components
   });
 
   const [sending, setSending] = useState(false);
 
   const { onSubmit, onError } = props;
-  const options = ["Dining", "Sport", "Library"];
-  const labels = [
-    { key: "mon", label: "Mon" },
-    { key: "tues", label: "Tues" },
-    { key: "wed", label: "Wednesday" },
-    { key: "thurs", label: "Thurs" },
-    { key: "fri", label: "Fri" },
-    { key: "sat", label: "Sat" },
-    { key: "sun", label: "Sun" },
-  ];
-  const days = [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-  ];
+  const options = constants.options;
+  const labels = constants.labels;
+  const days = constants.days;
 
   const post = async () => {
     setSending(true);
@@ -55,15 +45,7 @@ export default function AddPlaceForm(props) {
       group: state.group,
     };
 
-    const times = state.times;
-    const json = {};
-    Object.keys(times).forEach((day) => {
-      json[day] = times[day].start + "-" + times[day].end;
-    });
-    const weeks = [];
-    for (let i = 0; i < 54; i++) {
-      weeks.push(json);
-    }
+    const weeks = populateWeeksArray(state.times);
 
     axios
       .post(`api/places/add`, data)
@@ -72,7 +54,6 @@ export default function AddPlaceForm(props) {
         axios
           .post(`api/schedules`, { ...data, emp_id, weeks, ...json })
           .then((_response) => {
-            console.log('here')
             setSending(false);
             onSubmit(state.name + " added as a new place.");
           })
@@ -143,7 +124,9 @@ export default function AddPlaceForm(props) {
             variant="outlined"
           >
             {options.map((group) => (
-              <MenuItem key={group} value={group}>{group}</MenuItem>
+              <MenuItem key={group} value={group}>
+                {group}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -161,17 +144,30 @@ export default function AddPlaceForm(props) {
         )}
       </div>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <Button
-          style={{
-            backgroundColor: !state.name || sending ? "#5482B6" : "#1B4370",
-            color: "white",
-            width: "20%",
-          }}
-          onClick={post}
-          disabled={!state.name || sending}
+        <Tooltip
+          title={
+            !state.name
+              ? "Please provide a place name"
+              : sending
+              ? "New place is being added"
+              : "Add a new place"
+          }
+          arrow
         >
-          {sending ? "Submitting..." : "Submit"}
-        </Button>
+          <span style={{ width: "20%" }}>
+            <Button
+              style={{
+                backgroundColor: !state.name || sending ? "#5482B6" : "#1B4370",
+                color: "white",
+                width: "100%",
+              }}
+              onClick={post}
+              disabled={!state.name || sending}
+            >
+              {sending ? "Adding new place..." : "Add new place"}
+            </Button>
+          </span>
+        </Tooltip>
       </div>
     </div>
   );

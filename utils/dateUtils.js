@@ -71,3 +71,15 @@ export function getDefaultWeekTimes() {
     sunday: { start: "7:30am", end: "2:00am" },
   };
 }
+
+export function populateWeeksArray(times) {
+  const json = {};
+  Object.keys(times).forEach((day) => {
+    json[day] = times[day].start + "-" + times[day].end;
+  });
+  const weeks = [];
+  for (let i = 0; i < 54; i++) { // overpopulate array
+    weeks.push(json);
+  }
+  return weeks;
+}
