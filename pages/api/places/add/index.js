@@ -4,11 +4,10 @@ import Place from "../../../../models/Place";
 dbConnect();
 
 export default function (req, res) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _reject) => {
     if (req.method === "POST") {
       Place.findOne({ Name: req.body.name }, (err, doc) => {
-        console.log(err, doc)
-        if (!!err) {
+        if (!doc) {
           // the place should not have been found
           const newPlace = new Place({
             Name: req.body.name,
@@ -17,18 +16,18 @@ export default function (req, res) {
           newPlace.save((err) => {
             if (err) {
               console.err(err);
-              reject(err);
             } else {
-              res.send(newPlace);
-              return resolve();
+              res.send(() => newPlace);
             }
           });
-        } else {  
-          return reject("Place already exists");
+        } else {
+          res.status(409).send(`${req.body.name} already exists`);
+          return resolve();
         }
       });
     } else {
-      return reject("Incorrect HTTP request");
+      res.status(405);
+      return resolve();
     }
   });
 }

@@ -39,7 +39,7 @@ export default function AddPlaceForm(props) {
     "sunday",
   ];
 
-  const post = () => {
+  const post = async () => {
     setSending(true);
 
     const data = {
@@ -60,7 +60,6 @@ export default function AddPlaceForm(props) {
     axios
       .post(`api/places/add`, data)
       .then((response) => {
-        console.log(response)
         const emp_id = response.data._id;
         axios
           .post(`api/schedules`, { ...data, emp_id, weeks, ...json })
@@ -70,7 +69,7 @@ export default function AddPlaceForm(props) {
           })
           .catch((err) => onError(`FAILED: add place: ${err}`));
       })
-      .catch((err) => onError(`FAILED: add place: ${err}`));
+      .catch((err) => onError(`FAILED: add place: ${err.response.data}`));
   };
 
   const updateTimes = (_date, hour, day, start) => {
@@ -95,7 +94,7 @@ export default function AddPlaceForm(props) {
       );
     });
 
-    setState((prev) => ({...prev, row: row}));
+    setState((prev) => ({ ...prev, row: row }));
 
     return row;
   };
@@ -148,12 +147,16 @@ export default function AddPlaceForm(props) {
         >
           Enter Hours
         </div>
-        {createTable({ width: "1400 px" }, labels, <tr>{state.row || createRow()}</tr>)}
+        {createTable(
+          { width: "1400 px" },
+          labels,
+          <tr>{state.row || createRow()}</tr>
+        )}
       </div>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <Button
           style={{
-            backgroundColor: !state.name ? "#5482B6" : "#1B4370",
+            backgroundColor: !state.name || sending ? "#5482B6" : "#1B4370",
             color: "white",
             width: "20%",
           }}
