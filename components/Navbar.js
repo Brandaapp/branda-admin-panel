@@ -36,6 +36,20 @@ export default function Navbar() {
                 <i className="material-icons" style={{ margin: "0px" }}>exit_to_app</i>
               </a>
             </li>
+            {/* <li>
+              <a className="dropdown-trigger black-text profile" data-activates="dropdown1" data-beloworigin="true">
+                {session.user.name}
+                <img className="circle circle-small" id="profile-pic" src={session.user.image}/>
+              </a>
+              <ul id="dropdown1" className="dropdown-content" style={{ minWidth: "135px" }}>
+                <li>
+                  <a className="black-text" id="logout" onClick={async () => {await signOut(); router.push('/login')}}>
+                    Logout
+                    <i className="material-icons" style={{ margin: "0px" }}>exit_to_app</i>
+                  </a>
+                </li>
+              </ul>
+            </li> */}
           </ul>
         </div>
       </nav>

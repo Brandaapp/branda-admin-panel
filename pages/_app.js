@@ -28,7 +28,7 @@ function TLApp({ Component, pageProps }) {
   }
 
   return (
-    <div>
+    <div style={{ height: "100%" }}>
       <Provider session={pageProps.session}>
         <Auth>
           <MuiPickersUtilsProvider utils={LuxonUtils}>
@@ -48,7 +48,13 @@ function Auth({ children }) {
   const router = useRouter()
   const isUser = !!session?.user
   useEffect(() => {
-    if (loading) return // Do nothing while loading
+    if (loading) return (
+      <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", height: "100%" }}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <img src="/branda-admin-loading-gif.gif" style={{ width: "280px" }} />
+        </div>
+      </div>
+    )
     if (!isUser && router.pathname !== "/login") signIn() // If not authenticated, force log in
     if (isUser) {
       if (access[session.user.type] === undefined) {
@@ -66,7 +72,13 @@ function Auth({ children }) {
 
   // Session is being fetched, or no user.
   // If no user, useEffect() will redirect.
-  return <div>Loading...</div>
+  return (
+    <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", height: "100%" }}>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <img src="/branda-admin-loading-gif.gif" style={{ width: "280px" }} />
+      </div>
+    </div>
+  )
 }
 
 export async function getServerSideProps(ctx) {

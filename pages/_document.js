@@ -22,7 +22,7 @@ class MainDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html style={{ height: "100%" }}>
         <Head>
           <link rel="icon" href="/favicon.ico" />
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
@@ -30,9 +30,14 @@ class MainDocument extends Document {
           <script src="https://use.fontawesome.com/8ff98e4aea.js"></script>
 
         </Head>
-        <body>
+        <body style={{ height: "100%" }}>
           <Main />
           <NextScript />
+          <style>{`
+            #__next {
+              height: 100%;
+            }
+          `}</style>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
           <script src="javascript.js"></script>
         </body>
