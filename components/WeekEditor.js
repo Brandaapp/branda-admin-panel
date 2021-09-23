@@ -53,7 +53,7 @@ export default function WeekEditor(props) {
 
   useEffect(() => {
     update(false);
-  });
+  }, [update]);
 
   const updateSchedule = async () => {
     let data = mergeStartEndToSchedule(
@@ -159,7 +159,7 @@ export default function WeekEditor(props) {
         }}
       >
         <Tooltip
-          title={`Updates the live schedule for ${state.schedule.name}`}
+          title={`Updates the live schedule for ${state.schedule.name} for this week`}
           arrow
         >
           <Button
@@ -172,7 +172,7 @@ export default function WeekEditor(props) {
         </Tooltip>
 
         <Tooltip
-          title={`Resets ${state.schedule.name}'s schedule to the state it was when the page loaded`}
+          title={`Resets ${state.schedule.name}'s schedule to the state it was in when the page loaded`}
           arrow
         >
           <Button

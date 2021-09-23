@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { weekStart, weekEnd, weekNum } from "../utils/dateUtils";
 import WeekPicker from "./WeekPicker";
 import Popover from "@material-ui/core/Popover";
@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ScheduleEditor(props) {
+  const containerRef = React.useRef();
   const classes = useStyles();
   const [state, setState] = useState({
     weekStart: null,
@@ -165,6 +166,7 @@ export default function ScheduleEditor(props) {
           open={open ? props.dataFetched : false}
           anchorEl={anchorEl}
           onClose={handleClose}
+          anchorReference="anchorEl"
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "center",
@@ -173,6 +175,9 @@ export default function ScheduleEditor(props) {
             vertical: "top",
             horizontal: "center",
           }}
+          disableScrollLock
+          style={{position: "absolute"}}
+          
         >
           <WeekPicker
             setWeek={setWeek}
@@ -190,6 +195,7 @@ export default function ScheduleEditor(props) {
           onClose={() => {
             setModalOpen(false);
           }}
+          disableScrollLock
         >
           <div>
             <AddPlaceForm
