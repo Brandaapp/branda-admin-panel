@@ -13,7 +13,6 @@ export default function ShuttleView() {
     await axios
       .get(`/api/shuttles/${date.toISOString()}`)
       .then((response) => {
-        //console.log(response.data);
         setShuttles(response.data);
       })
       .catch((err) => console.log("Error getting shuttles", err));
@@ -37,8 +36,6 @@ export default function ShuttleView() {
     });
   }
 
-  //console.log(date);
-
   return (
     <div style={{ width: "100%" }}>
       <div className="row">
@@ -50,7 +47,7 @@ export default function ShuttleView() {
             justify_content: "center",
           }}
         >
-          <h5>Shuttle Management</h5>
+          <h5>Shuttles Management</h5>
 
           <KeyboardDatePicker
             clearable
