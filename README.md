@@ -2,6 +2,8 @@
 
 This is the admin panel that allows Brandeis staff to change the data displayed in the Branda app as well as perform other administrative tasks. This repo is for the version that is being rebuilt in [Next.js](https://nextjs.org/). If you want the version that is currently deployed, go to the [BrandaServer](https://github.com/segalb/BrandaServer) repo.
 
+The production version of this admin panel can be found at https://branda-admin-panel.herokuapp.com/
+
 ## Setup
 
 After you've cloned the repo to your machine, install the necessary dependencies with:
