@@ -20,14 +20,6 @@ export default function Manager() {
                 </Link>
             </li>
             <li>
-                <Link href="/places-management">
-                    <a className="black-text">
-                        Places Managment
-                        <i className="material-icons right">place</i>
-                    </a>
-                </Link>
-            </li>
-            <li>
                 <Link href="/schedules">
                     <a className="black-text">
                         Schedules

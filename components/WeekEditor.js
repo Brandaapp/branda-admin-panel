@@ -3,8 +3,10 @@ import DayEditor from "./DayEditor";
 import { Button } from "@material-ui/core";
 import { getProperDate } from "../utils/dateUtils";
 import { mergeStartEndToSchedule } from "../utils/scheduleUtils";
+import Confirmation from "./Confirmation";
+import Tooltip from "@material-ui/core/Tooltip";
 
-const axios = require("axios");
+import axios from "axios";
 
 const days = [
   "monday",
@@ -24,6 +26,8 @@ export default function WeekEditor(props) {
     ver: -1,
   });
 
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
   const updateOnChange = (date, hour, day, start) => {
     hour = hour.toLowerCase();
     let newDate = getProperDate(hour);
@@ -36,7 +40,7 @@ export default function WeekEditor(props) {
     }
 
     setState((prev) => ({ ...prev, startTimes: tempStart, endTimes: tempEnd }));
-  }
+  };
 
   const reset = () => {
     Materialize.toast(
@@ -45,14 +49,19 @@ export default function WeekEditor(props) {
       "#0d47a1 blue darken-4 rounded"
     );
     update(true); // want to manually override
-  }
+  };
 
   useEffect(() => {
     update(false);
-  });
+  }, [update]);
 
   const updateSchedule = async () => {
-    let data = mergeStartEndToSchedule(state.schedule, state.startTimes, state.endTimes, days);
+    let data = mergeStartEndToSchedule(
+      state.schedule,
+      state.startTimes,
+      state.endTimes,
+      days
+    );
     await axios
       .patch(`/api/schedules/${props.weekNum}/${state.schedule.emp_id}`, data)
       .then((response) => {
@@ -71,7 +80,7 @@ export default function WeekEditor(props) {
           "red rounded"
         );
       });
-  }
+  };
 
   // override allows for setState not based on version number - used from reset()
   const update = (override) => {
@@ -95,6 +104,31 @@ export default function WeekEditor(props) {
         ver: props.updateNum,
       });
     }
+  };
+
+  const remove = async () => {
+    setConfirmDelete(false);
+    const data = {
+      id: props.schedule.emp_id,
+      emp_id: props.schedule.emp_id,
+    };
+    await axios
+      .patch(`/api/places/delete`, data)
+      .then(async (_response) => {
+        await axios
+          .patch(`/api/schedules/delete`, data)
+          .then((response) => {
+            props.onDeleteSuccess(state.schedule.name + " deleted");
+          })
+          .catch((_e) =>
+            props.onDeleteError(
+              "ERROR: unable to delete " + state.schedule.name
+            )
+          );
+      })
+      .catch((_e) =>
+        props.onDeleteError("ERROR: unable to delete " + state.schedule.name)
+      );
   };
 
   return (
@@ -124,21 +158,49 @@ export default function WeekEditor(props) {
           height: "150px",
         }}
       >
-        <Button
-          variant="contained"
-          style={{ backgroundColor: "#4caf50", color: "white" }}
-          onClick={updateSchedule}
+        <Tooltip
+          title={`Updates the live schedule for ${state.schedule.name} for this week`}
+          arrow
         >
-          Update
-        </Button>
+          <Button
+            variant="contained"
+            style={{ backgroundColor: "#4caf50", color: "white" }}
+            onClick={updateSchedule}
+          >
+            Update
+          </Button>
+        </Tooltip>
 
-        <Button
-          variant="contained"
-          style={{ backgroundColor: "#0d47a1", color: "white" }}
-          onClick={reset}
+        <Tooltip
+          title={`Resets ${state.schedule.name}'s schedule to the state it was in when the page loaded`}
+          arrow
         >
-          Clear Edits
-        </Button>
+          <Button
+            variant="contained"
+            style={{ backgroundColor: "#1B4370", color: "white" }}
+            onClick={reset}
+          >
+            Clear Edits
+          </Button>
+        </Tooltip>
+        <Tooltip
+          title={`Deletes ${state.schedule.name} by making it inactive`}
+          arrow
+        >
+          <Button
+            variant="contained"
+            style={{ backgroundColor: "#C11A1A", color: "white" }}
+            onClick={() => setConfirmDelete(true)}
+          >
+            Delete
+          </Button>
+        </Tooltip>
+        <Confirmation
+          name={state.schedule.name}
+          open={confirmDelete}
+          handleConfirm={remove}
+          handleCancel={() => setConfirmDelete(false)}
+        />
       </td>
     </tr>
   );

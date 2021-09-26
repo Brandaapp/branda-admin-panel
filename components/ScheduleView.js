@@ -39,9 +39,9 @@ export default function ScheduleView(props) {
   });
 
   function renderRows() {
-    return state.scheduleData.map((schedule) => {
-      return (
-        <tr
+    const weeks = [];
+    state.scheduleData.forEach((schedule) => {
+      weeks.unshift(<tr
           className="schedule-row"
           key={"_" + Math.random().toString(36).substr(2, 9)}
         >
@@ -88,9 +88,9 @@ export default function ScheduleView(props) {
               ? "Closed"
               : schedule.sunday}
           </td>
-        </tr>
-      );
+        </tr>);
     });
+    return weeks;
   }
 
   function handleClick(event) {

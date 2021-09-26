@@ -1,13 +1,29 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { weekStart, weekEnd, weekNum } from "../utils/dateUtils";
 import WeekPicker from "./WeekPicker";
 import Popover from "@material-ui/core/Popover";
 import Button from "@material-ui/core/Button";
 import WeekEditor from "./WeekEditor";
+import Modal from "@material-ui/core/Modal";
+import AddPlaceForm from "./addplace/AddPlaceForm";
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-const axios = require("axios");
+import axios from "axios";
+import createTable from "../utils/renderUtils/tableGenerator";
+
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
+}));
 
 export default function ScheduleEditor(props) {
+  const containerRef = React.useRef();
+  const classes = useStyles();
   const [state, setState] = useState({
     weekStart: null,
     weekEnd: null,
@@ -17,9 +33,23 @@ export default function ScheduleEditor(props) {
     weeks: undefined,
   });
   const [anchorEl, setAnchorEl] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  async function setWeek(start, end, num) {
-    await axios
+  const labels = [
+    { key: "name", label: "Name" },
+    { key: "mon", label: "Mon" },
+    { key: "tues", label: "Tues" },
+    { key: "wed", label: "Wed" },
+    { key: "thurs", label: "Thurs" },
+    { key: "fri", label: "Fri" },
+    { key: "sat", label: "Sat" },
+    { key: "sun", label: "Sun" },
+    { key: "adops", label: "Admin Option" },
+  ];
+
+  function setWeek(start, end, num) {
+    props.setDataFetched(false);
+    axios
       .get(`/api/schedules/${num}`)
       .then((response) => {
         setState({
@@ -28,10 +58,11 @@ export default function ScheduleEditor(props) {
           weekNum: num,
           scheduleData: response.data,
           updateNum: state.updateNum + 1,
+          weeks: undefined,
         });
+        props.setDataFetched(true);
       })
       .catch((err) => console.log("Error fetching schedule info", err));
-    if (!props.dataFetched) props.setDataFetched(true);
   }
 
   async function resetWeekSchedule() {
@@ -52,20 +83,28 @@ export default function ScheduleEditor(props) {
   but was causing weekeditor components to reset state briefly
   */
   function renderRows() {
-    const weeks = state.scheduleData.map((schedule) => {
-      return (
+    const weeks = [];
+    state.scheduleData.forEach((schedule) => {
+      weeks.unshift(
         <WeekEditor
           schedule={schedule}
           updateNum={state.updateNum}
           weekNum={state.weekNum}
           refresh={resetWeekSchedule}
           key={schedule.name}
+          onDeleteSuccess={(msg) => {
+            setWeek(state.weekStart, state.weekEnd, state.weekNum);
+            Materialize.toast(msg, 2500, "green rounded");
+          }}
+          onDeleteError={(msg) => {
+            Materialize.toast(msg, 2500, "red rounded");
+          }}
         />
       );
     });
 
     // weeks are now cached locally to avoid re-rendering on popup opening
-    setState((prev) => ({ ...prev, weeks: weeks })); 
+    setState((prev) => ({ ...prev, weeks: weeks }));
 
     return weeks;
   }
@@ -87,26 +126,47 @@ export default function ScheduleEditor(props) {
   else
     return (
       <div>
-        <h5>
+        <Backdrop className={classes.backdrop} open={!props.dataFetched}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+        <h5 style={{ paddingBottom: "20px" }}>
           Schedule Editor - Current week is:
           <span style={{ marginLeft: "10px", fontWeight: "500" }}>
-            {state.weekStart.toLocaleDateString("en-US")} -{" "}
+            {state.weekStart.toLocaleDateString("en-US")}-{" "}
             {state.weekEnd.toLocaleDateString("en-US")}
           </span>
         </h5>
-        <Button
-          aria-describedby={id}
-          variant="contained"
-          style={{ backgroundColor: "#1B4370", color: "white" }}
-          onClick={handleClick}
+        <div
+          style={{
+            paddingBottom: "20px",
+            display: "flex",
+            width: "25%",
+            justifyContent: "space-between",
+          }}
         >
-          Choose Week
-        </Button>
+          <Button
+            aria-describedby={id}
+            variant="contained"
+            style={{ backgroundColor: "#1B4370", color: "white", width: "40%" }}
+            onClick={handleClick}
+          >
+            Choose Week
+          </Button>
+          <Button
+            aria-describedby={id}
+            variant="contained"
+            style={{ backgroundColor: "#1B4370", color: "white", width: "40%" }}
+            onClick={() => setModalOpen(true)}
+          >
+            Add New Place
+          </Button>
+        </div>
         <Popover
           id={id}
-          open={open}
+          open={open ? props.dataFetched : false}
           anchorEl={anchorEl}
           onClose={handleClose}
+          anchorReference="anchorEl"
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "center",
@@ -115,6 +175,9 @@ export default function ScheduleEditor(props) {
             vertical: "top",
             horizontal: "center",
           }}
+          disableScrollLock
+          style={{position: "absolute", zIndex: 1029}}
+          
         >
           <WeekPicker
             setWeek={setWeek}
@@ -122,22 +185,33 @@ export default function ScheduleEditor(props) {
             lastDay={state.weekEnd}
           />
         </Popover>
-        <table style={{ width: "1400px" }}>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Mon</th>
-              <th>Tues</th>
-              <th>Wed</th>
-              <th>Thurs</th>
-              <th>Fri</th>
-              <th>Sat</th>
-              <th>Sun</th>
-              <th>Admin Options</th>
-            </tr>
-          </thead>
-          <tbody>{state.weeks || renderRows()}</tbody>
-        </table>
+        <Modal
+          open={modalOpen}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onClose={() => {
+            setModalOpen(false);
+          }}
+          disableScrollLock
+        >
+          <div>
+            <AddPlaceForm
+              onSubmit={(msg) => {
+                setWeek(state.weekStart, state.weekEnd, state.weekNum);
+                setModalOpen(false);
+                Materialize.toast(msg, 2500, "green rounded");
+              }}
+              onError={(msg) => {
+                Materialize.toast(msg, 3000, "red rounded");
+                setModalOpen(false);
+              }}
+            />
+          </div>
+        </Modal>
+        {createTable({ width: "1400px" }, labels, state.weeks || renderRows())}
       </div>
     );
 }
