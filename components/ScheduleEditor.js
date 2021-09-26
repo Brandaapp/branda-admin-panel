@@ -176,7 +176,7 @@ export default function ScheduleEditor(props) {
             horizontal: "center",
           }}
           disableScrollLock
-          style={{position: "absolute"}}
+          style={{position: "absolute", zIndex: 1029}}
           
         >
           <WeekPicker
