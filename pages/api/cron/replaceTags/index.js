@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 
 dbConnect();
 
-export default async function(_req, _res) {
+export default async function(_req, res) {
     console.log("EXECUTING REPLACE TAGS")
     let routesToUpdate = ["Campus", "Waltham", "Boston"]
     let tags = fetch('https://api.samsara.com/v1/tags?access_token=ANNHgBhJdUcAvq7DMg5Sts8cm3opfW')
@@ -43,6 +43,7 @@ export default async function(_req, _res) {
                 vehicles: currentTags.filter(item => item.route === tag.name).map(item => { return { id: item.busID } })
             })
         }).then(response => response.text())
-    }))
+    })).catch(e => res.status(500))
     console.log("RESULT", x)
+    res.status(200);
 };

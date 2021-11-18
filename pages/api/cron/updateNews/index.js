@@ -6,7 +6,7 @@ import News from "../../../../models/News";
 
 dbConnect();
 
-export default (_req, _res) => {
+export default (_req, res) => {
     const result = axios.get("https://www.brandeis.edu/");
     result
         .then((result) => {
@@ -128,13 +128,16 @@ export default (_req, _res) => {
                             }
                         }
                         console.log("News fetched and saved.");
+                        res.status(200);
                     });
                 })
                 .catch((error) => {
                     console.log("Error fetching news:", error);
+                    res.status(500);
                 });
         })
         .catch((error) => {
             console.log("Error fetching news:", error);
+            res.status(500);
         });
 };
