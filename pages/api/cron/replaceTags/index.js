@@ -4,10 +4,10 @@ const fetch = require("node-fetch");
 
 dbConnect();
 
-export default (_req, _res) => {
+export default async function(_req, _res) {
     console.log("EXECUTING REPLACE TAGS")
     let routesToUpdate = ["Campus", "Waltham", "Boston"]
-    let tags = await fetch('https://api.samsara.com/v1/tags?access_token=ANNHgBhJdUcAvq7DMg5Sts8cm3opfW')
+    let tags = fetch('https://api.samsara.com/v1/tags?access_token=ANNHgBhJdUcAvq7DMg5Sts8cm3opfW')
         .then(response => response.json())
         .then((response) => { console.log(response); return response })
         .then(json => json.tags.map(tag => {
