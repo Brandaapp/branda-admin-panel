@@ -22,7 +22,7 @@ export default function PushNotifsForm(props) {
   const [sending, setSending] = useState(false);
 
   useEffect(() => {
-    axios.get(`/api/brandeisClubs`).then((response) => {
+    axios.get(`/api/brandeisclubs`).then((response) => {
       setState((prev) => ({ ...prev, clubData: response.data }));
     });
   }, [state.clubData]);
