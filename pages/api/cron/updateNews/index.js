@@ -128,7 +128,7 @@ export default (_req, res) => {
                             }
                         }
                         console.log("News fetched and saved.");
-                        res.status(200);
+                        res.status(200).send(out.length + " news articles fetched and saved.");
                     });
                 })
                 .catch((error) => {
