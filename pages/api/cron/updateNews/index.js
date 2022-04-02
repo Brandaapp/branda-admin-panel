@@ -133,11 +133,11 @@ export default (_req, res) => {
                 })
                 .catch((error) => {
                     console.log("Error fetching news:", error);
-                    res.status(500);
+                    res.status(500).send("Error fetching news: " + error);
                 });
         })
         .catch((error) => {
             console.log("Error fetching news:", error);
-            res.status(500);
+            res.status(500).send("Error fetching news: " + error);
         });
 };
