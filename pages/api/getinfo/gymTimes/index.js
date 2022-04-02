@@ -1,5 +1,5 @@
 import dbConnect from "../../../../utils/dbConnect";
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 const moment = require("moment");
 
 dbConnect();
