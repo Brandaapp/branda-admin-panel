@@ -128,16 +128,16 @@ export default (_req, res) => {
                             }
                         }
                         console.log("News fetched and saved.");
-                        res.status(200);
+                        res.status(200).send(out.length + " news articles fetched and saved.");
                     });
                 })
                 .catch((error) => {
                     console.log("Error fetching news:", error);
-                    res.status(500);
+                    res.status(500).send("Error fetching news: " + error);
                 });
         })
         .catch((error) => {
             console.log("Error fetching news:", error);
-            res.status(500);
+            res.status(500).send("Error fetching news: " + error);
         });
 };
