@@ -18,9 +18,6 @@ Each element on a file path that is enclosed in square brackets indicates a para
 
 This api is documented using the [OpenApi Specification 3.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md). The documentation resides in the [docs](https://github.com/elijahmiller237/branda-admin-panel/tree/main/docs) folder of this project. Most of the information will be in the openapi.json file. This is where you will find information on when and where to use the various routes in the api. Additionally, the schemas that are used by the endpoints are documented in the [docs/components/schemas](https://github.com/elijahmiller237/branda-admin-panel/tree/main/docs/components/schemas) folder. When you are using an endpoint that requires information in a request body, this is where you can go to figure out what information to send. Alternatively, it might be easier to just reference the example that is included in openapi.json under each endpoint.
 
-## Contributing
-
-We will be working on this project page by page, at least initially. If you decide you want to work on a page, please check out a new branch, create a card on our [Trello board](https://trello.com/invite/b/6CuK1xvu/955c8ee484139750e0ffcfdf5c3c5952/nextjs), and then assign yourself to that card. For now, we won't be working on the Reservations page since the reservations feature has not yet been fully implemented.
 
 ### Libraries
 
