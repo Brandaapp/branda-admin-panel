@@ -4,26 +4,6 @@ This is the admin panel that allows Brandeis staff to change the data displayed 
 
 The production version of this admin panel can be found at https://branda-admin-panel.herokuapp.com/
 
-## Setup
-
-After you've cloned the repo to your machine, install the necessary dependencies with:
-
-```bash
-npm install
-```
-
-## Usage
-
-Run dev server:
-
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000)
-
 ## API
 
 The Branda backend as it is now is not very user friendly, mostly because the bulk of it was written at a time when none of us really knew what we were doing. This, in combination with the double edged sword that is the same-origin policy, made it pretty undesirable to use the current backend in development of this project. Therefore, I've gone ahead and rebuilt parts of our backend in this repo using Next.js' built-in api support.
