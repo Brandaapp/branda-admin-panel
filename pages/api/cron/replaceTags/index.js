@@ -9,7 +9,7 @@ export default async function(_req, res) {
     // res.send("Hello world");
     console.log("EXECUTING REPLACE TAGS")
     let routesToUpdate = ["Campus", "Waltham", "Boston"]
-    let tags = await fetch('https://api.samsara.com/v1/tags?access_token=ANNHgBhJdUcAvq7DMg5Sts8cm3opfW')
+    let tags = await fetch(`https://api.samsara.com/v1/tags?access_token=${process.env.SAMSARA_API_KEY}`)
         .then(response => response.json())
         .then((response) => {
             console.log(response);
@@ -44,7 +44,7 @@ export default async function(_req, res) {
                     id: item.busID
                 }
             }))
-            return fetch(`https://api.samsara.com/v1/tags/${tag.id}?access_token=ANNHgBhJdUcAvq7DMg5Sts8cm3opfW`, {
+            return fetch(`https://api.samsara.com/v1/tags/${tag.id}?access_token=${process.env.SAMSARA_API_KEY}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
