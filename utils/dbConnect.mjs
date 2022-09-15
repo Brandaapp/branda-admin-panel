@@ -11,7 +11,7 @@ async function dbConnect() {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
-
+    
     connection.isConnected = db.connections[0].readyState;
 
     console.log("Mongoose connection successful.");
