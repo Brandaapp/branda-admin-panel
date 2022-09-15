@@ -24,15 +24,14 @@ describe('scheduleUtils', () => {
         }
         const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
-        expect(mergeStartEndToSchedule(schedule, startTimes, endTimes, days)).to.deep.equal({
-            name: 'test',
-            monday: '8:00am-4:00pm',
-            tuesday: '8:00am-4:00pm',
-            wednesday: '8:00am-4:00pm',
-            thursday: '8:00am-4:00pm',
-            friday: '8:00am-4:00pm',
-            saturday: '8:00am-4:00pm',
-            sunday: '8:00am-4:00pm'
+        const merged = mergeStartEndToSchedule(schedule, startTimes, endTimes, days);
+        
+        expect(merged).to.have.property('name', 'test');
+        
+        const regex = new RegExp('^([0-1]?[0-9]|2[0-3]):[0-5][0-9](am|pm)-([0-1]?[0-9]|2[0-3]):[0-5][0-9](am|pm)$');
+        days.forEach(day => {
+            const time = merged[day];
+            expect(!!regex.test(time)).to.be.true;
         });
     })
 });

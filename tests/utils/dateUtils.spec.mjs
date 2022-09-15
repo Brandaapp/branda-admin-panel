@@ -2,26 +2,42 @@ import { expect, assert } from 'chai';
 import { getProperDate, populateWeeksArray, weekEnd, weekNum, weekStart} from '../../utils/dateUtils.mjs';
 
 const weekUtilsFactory = (func, expected) => {
-    let day;
+    let day, computed;
 
-    it ('works with a day in the middle of the week in one month', () => {
+    it('works with a day in the middle of the week in one month', () => {
         day = new Date('2022-08-31T04:00:00.000Z');
-        assert.deepEqual(func(day), expected);
+        computed = func(day);
+
+        expect(computed.getDate()).to.equal(expected.getDate());
+        expect(computed.getMonth()).to.equal(expected.getMonth());
+        expect(computed.getFullYear()).to.equal(expected.getFullYear());
     });
 
     it('works with a day in the middle of the week in another month', () => {
         day = new Date('2022-09-01T04:00:00.000Z');
-        assert.deepEqual(func(day), expected);
+        computed = func(day);
+
+        expect(computed.getDate()).to.equal(expected.getDate());
+        expect(computed.getMonth()).to.equal(expected.getMonth());
+        expect(computed.getFullYear()).to.equal(expected.getFullYear());
     });
 
     it('works when the day is the start of the week', () => {
         day = new Date('2022-08-28T04:00:00.000Z');
-        assert.deepEqual(func(day), expected);
+        computed = func(day);
+
+        expect(computed.getDate()).to.equal(expected.getDate());
+        expect(computed.getMonth()).to.equal(expected.getMonth());
+        expect(computed.getFullYear()).to.equal(expected.getFullYear());
     });
 
     it('works when the day is the last day of the week', () => {
         day = new Date('2022-09-03T04:00:00.000Z');
-        assert.deepEqual(func(day), expected);
+        computed = func(day);
+
+        expect(computed.getDate()).to.equal(expected.getDate());
+        expect(computed.getMonth()).to.equal(expected.getMonth());
+        expect(computed.getFullYear()).to.equal(expected.getFullYear());
     });
 }
 

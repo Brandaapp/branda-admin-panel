@@ -9,8 +9,8 @@
     "test": "npm run cy:run",
     "depcheck": "npx depcheck",
     "cy:run": "./node_modules/.bin/cypress run",
-    "test:utils": "mocha ./tests/utils/$UTIL.spec.mjs",
-    "test:utils:all": "mocha ./tests/utils"
+    "test:utils": "mocha --colors ./tests/utils/$UTIL.spec.mjs",
+    "test:utils:all": "mocha --colors --exit ./tests/utils"
   },
   "dependencies": {
     "@date-io/luxon": "^1.3.13",
