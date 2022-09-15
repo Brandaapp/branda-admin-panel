@@ -1,0 +1,60 @@
+name: Utils
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  
+concurrency:
+  cancel-in-progress: true
+
+jobs:
+  dateUtils:
+    runs-on: ubuntu-latest
+    env:
+      UTIL: dateUtils
+    steps:
+      uses: actions/checkout@v3
+      uses: ./.github/actions/node/latest
+      run: npm install
+      run: npm run test:utils
+
+  dbConnect:
+    runs-on: ubuntu-latest
+    env:
+      UTIL: dbConnect
+    steps:
+      uses: actions/checkout@v3
+      uses: ./.github/actions/node/latest
+      run: npm install
+      run: npm run test:utils
+
+  httpUtils:
+    runs-on: ubuntu-latest
+    env:
+      UTIL: httpUtils
+    steps:
+      uses: actions/checkout@v3
+      uses: ./.github/actions/node/latest
+      run: npm install
+      run: npm run test:utils
+
+  passwordUtils:
+    runs-on: ubuntu-latest
+    env:
+      UTIL: passwordUtils
+    steps:
+      uses: actions/checkout@v3
+      uses: ./.github/actions/node/latest
+      run: npm install
+      run: npm run test:utils
+
+  scheduleUtils:
+    runs-on: ubuntu-latest
+    env:
+      UTIL: scheduleUtils
+    steps:
+      uses: actions/checkout@v3
+      uses: ./.github/actions/node/latest
+      run: npm install
+      run: npm run test:utils
