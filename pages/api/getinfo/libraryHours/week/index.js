@@ -46,6 +46,10 @@ export default (req, res) => {
                 .then(response => response.json())
                 .then(data => parseAndReduceWeekHours(data.locations))
                 .then(data => res.send(data));
+                resolve();
+        } else {
+            res.status(405).send(`HTTP method must be GET on ${req.url}`);
+            resolve();
         }
     })
 }
