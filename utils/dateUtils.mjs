@@ -1,4 +1,4 @@
-const { DateTime } = require("luxon");
+import { DateTime } from "luxon";
 
 export function weekStart(day) {
   const date = DateTime.local(
@@ -19,11 +19,13 @@ export function weekEnd(day) {
 }
 
 export function weekNum(day) {
+  
   const date = DateTime.local(
     day.getFullYear(),
     day.getMonth() + 1,
     day.getDate()
   );
+  
   return date.weekNumber % 53;
 }
 
@@ -53,7 +55,7 @@ export function getProperDate(time) {
       hour = n.toString();
     }
   }
-
+  
   date.setHours(hour);
   date.setMinutes(minute);
 

@@ -10,7 +10,7 @@ function isValidHttpUrl(str) {
   ); // fragment locator
 
   let url;
-
+  
   try {
     url = new URL(str);
   } catch (_) {
