@@ -50,7 +50,9 @@ sabrenner/schedulesfix
 
 ### Testing your Changes
 
-This section will be updated later as more test automation is added. For now, we run CircleCI for our builds, and will use GitHub actions for all other tests.
+---
+
+Tests can be run locally using any of the `test` commands found within the `package.json` file. Tests should be written for any new API and utility functions added, and any functions or routes changed should still pass these tests. These tests will run again on any pushes or pull requests, and are required to merge pull requests into the `main` branch. 
 
 ### Committing Pushing Changes
 
