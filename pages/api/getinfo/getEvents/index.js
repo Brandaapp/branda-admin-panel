@@ -5,30 +5,32 @@ import CalendarEvent from "../../../../models/CalendarEvent";
 dbConnect();
 
 export default (req, res) => {
-    let year = req.query.year || false;
-    let month = req.query.month || false;
-
-    if (year && month) {
-        //add axios to helpers
-        CalendarEvent.find({ year: year, month: month }).exec(function(err, docs) {
-            if (err) {
-                console.log(err);
+    return new Promise(resolve => {
+        if (req.method === 'GET') {
+            const year = req.query.year || false;
+            const month = req.query.month || false;
+            if (year && month) {
+                CalendarEvent.find({year: year, month: month}).exec((err, docs) => {
+                    if (err) {
+                        res.status(400).send({err: err});
+                        resolve();
+                    } else {
+                        const objGrouping = _.groupBy(docs, "dateForgroup");
+                        const arrFinalFormat = [];
+                        for (let date in objGrouping) {
+                            arrFinalFormat.push({day: date, events: objGrouping[date]});
+                        }
+                        res.send(arrFinalFormat);
+                        resolve();
+                    }
+                });
             } else {
-                //prepare the view for the phone -  might be smarter to do front end
-                let objGrouping = _.groupBy(docs, "dateForgroup");
-                let arrFinalFormat = [];
-                for (var date in objGrouping) {
-                    //console.log(date);
-                    arrFinalFormat.push({ day: date, events: objGrouping[date] });
-                }
-
-                //tmpArr.unshift({})
-                //console.log("this is result after clean", arrFinalFormat)
-                arrFinalFormat;
-                res.send(arrFinalFormat);
+                res.status(400).send({err: "no year or month"});
+                resolve();
             }
-        });
-    } else {
-        res.send({ err: "no year or month" });
-    }
+        } else {
+            res.status(405).send(`HTTP method must be GET on ${req.url}`);
+            resolve();
+        }
+    });
 }
