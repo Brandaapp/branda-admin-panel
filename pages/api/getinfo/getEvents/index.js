@@ -12,7 +12,7 @@ export default (req, res) => {
             if (year && month) {
                 CalendarEvent.find({year: year, month: month}).exec((err, docs) => {
                     if (err) {
-                        res.status(400).send({err: err});
+                        res.status(404).send({err: err});
                         resolve();
                     } else {
                         const objGrouping = _.groupBy(docs, "dateForgroup");
