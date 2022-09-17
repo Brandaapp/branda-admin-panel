@@ -2,7 +2,7 @@ name: 15-Minute Basis Cron Jobs
 
 on:
   schedule:
-    - cron: "/15 * * * *"
+    - cron: "*/15 * * * *"
 
 jobs:
   updateDiningHours:
