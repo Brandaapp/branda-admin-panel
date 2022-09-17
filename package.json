@@ -6,9 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "npm run cy:run",
     "depcheck": "npx depcheck",
-    "cy:run": "./node_modules/.bin/cypress run",
     "test:utils": "mocha --colors ./tests/utils/$UTIL.spec.mjs",
     "test:utils:all": "mocha --colors --exit ./tests/utils"
   },
@@ -44,7 +42,6 @@
     "swagger-ui": "^4.10.3"
   },
   "devDependencies": {
-    "cypress": "^8.3.1",
     "eslint": "^7.32.0",
     "yaml-loader": "^0.6.0"
   }
