@@ -16,5 +16,5 @@ const KBArticle = new Schema({
   }
 });
 
-const KB = mongoose.model("KnowledgeBaseArticle", KBArticle);
+const KB = mongoose.models.KnowledgeBaseArticle || mongoose.model("KnowledgeBaseArticle", KBArticle);
 module.exports = KB;
