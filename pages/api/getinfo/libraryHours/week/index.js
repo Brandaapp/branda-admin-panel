@@ -45,8 +45,10 @@ export default (req, res) => {
             fetch(BRANDEIS_LIBRARY_HOURS_WEEK)
                 .then(response => response.json())
                 .then(data => parseAndReduceWeekHours(data.locations))
-                .then(data => res.send(data));
-                resolve();
+                .then(data => {
+                    res.send(data)
+                    resolve();
+                });
         } else {
             res.status(405).send(`HTTP method must be GET on ${req.url}`);
             resolve();

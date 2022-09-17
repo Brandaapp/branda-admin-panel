@@ -27,11 +27,13 @@ function parseAndReduceTodayHours(libraryLocations){
 export default (req, res) => {
     return new Promise(resolve => {
         if (req.method === 'GET') {
-            fetch(LIBRARY_HOURS_TODAY_URL)  // Possible 4xx and 5xx status code here
+            fetch(LIBRARY_HOURS_TODAY_URL)
                 .then(response => response.json())
                 .then(data => parseAndReduceTodayHours(data.locations))
-                .then(data => res.send(data));
-                resolve();
+                .then(data => {
+                    res.send(data);
+                    resolve();
+                });
         } else {
             res.status(405).send(`HTTP method must be GET on ${req.url}`);
             resolve();
