@@ -21,6 +21,7 @@
     "cheerio": "^1.0.0-rc.5",
     "core-js": "^3.8.2",
     "depcheck": "^1.4.2",
+    "jssoup": "^0.0.15",
     "lodash": "^4.17.21",
     "luxon": "^1.25.0",
     "materialize-css": "^1.0.0-rc.2",

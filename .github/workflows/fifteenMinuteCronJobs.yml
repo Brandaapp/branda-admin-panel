@@ -1,0 +1,13 @@
+name: 15-Minute Basis Cron Jobs
+
+on:
+  schedule:
+    - cron: "/15 * * * *"
+
+jobs:
+  updateDiningHours:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+        curl --request PATCH \
+        --url https://branda-admin-panel.herokuapp.com/api/cron/replaceTags
