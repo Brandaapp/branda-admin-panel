@@ -49,7 +49,10 @@ export default function(req, res) {
                         })
                     });
                     return await response.text();
-                })).catch(err => res.status(500).send({ err }))
+                })).catch(err => {
+                    res.status(500).send({ err })
+                    resolve();
+                });
                 
                 res.status(200).send({});
                 resolve();

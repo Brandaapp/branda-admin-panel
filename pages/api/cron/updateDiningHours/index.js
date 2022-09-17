@@ -58,8 +58,10 @@ export default (req, res) => {
                         (err, doc) => {
                             if (err) {
                                 res.status(500).send({ err, msg: 'Problem creating new DiningHours document' });
+                                resolve();
                             } else {
                                 res.send(doc);
+                                resolve();
                             }
                         }
                     );
