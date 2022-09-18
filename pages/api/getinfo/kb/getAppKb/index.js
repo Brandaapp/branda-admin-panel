@@ -8,7 +8,7 @@ export default (req, res) => {
         if (req.method === 'GET') {
             KB.find().exec((err, knowledge) => {
                 if (err) {
-                    res.status(400).send({err: err});
+                    res.status(500).send({err: err});
                     resolve();
                 } else {
                     res.send({kb: knowledge});
