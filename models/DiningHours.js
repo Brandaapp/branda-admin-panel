@@ -10,5 +10,5 @@ const diningHours = new Schema({
       }
 });
 
-const DiningHours = mongoose.model.DiningHours || mongoose.model('DiningHours', diningHours);
+const DiningHours = mongoose.models.DiningHours || mongoose.model('DiningHours', diningHours);
 module.exports = DiningHours;
