@@ -8,7 +8,7 @@ export default (req, res) => {
         if (req.method === 'GET') {
             DiningHours.find({}).exec((err, doc) => {
                 if (err) {
-                    res.status(404).send({err: err});
+                    res.status(500).send({err: err});
                     resolve();
                 } else {
                     res.send(doc);
