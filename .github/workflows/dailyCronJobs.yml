@@ -1,0 +1,16 @@
+name: Daily Cron Jobs
+
+on:
+  schedule:
+    - cron: "30 */12 * * *"
+  
+jobs:
+  updateDiningHours:
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl --request PATCH --url https://branda-admin-panel.herokuapp.com/api/cron/updateDiningHours
+  updateNews:
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl --request PATCH  --url https://branda-admin-panel.herokuapp.com/api/cron/updateNews
+    
