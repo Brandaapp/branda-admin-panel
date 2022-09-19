@@ -5,7 +5,7 @@ on:
     - cron: "*/15 * * * *"
 
 jobs:
-  updateDiningHours:
+  replaceTags:
     runs-on: ubuntu-latest
     steps:
       - run: curl --request PATCH --url https://branda-admin-panel.herokuapp.com/api/cron/replaceTags
