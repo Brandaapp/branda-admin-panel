@@ -13,7 +13,7 @@ export default function (req, res) {
             resolve();
           } else {
             res.send(doc);
-            return resolve();
+            resolve();
           }
         }
       );

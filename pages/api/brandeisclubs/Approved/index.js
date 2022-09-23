@@ -8,7 +8,7 @@ export default function (req, res) {
     if (req.method === 'GET') {
       Organization.find({ active: true }, (err, approvedOrganizations) => {
         if (err) {
-          res.json({ success: false, error: err });
+          res.status(500).json({ success: false, error: err });
           resolve();
         } else {
           res.json({ success: true, approvedOrganizations: approvedOrganizations });
