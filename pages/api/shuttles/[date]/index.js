@@ -5,6 +5,7 @@ const { DateTime } = require('luxon');
 dbConnect();
 
 export default (req, res) => {
+   return new Promise(resolve => {
     const { query: { date } } = req;
     const start = DateTime.fromISO(date).startOf('day').toJSDate();
     const end = DateTime.fromISO(date).endOf('day').toJSDate();
@@ -28,16 +29,16 @@ export default (req, res) => {
             { $addToSet: { times: temp } },
             (err, result) => {
                 if (err) {
-                    console.log("Error adding shuttle route");
-                    res.status(500).send("Oop");
+                    res.status(500).send({ err });
+                    resolve();
                 } else {
                     res.send(result);
-                    
+                    resolve();
                     //TODO: connect to samsara api
                 }
             }
         )
-    } else {
+    } else if (req.method === 'GET') {
         ShuttleActivity.findOne({
             date: {
                 $gte: start,
@@ -45,14 +46,19 @@ export default (req, res) => {
             }
         }, (err, doc) => {
             if (err) {
-                console.log("Error finding date", err);
-                res.status(500).send("Oop");
+                res.status(500).send({ err });
+                resolve();
             } else if (!doc) {
-                console.log("Could not find date");
-                res.status(404).send("Oop");
+                res.status(404).send("Could not find date");
+                resolve();
             } else {
                 res.send(doc);
+                resolve();
             }
         });
+    } else {
+        res.status(405).send(`HTTP method must be PATCH or GET on ${req.url}`);
+        resolve();
     }
+   });
 }
