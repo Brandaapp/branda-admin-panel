@@ -4,12 +4,20 @@ import Organization from "../../../../models/Organization";
 dbConnect();
 
 export default function (req, res) {
-  Organization.find({ active: true }, (err, approvedOrganizations) => {
-    if (err) {
-      res.json({ success: false, error: err });
+  return new Promise(resolve => {
+    if (req.method === 'GET') {
+      Organization.find({ active: true }, (err, approvedOrganizations) => {
+        if (err) {
+          res.status(500).json({ success: false, error: err });
+          resolve();
+        } else {
+          res.json({ success: true, approvedOrganizations: approvedOrganizations });
+          resolve();
+        }
+      });
     } else {
-      console.log(approvedOrganizations);
-      res.json({ success: true, approvedOrganizations: approvedOrganizations });
+      res.status(405).send(`HTTP method must be GET on ${req.url}`);
+      resolve();
     }
   });
 }
