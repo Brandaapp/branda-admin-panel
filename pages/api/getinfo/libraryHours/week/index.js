@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import fetch, {FetchError} from 'node-fetch';
 const BRANDEIS_LIBRARY_HOURS_WEEK = "https://calendar.library.brandeis.edu/api_hours_grid.php?format=json&weeks=1";
 const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
@@ -43,11 +43,40 @@ export default (req, res) => {
     return new Promise(resolve => {
         if (req.method === 'GET') {
             fetch(BRANDEIS_LIBRARY_HOURS_WEEK)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw response.status
+                    } else {
+                        return response.json();
+                    }
+                })
                 .then(data => parseAndReduceWeekHours(data.locations))
                 .then(data => {
                     res.send(data)
                     resolve();
+                }).catch(err => {
+                    if (err instanceof FetchError) {
+                        if (err.message.includes('getaddrinfo ENOTFOUND')) {
+                            // error from fetch() because of incorrect domain
+                            res.status(500).send({err, msg: 'Fetching weeks\'s library hours failed: Incorrect domain.'});
+                            resolve();
+                        } else {
+                            res.status(err).send({err, msg: `Fetching weeks's library hours failed. Status code: ${err}`});
+                            resolve();
+                        }
+                    } else if (err instanceof SyntaxError) {
+                        // error from response.json(), non-json text received
+                        res.status(500).send({err, msg: `JSON syntax error. Check response data from ${LIBRARY_HOURS_TODAY_URL}.`});
+                        resolve();
+                    } else if (err instanceof ReferenceError) {
+                        // error from parseAndReduceWeekHours(), json schema changed
+                        res.status(500).send({err, msg: `JSON schema error. Check response data from ${LIBRARY_HOURS_TODAY_URL}.`});
+                        resolve();
+                    } else {
+                        // response.ok == false
+                        res.status(err).send({msg: `Fetching weeks's library hours failed. Status code: ${err}`})
+                        resolve();
+                    }
                 });
         } else {
             res.status(405).send(`HTTP method must be GET on ${req.url}`);
