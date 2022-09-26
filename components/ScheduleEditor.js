@@ -8,13 +8,17 @@ import Modal from '@material-ui/core/Modal';
 import AddPlaceForm from './addplace/AddPlaceForm';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import M from 'materialize-css';
 import Image from 'next/image';
 
 import axios from 'axios';
 import createTable from '../utils/renderUtils/tableGenerator';
 
 import { makeStyles } from '@material-ui/core/styles';
+
+let M;
+if (typeof window !== 'undefined') {
+  M = require('materialize-css');
+}
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -94,10 +98,18 @@ export default function ScheduleEditor (props) {
           key={schedule.name}
           onDeleteSuccess={(msg) => {
             setWeek(state.weekStart, state.weekEnd, state.weekNum);
-            M.toast(msg, 2500, 'green rounded');
+            M.toast({
+              html: msg,
+              displayLength: 2500,
+              classes: 'green rounded'
+            });
           }}
           onDeleteError={(msg) => {
-            M.toast(msg, 2500, 'red rounded');
+            M.toast({
+              html: msg,
+              displayLength: 2500,
+              classes: 'red rounded'
+            });
           }}
         />
       );
@@ -202,10 +214,18 @@ export default function ScheduleEditor (props) {
               onSubmit={(msg) => {
                 setWeek(state.weekStart, state.weekEnd, state.weekNum);
                 setModalOpen(false);
-                M.toast(msg, 2500, 'green rounded');
+                M.toast({
+                  html: msg,
+                  displayLength: 2500,
+                  classes: 'green rounded'
+                });
               }}
               onError={(msg) => {
-                M.toast(msg, 3000, 'red rounded');
+                M.toast({
+                  html: msg,
+                  displayLength: 3000,
+                  classes: 'red rounded'
+                });
                 setModalOpen(false);
               }}
             />

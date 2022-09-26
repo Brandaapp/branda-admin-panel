@@ -5,9 +5,13 @@ import { getProperDate } from '../utils/dateUtils';
 import { mergeStartEndToSchedule } from '../utils/scheduleUtils';
 import Confirmation from './Confirmation';
 import Tooltip from '@material-ui/core/Tooltip';
-import M from 'materialize-css';
 
 import axios from 'axios';
+
+let M;
+if (typeof window !== 'undefined') {
+  M = require('materialize-css');
+}
 
 const days = [
   'monday',
@@ -68,11 +72,11 @@ export default function WeekEditor (props) {
   };
 
   const reset = () => {
-    M.toast(
-      'Updates for ' + state.schedule.name + ' cleared',
-      2500,
-      '#0d47a1 blue darken-4 rounded'
-    );
+    M.toast({
+      html: 'Updates for ' + state.schedule.name + ' cleared',
+      displayLength: 2500,
+      classes: '#0d47a1 blue darken-4 rounded'
+    });
     update(true); // want to manually override
   };
 
@@ -91,17 +95,18 @@ export default function WeekEditor (props) {
       .patch(`/api/schedules/${props.weekNum}/${state.schedule.emp_id}`, data)
       .then((response) => {
         props.refresh();
-        M.toast(
-          state.schedule.name + ' updated',
-          2500,
-          'green rounded'
-        );
+        M.toast({
+          html: state.schedule.name + ' updated',
+          displayLength: 2500,
+          classes: 'green rounded'
+        });
       })
       .catch(() => {
-        M.toast(
-          'Unable to update ' + state.schedule.name,
-          2500,
-          'red rounded'
+        M.toast({
+          html: 'Unable to update ' + state.schedule.name,
+          displayLength: 2500,
+          classes: 'red rounded'
+        }
         );
       });
   };

@@ -4,7 +4,11 @@ import { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { isValidHttpUrl } from '../utils/httpUtils';
 import Image from 'next/image';
-import M from 'materialize-css';
+
+let M;
+if (typeof window !== 'undefined') {
+  M = require('materialize-css');
+}
 
 const axios = require('axios');
 
@@ -49,11 +53,11 @@ export default function PushNotifsForm (props) {
 
     await axios.patch(`/api/sendpushnotification`, data).then((response) => {
       // keep an eye on missing notifications (maybe based on phone type or expo problem => what screen is open)
-      M.toast(
-        'Push notification sent to: ' + state.club,
-        2500,
-        '#0d47a1 blue darken-4 rounded'
-      );
+      M.toast({
+        html: 'Push notification sent to: ' + state.club,
+        displayLength: 2500,
+        class: '#0d47a1 blue darken-4 rounded'
+      });
       setSending(false);
     });
   };
