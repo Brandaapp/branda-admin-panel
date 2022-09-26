@@ -24,6 +24,31 @@ npm run build
 
 Open [http://localhost:3000](http://localhost:3000) to see the server running.
 
+## Using the linter
+
+To run the linter, run:
+
+```bash
+npm run lint
+```
+
+In order to auto-fix as many linter issues (mostly spacing issues), run:
+
+```bash
+npm run lint:fix
+```
+
+If you are using `VSCode`, then installing the `ESLint` extension will visualize our rules in your IDE.
+
+For auto-format on-save, and to use vertical ruler markers, please put these in your user `settings.json` for `VSCode`:
+
+```javascript
+    "editor.rulers": [80,120],
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    }
+```
+
 ## Making a Change
 
 ### Create a Card
