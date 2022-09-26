@@ -1,6 +1,6 @@
 import JSSoup from 'jssoup';
 import DiningHours from '../../../../models/DiningHours';
-import fetch from 'node-fetch';
+import fetch, { FetchError } from 'node-fetch';
 import dbConnect from '../../../../utils/dbConnect.mjs';
 
 dbConnect();
@@ -11,7 +11,13 @@ export default (req, res) => {
     return new Promise(resolve => {
         if (req.method === 'PATCH') {
             fetch(DINING_LINK)
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw response.status;
+                    } else {
+                        return response.text();
+                    }
+                })
                 .then(textResponse => {
                     const parsed = new JSSoup(textResponse, false);
 
@@ -70,8 +76,23 @@ export default (req, res) => {
                     );
                 })
                 .catch(err => {
-                    res.status(500).send({ err, msg: 'Could not fetch from external API' });
-                    resolve();
+                    if (err instanceof FetchError) {
+                        if (err.message.includes('getaddrinfo ENOTFOUND')) {
+                            // error from fetch() because of incorrect domain
+                            res.status(500).send({ err, msg: 'Incorrect API domain' });
+                            resolve();
+                        } else {
+                            res.status(500).send({err, msg: 'Could not fetch from external API' });
+                            resolve();
+                        }
+                    } else if (err instanceof Error) {
+                        res.status(500).send({ err, msg: 'Could not fetch from external API' });
+                        resolve();
+                    } else {
+                        // !response.ok
+                        res.status(err).send({ msg: 'Could not fetch from external API' })
+                        resolve();
+                    }
                 })
         } else {
             res.status(405).send(`HTTP method must be PATCH on ${req.url}`);
