@@ -1,16 +1,16 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import Link from 'next/link';
+import Head from 'next/head';
+import styles from '../styles/Home.module.css';
+import Image from 'next/image';
 import { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { csrfToken } from 'next-auth/client';
 import TextField from '@material-ui/core/TextField';
 
-const Input = withStyles({ root: { width: "100% !important" } })(TextField);
+const Input = withStyles({ root: { width: '100% !important' } })(TextField);
 
-export default function Login({ csrfToken }) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function Login ({ csrfToken }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
     <div className={styles.container}>
@@ -18,11 +18,11 @@ export default function Login({ csrfToken }) {
         <title>Branda - Login</title>
       </Head>
 
-      <main className={styles.main} style={{ width: "100%" }}>
-        <div className="row" style={{ textAlign: "center" }}>
-          <img src="/admin-logo.png" style={{ width: "15%", marginBottom: "10px" }} />
+      <main className={styles.main} style={{ width: '100%' }}>
+        <div className="row" style={{ textAlign: 'center' }}>
+          <Image alt='' src="/admin-logo.png" width='100%' height='100%' style={{ marginBottom: '10px' }} />
         </div>
-        <div className="row" style={{ width: "100%" }}>
+        <div className="row" style={{ width: '100%' }}>
           <div className="login-card">
             <h5 className="login-header">Login</h5>
             {/* Necessary to wrap in a form so the redirect to homepage after login works correctly */}
@@ -71,5 +71,5 @@ export default function Login({ csrfToken }) {
 Login.getInitialProps = async (context) => {
   return {
     csrfToken: await csrfToken(context)
-  }
-}
+  };
+};

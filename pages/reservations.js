@@ -1,7 +1,7 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Head from 'next/head';
+import styles from '../styles/Home.module.css';
 
-export default function Reservations() {
+export default function Reservations () {
   return (
     <div className={styles.container}>
       <Head>
@@ -14,5 +14,5 @@ export default function Reservations() {
       <footer className={styles.footer}>
       </footer>
     </div>
-  )
+  );
 }

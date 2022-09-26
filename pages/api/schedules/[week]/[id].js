@@ -1,12 +1,12 @@
-import dbConnect from "../../../../utils/dbConnect";
-let PlaceSchedule = require("../../../../models/PlaceSchedule");
+import dbConnect from '../../../../utils/dbConnect';
+const PlaceSchedule = require('../../../../models/PlaceSchedule');
 
 dbConnect();
 
 export default (req, res) => {
   return new Promise(resolve => {
     const {
-      query: { week, id },
+      query: { week, id }
     } = req;
     if (req.method === 'PATCH') {
       const weekInfo = {
@@ -17,7 +17,7 @@ export default (req, res) => {
         wednesday: req.body.wednesday,
         tuesday: req.body.tuesday,
         monday: req.body.monday,
-        week: parseInt(week),
+        week: parseInt(week)
       };
       PlaceSchedule.updateOne(
         { emp_id: id },
@@ -38,7 +38,7 @@ export default (req, res) => {
           res.status(500).send({ err });
           resolve();
         } else if (!doc) {
-          res.status(404).send("Could not find schedule");
+          res.status(404).send('Could not find schedule');
           resolve();
         } else {
           res.send(doc.weeks > week ? doc.weeks[week] : null);

@@ -1,5 +1,5 @@
-import dbConnect from "../../../../utils/dbConnect";
-import Organization from "../../../../models/Organization";
+import dbConnect from '../../../../utils/dbConnect';
+import Organization from '../../../../models/Organization';
 
 dbConnect();
 

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // This is the schema for the shuttle activity happening in one day at Brandeis
@@ -17,4 +17,4 @@ const shuttleActivitySchema = new Schema({
   ]
 });
 // THINK ABOUT CHANGING busID to samsaraID
-module.exports = mongoose.models.shuttleActivity || mongoose.model("shuttleActivity", shuttleActivitySchema);
+module.exports = mongoose.models.shuttleActivity || mongoose.model('shuttleActivity', shuttleActivitySchema);

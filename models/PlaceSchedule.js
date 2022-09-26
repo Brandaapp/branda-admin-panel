@@ -1,24 +1,24 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 // var test =require("./defaultData.json");
 
-var loop = [];
-//reorganize based on which information is given
-for(var x = 0; x < 44; x++){
- loop.push({week: x ,
-            monday: "7:30am-2:00am",
-            tuesday: "7:30am-2:00am",
-            wednesday: "7:30am-2:00am",
-            thursday: "7:30am-2:00am",
-            friday: "7:30am-10:00pm",
-            saturday:"9:00am-10:00pm",
-            sunday:"9:00am-2:00am"
-          });
+const loop = [];
+// reorganize based on which information is given
+for (let x = 0; x < 44; x++) {
+  loop.push({ week: x,
+    monday: '7:30am-2:00am',
+    tuesday: '7:30am-2:00am',
+    wednesday: '7:30am-2:00am',
+    thursday: '7:30am-2:00am',
+    friday: '7:30am-10:00pm',
+    saturday: '9:00am-10:00pm',
+    sunday: '9:00am-2:00am'
+  });
 }
 
-//the stein and mandel caffe were not calculated 9/14/2018
-var PlaceScheduleSchema = new Schema({
+// the stein and mandel caffe were not calculated 9/14/2018
+const PlaceScheduleSchema = new Schema({
 
   emp_id: {
     type: String
@@ -29,41 +29,41 @@ var PlaceScheduleSchema = new Schema({
   group: {
     type: String
   },
-  weeks : {
-        type: Array,
-        default: loop
-    },
+  weeks: {
+    type: Array,
+    default: loop
+  },
   monday: {
     type: String,
-    default: "",
+    default: ''
   },
   tuesday: {
     type: String,
-    default: "",
+    default: ''
   },
   wednesday: {
     type: String,
-    default: "",
+    default: ''
   },
   thursday: {
     type: String,
-    default: "",
+    default: ''
   },
   friday: {
     type: String,
-    default: "",
+    default: ''
   },
-  saturday:{
+  saturday: {
     type: String,
-    default: "",
+    default: ''
   },
-  sunday:{
+  sunday: {
     type: String,
-    default: "",
+    default: ''
   },
   active: {
     type: Number,
-    default: 1,
+    default: 1
   }
 });
 

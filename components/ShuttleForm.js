@@ -1,33 +1,33 @@
-import { useState } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { KeyboardTimePicker } from "@material-ui/pickers";
-import TextField from "@material-ui/core/TextField";
+import { useState } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { KeyboardTimePicker } from '@material-ui/pickers';
+import TextField from '@material-ui/core/TextField';
 
-const Input = withStyles({ root: { width: "100% !important" } })(TextField);
-const axios = require("axios");
+const Input = withStyles({ root: { width: '100% !important' } })(TextField);
+const axios = require('axios');
 
-export default function ShuttleForm(props) {
+export default function ShuttleForm (props) {
   const [state, setState] = useState({
-    ID: "",
-    busID: "",
-    busName: "",
+    ID: '',
+    busID: '',
+    busName: '',
     start: props.date,
-    end: props.date,
+    end: props.date
   });
 
-  function cancel() {
+  function cancel () {
     setState({
-      ID: "",
-      busID: "",
-      busName: "",
+      ID: '',
+      busID: '',
+      busName: '',
       start: props.date,
       end: props.date,
-      route: props.route,
+      route: props.route
     });
     props.setShow(false);
   }
 
-  async function submit() {
+  async function submit () {
     await axios
       .patch(`/api/shuttles/${props.date.toISOString()}`, {
         start: state.start.toISOString(),
@@ -35,19 +35,18 @@ export default function ShuttleForm(props) {
         ID: state.ID,
         busID: state.busID,
         busName: state.busName,
-        route: props.route,
+        route: props.route
       })
       .then((response) => {
-        //console.log(response);
-        //console.log("Adding a new shuttle:", state);
+        // console.log(response);
+        // console.log("Adding a new shuttle:", state);
         cancel();
         props.getShuttles(props.date);
         window.location.reload();
-      })
-      .catch((err) => console.log("Error creating new shuttles", err));
+      });
   }
 
-  if (props.show)
+  if (props.show) {
     return (
       <div>
         <div className="popup-form-bg"></div>
@@ -129,5 +128,5 @@ export default function ShuttleForm(props) {
         </div>
       </div>
     );
-  else return null;
+  } else return null;
 }

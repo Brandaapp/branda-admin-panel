@@ -1,11 +1,11 @@
-import dbConnect from "../../../../utils/dbConnect";
-import Place from "../../../../models/Place";
+import dbConnect from '../../../../utils/dbConnect';
+import Place from '../../../../models/Place';
 
 dbConnect();
 
 export default function (req, res) {
   return new Promise(resolve => {
-    if (req.method === "PATCH") {
+    if (req.method === 'PATCH') {
       Place.findOneAndUpdate({ _id: req.body.id }, { active: 0 }).exec(
         (err, doc) => {
           if (err) {

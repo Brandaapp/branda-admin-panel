@@ -1,7 +1,7 @@
-import { RedocStandalone } from 'redoc'
+import { RedocStandalone } from 'redoc';
 
-let Spec = require('../docs/openapi.yaml')
+const Spec = require('../docs/openapi.yaml');
 
-export default function Docs() {
-    return(<RedocStandalone spec={Spec} />)
+export default function Docs () {
+  return (<RedocStandalone spec={Spec} />);
 }

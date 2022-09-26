@@ -1,21 +1,22 @@
-import { useState, useEffect } from "react";
-import { weekStart, weekEnd, weekNum } from "../utils/dateUtils";
-import WeekPicker from "./WeekPicker";
-import Popover from "@material-ui/core/Popover";
-import Button from "@material-ui/core/Button";
+import { useState, useEffect } from 'react';
+import { weekStart, weekEnd, weekNum } from '../utils/dateUtils';
+import WeekPicker from './WeekPicker';
+import Popover from '@material-ui/core/Popover';
+import Button from '@material-ui/core/Button';
+import Image from 'next/image';
 
-const axios = require("axios");
+const axios = require('axios');
 
-export default function ScheduleView(props) {
+export default function ScheduleView (props) {
   const [state, setState] = useState({
     weekStart: null,
     weekEnd: null,
     weekNum: -1,
-    scheduleData: [],
+    scheduleData: []
   });
   const [anchorEl, setAnchorEl] = useState(null);
 
-  async function setWeek(start, end, num) {
+  async function setWeek (start, end, num) {
     await axios
       .get(`/api/schedules/${num}`)
       .then((response) => {
@@ -23,11 +24,9 @@ export default function ScheduleView(props) {
           weekStart: start,
           weekEnd: end,
           weekNum: num,
-          scheduleData: response.data,
+          scheduleData: response.data
         });
-        console.log(response);
-      })
-      .catch((err) => console.log("Error fetching schedule info", err));
+      });
     if (!props.dataFetched) props.setDataFetched(true);
   }
 
@@ -38,89 +37,89 @@ export default function ScheduleView(props) {
     }
   });
 
-  function renderRows() {
+  function renderRows () {
     const weeks = [];
     state.scheduleData.forEach((schedule) => {
       weeks.unshift(<tr
-          className="schedule-row"
-          key={"_" + Math.random().toString(36).substr(2, 9)}
-        >
-          <td>{schedule.name}</td>
-          <td>
-            {schedule.monday === "11:00am-11:01am" ||
-            schedule.monday === "11:00pm-11:01pm"
-              ? "Closed"
-              : schedule.monday}
-          </td>
-          <td>
-            {schedule.tuesday === "11:00am-11:01am" ||
-            schedule.tuesday === "11:00pm-11:01pm"
-              ? "Closed"
-              : schedule.tuesday}
-          </td>
-          <td>
-            {schedule.wednesday === "11:00am-11:01am" ||
-            schedule.wednesday === "11:00pm-11:01pm"
-              ? "Closed"
-              : schedule.wednesday}
-          </td>
-          <td>
-            {schedule.thursday === "11:00am-11:01am" ||
-            schedule.thursday === "11:00pm-11:01pm"
-              ? "Closed"
-              : schedule.thursday}
-          </td>
-          <td>
-            {schedule.friday === "11:00am-11:01am" ||
-            schedule.friday === "11:00pm-11:01pm"
-              ? "Closed"
-              : schedule.friday}
-          </td>
-          <td>
-            {schedule.saturday === "11:00am-11:01am" ||
-            schedule.saturday === "11:00pm-11:01pm"
-              ? "Closed"
-              : schedule.saturday}
-          </td>
-          <td>
-            {schedule.sunday === "11:00am-11:01am" ||
-            schedule.sunday === "11:00pm-11:01pm"
-              ? "Closed"
-              : schedule.sunday}
-          </td>
-        </tr>);
+        className="schedule-row"
+        key={'_' + Math.random().toString(36).substr(2, 9)}
+      >
+        <td>{schedule.name}</td>
+        <td>
+          {schedule.monday === '11:00am-11:01am' ||
+            schedule.monday === '11:00pm-11:01pm'
+            ? 'Closed'
+            : schedule.monday}
+        </td>
+        <td>
+          {schedule.tuesday === '11:00am-11:01am' ||
+            schedule.tuesday === '11:00pm-11:01pm'
+            ? 'Closed'
+            : schedule.tuesday}
+        </td>
+        <td>
+          {schedule.wednesday === '11:00am-11:01am' ||
+            schedule.wednesday === '11:00pm-11:01pm'
+            ? 'Closed'
+            : schedule.wednesday}
+        </td>
+        <td>
+          {schedule.thursday === '11:00am-11:01am' ||
+            schedule.thursday === '11:00pm-11:01pm'
+            ? 'Closed'
+            : schedule.thursday}
+        </td>
+        <td>
+          {schedule.friday === '11:00am-11:01am' ||
+            schedule.friday === '11:00pm-11:01pm'
+            ? 'Closed'
+            : schedule.friday}
+        </td>
+        <td>
+          {schedule.saturday === '11:00am-11:01am' ||
+            schedule.saturday === '11:00pm-11:01pm'
+            ? 'Closed'
+            : schedule.saturday}
+        </td>
+        <td>
+          {schedule.sunday === '11:00am-11:01am' ||
+            schedule.sunday === '11:00pm-11:01pm'
+            ? 'Closed'
+            : schedule.sunday}
+        </td>
+      </tr>);
     });
     return weeks;
   }
 
-  function handleClick(event) {
+  function handleClick (event) {
     setAnchorEl(event.currentTarget);
   }
 
-  function handleClose() {
+  function handleClose () {
     setAnchorEl(null);
   }
 
   const open = Boolean(anchorEl);
-  const id = open ? "popover" : undefined;
-  if (state.weekNum === -1)
+  const id = open ? 'popover' : undefined;
+  if (state.weekNum === -1) {
     return (
-      <img src="/branda-admin-loading-gif.gif" style={{ width: "280px" }} />
+      <Image alt='' src="/branda-admin-loading-gif.gif" width={280} height={280} />
     );
-  else
+  } else {
     return (
       <div>
         <h5>
           Week at a glance - current week is:
-          <span style={{ marginLeft: "10px", fontWeight: "500" }}>
-            {state.weekStart.toLocaleDateString("en-US")} -{" "}
-            {state.weekEnd.toLocaleDateString("en-US")}
+          <span style={{ marginLeft: '10px', fontWeight: '500' }}>
+            {state.weekStart.toLocaleDateString('en-US')} -{' '}
+            {state.weekEnd.toLocaleDateString('en-US')}
           </span>
         </h5>
         <Button
           aria-describedby={id}
           variant="contained"
-          style={{ backgroundColor: "#1B4370", color: "white" }}
+          style={{ backgroundColor: '#1B4370', color: 'white' }}
           onClick={handleClick}
         >
           Choose Week
@@ -131,12 +130,12 @@ export default function ScheduleView(props) {
           anchorEl={anchorEl}
           onClose={handleClose}
           anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
+            vertical: 'bottom',
+            horizontal: 'center'
           }}
           transformOrigin={{
-            vertical: "top",
-            horizontal: "center",
+            vertical: 'top',
+            horizontal: 'center'
           }}
         >
           <WeekPicker
@@ -145,7 +144,7 @@ export default function ScheduleView(props) {
             lastDay={state.weekEnd}
           />
         </Popover>
-        <table style={{ width: "1150px" }}>
+        <table style={{ width: '1150px' }}>
           <thead>
             <tr>
               <th>Name</th>
@@ -162,4 +161,5 @@ export default function ScheduleView(props) {
         </table>
       </div>
     );
+  }
 }

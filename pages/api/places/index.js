@@ -1,1 +1,1 @@
- // default route to get all places
+// default route to get all places
