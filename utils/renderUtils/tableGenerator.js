@@ -1,4 +1,4 @@
-export default function createTable(style, labels, rows) {
+export default function createTable (style, labels, rows) {
   return (
     <table style={style}>
       <thead>

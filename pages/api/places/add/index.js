@@ -1,11 +1,11 @@
-import dbConnect from "../../../../utils/dbConnect";
-import Place from "../../../../models/Place";
+import dbConnect from '../../../../utils/dbConnect';
+import Place from '../../../../models/Place';
 
 dbConnect();
 
 export default function (req, res) {
   return new Promise(resolve => {
-    if (req.method === "POST") {
+    if (req.method === 'POST') {
       Place.findOne({ Name: req.body.name }, (err, doc) => {
         if (err) {
           res.status(500).send({ err });
@@ -14,7 +14,7 @@ export default function (req, res) {
           // the place should not have been found
           const newPlace = new Place({
             Name: req.body.name,
-            group: req.body.group,
+            group: req.body.group
           });
           newPlace.save((err) => {
             if (err) {

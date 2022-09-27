@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import ScheduleView from '../components/ScheduleView'
+import { useState } from 'react';
+import Head from 'next/head';
+import styles from '../styles/Home.module.css';
+import ScheduleView from '../components/ScheduleView';
 
-export default function Home() {
-  const [dataFetched, setDataFetched] = useState(false)
+export default function Home () {
+  const [dataFetched, setDataFetched] = useState(false);
 
   return (
     <div className={styles.container}>
@@ -58,5 +58,5 @@ export default function Home() {
       <footer className={styles.footer}>
       </footer>
     </div>
-  )
+  );
 }

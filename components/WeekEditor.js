@@ -1,38 +1,43 @@
-import { useState, useEffect } from "react";
-import DayEditor from "./DayEditor";
-import { Button } from "@material-ui/core";
-import { getProperDate } from "../utils/dateUtils";
-import { mergeStartEndToSchedule } from "../utils/scheduleUtils";
-import Confirmation from "./Confirmation";
-import Tooltip from "@material-ui/core/Tooltip";
+import { useState, useEffect } from 'react';
+import DayEditor from './DayEditor';
+import { Button } from '@material-ui/core';
+import { getProperDate } from '../utils/dateUtils';
+import { mergeStartEndToSchedule } from '../utils/scheduleUtils';
+import Confirmation from './Confirmation';
+import Tooltip from '@material-ui/core/Tooltip';
 
-import axios from "axios";
+import axios from 'axios';
+
+let M;
+if (typeof window !== 'undefined') {
+  M = require('materialize-css');
+}
 
 const days = [
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-  "sunday",
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday'
 ];
 
-export default function WeekEditor(props) {
+export default function WeekEditor (props) {
   const [state, setState] = useState({
     schedule: [],
     startTimes: [],
     endTimes: [],
-    ver: -1,
+    ver: -1
   });
 
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const updateOnChange = (date, hour, day, start) => {
     hour = hour.toLowerCase();
-    let newDate = getProperDate(hour);
-    let tempStart = state.startTimes;
-    let tempEnd = state.endTimes;
+    const newDate = getProperDate(hour);
+    const tempStart = state.startTimes;
+    const tempEnd = state.endTimes;
     if (start) {
       tempStart[day] = newDate;
     } else {
@@ -42,56 +47,16 @@ export default function WeekEditor(props) {
     setState((prev) => ({ ...prev, startTimes: tempStart, endTimes: tempEnd }));
   };
 
-  const reset = () => {
-    Materialize.toast(
-      "Updates for " + state.schedule.name + " cleared",
-      2500,
-      "#0d47a1 blue darken-4 rounded"
-    );
-    update(true); // want to manually override
-  };
-
-  useEffect(() => {
-    update(false);
-  }, [update]);
-
-  const updateSchedule = async () => {
-    let data = mergeStartEndToSchedule(
-      state.schedule,
-      state.startTimes,
-      state.endTimes,
-      days
-    );
-    await axios
-      .patch(`/api/schedules/${props.weekNum}/${state.schedule.emp_id}`, data)
-      .then((response) => {
-        props.refresh();
-        Materialize.toast(
-          state.schedule.name + " updated",
-          2500,
-          "green rounded"
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-        Materialize.toast(
-          "Unable to update " + state.schedule.name,
-          2500,
-          "red rounded"
-        );
-      });
-  };
-
   // override allows for setState not based on version number - used from reset()
   const update = (override) => {
     if (override || state.ver !== props.updateNum) {
-      let tempSched = props.schedule;
-      let tempStart = [];
-      let tempEnd = [];
+      const tempSched = props.schedule;
+      const tempStart = [];
+      const tempEnd = [];
 
-      for (var item in props.schedule) {
-        if (item !== "name" && item !== "emp_id") {
-          let tempTime = tempSched[item].split("-");
+      for (const item in props.schedule) {
+        if (item !== 'name' && item !== 'emp_id') {
+          const tempTime = tempSched[item].split('-');
           tempStart[item] = getProperDate(tempTime[0]);
           tempEnd[item] = getProperDate(tempTime[1]);
         }
@@ -101,16 +66,56 @@ export default function WeekEditor(props) {
         startTimes: tempStart,
         endTimes: tempEnd,
         schedule: tempSched,
-        ver: props.updateNum,
+        ver: props.updateNum
       });
     }
+  };
+
+  const reset = () => {
+    M.toast({
+      html: 'Updates for ' + state.schedule.name + ' cleared',
+      displayLength: 2500,
+      classes: '#0d47a1 blue darken-4 rounded'
+    });
+    update(true); // want to manually override
+  };
+
+  useEffect(() => {
+    update(false);
+  }, [update]);
+
+  const updateSchedule = async () => {
+    const data = mergeStartEndToSchedule(
+      state.schedule,
+      state.startTimes,
+      state.endTimes,
+      days
+    );
+    await axios
+      .patch(`/api/schedules/${props.weekNum}/${state.schedule.emp_id}`, data)
+      .then((response) => {
+        props.refresh();
+        M.toast({
+          html: state.schedule.name + ' updated',
+          displayLength: 2500,
+          classes: 'green rounded'
+        });
+      })
+      .catch(() => {
+        M.toast({
+          html: 'Unable to update ' + state.schedule.name,
+          displayLength: 2500,
+          classes: 'red rounded'
+        }
+        );
+      });
   };
 
   const remove = async () => {
     setConfirmDelete(false);
     const data = {
       id: props.schedule.emp_id,
-      emp_id: props.schedule.emp_id,
+      emp_id: props.schedule.emp_id
     };
     await axios
       .patch(`/api/places/delete`, data)
@@ -118,23 +123,23 @@ export default function WeekEditor(props) {
         await axios
           .patch(`/api/schedules/delete`, data)
           .then((response) => {
-            props.onDeleteSuccess(state.schedule.name + " deleted");
+            props.onDeleteSuccess(state.schedule.name + ' deleted');
           })
           .catch((_e) =>
             props.onDeleteError(
-              "ERROR: unable to delete " + state.schedule.name
+              'ERROR: unable to delete ' + state.schedule.name
             )
           );
       })
       .catch((_e) =>
-        props.onDeleteError("ERROR: unable to delete " + state.schedule.name)
+        props.onDeleteError('ERROR: unable to delete ' + state.schedule.name)
       );
   };
 
   return (
     <tr
       className="schedule-row"
-      key={"_" + Math.random().toString(36).substr(2, 9)}
+      key={'_' + Math.random().toString(36).substr(2, 9)}
     >
       <td>{state.schedule.name}</td>
 
@@ -145,17 +150,17 @@ export default function WeekEditor(props) {
             start={state.startTimes[day]}
             end={state.endTimes[day]}
             callback={updateOnChange}
-            key={"_" + Math.random().toString(36).substr(2, 9)}
+            key={'_' + Math.random().toString(36).substr(2, 9)}
           />
         );
       })}
 
       <td
         style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-around",
-          height: "150px",
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-around',
+          height: '150px'
         }}
       >
         <Tooltip
@@ -164,7 +169,7 @@ export default function WeekEditor(props) {
         >
           <Button
             variant="contained"
-            style={{ backgroundColor: "#4caf50", color: "white" }}
+            style={{ backgroundColor: '#4caf50', color: 'white' }}
             onClick={updateSchedule}
           >
             Update
@@ -177,7 +182,7 @@ export default function WeekEditor(props) {
         >
           <Button
             variant="contained"
-            style={{ backgroundColor: "#1B4370", color: "white" }}
+            style={{ backgroundColor: '#1B4370', color: 'white' }}
             onClick={reset}
           >
             Clear Edits
@@ -189,7 +194,7 @@ export default function WeekEditor(props) {
         >
           <Button
             variant="contained"
-            style={{ backgroundColor: "#C11A1A", color: "white" }}
+            style={{ backgroundColor: '#C11A1A', color: 'white' }}
             onClick={() => setConfirmDelete(true)}
           >
             Delete

@@ -1,22 +1,25 @@
-import { Button } from "@material-ui/core";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import { useEffect, useState } from "react";
-import { withStyles } from '@material-ui/core/styles';
+import { Button } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { isValidHttpUrl } from "../utils/httpUtils";
+import { isValidHttpUrl } from '../utils/httpUtils';
+import Image from 'next/image';
 
-const Input = withStyles({ root: { width: "100% !important" } })(TextField);
+let M;
+if (typeof window !== 'undefined') {
+  M = require('materialize-css');
+}
 
-const axios = require("axios");
+const axios = require('axios');
 
-export default function PushNotifsForm(props) {
+export default function PushNotifsForm (props) {
   const [state, setState] = useState({
-    title: "",
-    message: "",
-    link: "",
-    club: "",
+    title: '',
+    message: '',
+    link: '',
+    club: '',
     clubData: null,
-    validLink: true,
+    validLink: true
   });
 
   const [sending, setSending] = useState(false);
@@ -27,59 +30,57 @@ export default function PushNotifsForm(props) {
     });
   }, [state.clubData]);
 
-  function linkChange(event) {
+  function linkChange (event) {
     const userLink = event.target.value;
     const valid = !userLink || isValidHttpUrl(userLink);
     setState((prev) => ({ ...prev, link: userLink, validLink: valid }));
   }
 
-  function clubChange(event) {
-    var name = event ? event.name : "";
+  function clubChange (event) {
+    const name = event ? event.name : '';
     setState((prev) => ({ ...prev, club: name }));
   }
 
   const submitForm = async () => {
-    
     setSending(true);
 
-    let data = {
+    const data = {
       title: state.title,
       message: state.message,
       httpLink: state.link,
-      organization_name: state.club,
+      organization_name: state.club
     };
 
     await axios.patch(`/api/sendpushnotification`, data).then((response) => {
       // keep an eye on missing notifications (maybe based on phone type or expo problem => what screen is open)
-      console.log(response);
-      Materialize.toast(
-        "Push notification sent to: " + state.club,
-        2500,
-        "#0d47a1 blue darken-4 rounded"
-      );
+      M.toast({
+        html: 'Push notification sent to: ' + state.club,
+        displayLength: 2500,
+        class: '#0d47a1 blue darken-4 rounded'
+      });
       setSending(false);
     });
-  }
+  };
 
-  function validate() {
+  function validate () {
     return (
       !state.validLink ||
       state.message.length < 5 ||
       state.title.length < 3 ||
-      state.club === "" ||
+      state.club === '' ||
       sending
     );
   }
 
   if (!state.clubData) {
     return (
-      <img src="/branda-admin-loading-gif.gif" style={{ width: "280px" }} />
+      <Image alt='' src="/branda-admin-loading-gif.gif" width={280} height={280} />
     );
   } else {
     return (
       <div className="pushnotif-form">
         <div>
-          <h4 style={{ color: "#1B4370"}}>
+          <h4 style={{ color: '#1B4370' }}>
             Send Push Notification
           </h4>
         </div>
@@ -90,9 +91,9 @@ export default function PushNotifsForm(props) {
             variant="outlined"
             type="text"
             required
-            error={state.title !== "" && state.title.length < 3}
+            error={state.title !== '' && state.title.length < 3}
             onChange={(event) => setState((prev) => ({ ...prev, title: event.target.value }))}
-            style={{ width: "90%" }}
+            style={{ width: '90%' }}
             helperText={`Between 3 and 140 characters (${
               state.title.length
             }/${140})`}
@@ -100,7 +101,7 @@ export default function PushNotifsForm(props) {
           />
 
           <TextField
-            error={state.message !== "" && state.message.length < 5}
+            error={state.message !== '' && state.message.length < 5}
             id="message"
             label="Message"
             variant="outlined"
@@ -109,8 +110,8 @@ export default function PushNotifsForm(props) {
             onChange={(event) => setState((prev) => ({ ...prev, message: event.target.value }))}
             multiline
             rows={4}
-            helperText={"More than 5 characters"}
-            style={{ width: "90%" }}
+            helperText={'More than 5 characters'}
+            style={{ width: '90%' }}
           />
 
           <TextField
@@ -120,17 +121,17 @@ export default function PushNotifsForm(props) {
             type="text"
             onChange={linkChange}
             error={!state.validLink}
-            style={{ width: "90%" }}
+            style={{ width: '90%' }}
             helperText={
-              "Please enter a valid HTTPS link (if you want to include a link)"
+              'Please enter a valid HTTPS link (if you want to include a link)'
             }
           />
 
           <Autocomplete
-            id={"club-dropdown"}
+            id={'club-dropdown'}
             options={state.clubData}
             getOptionLabel={(option) => option.name}
-            style={{ width: "90%" }}
+            style={{ width: '90%' }}
             renderInput={(params) => (
               <TextField {...params} label="Club" variant="outlined" />
             )}
@@ -143,14 +144,14 @@ export default function PushNotifsForm(props) {
             onClick={submitForm}
             disabled={validate()}
             style={{
-              backgroundColor: validate() ? "#5482B6" : "#1B4370",
-              color: "white",
-              width: "200px",
-              borderRadius: "5px",
+              backgroundColor: validate() ? '#5482B6' : '#1B4370',
+              color: 'white',
+              width: '200px',
+              borderRadius: '5px'
             }}
             type="submit"
           >
-            {sending ? "Sending..." : "Send"}
+            {sending ? 'Sending...' : 'Send'}
           </Button>
         </div>
       </div>

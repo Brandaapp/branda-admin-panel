@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ShuttleStopSchema = new Schema({
@@ -9,7 +9,7 @@ const ShuttleStopSchema = new Schema({
   /**
    * Optional text describing the stop.
    */
-  description:String,
+  description: String,
   /**
    * Unique ID for the stop.
    */
@@ -31,5 +31,5 @@ const ShuttleStopSchema = new Schema({
   route: String
 });
 
-const ShuttleStop = mongoose.models.ShuttleStop || mongoose.model("ShuttleStop",ShuttleStopSchema);
+const ShuttleStop = mongoose.models.ShuttleStop || mongoose.model('ShuttleStop', ShuttleStopSchema);
 module.exports = ShuttleStop;

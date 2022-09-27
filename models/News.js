@@ -1,35 +1,35 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const NewsSchema = new Schema({
   id: {
-    type: Number,
+    type: Number
   },
   headline: {
-    type: String,
+    type: String
   },
   summary: {
-    type: String,
+    type: String
   },
   link: {
-    type: String,
+    type: String
   },
   date: {
-    type: String,
+    type: String
   },
   time: {
-    type: String,
+    type: String
   },
   category: {
-    type: String,
+    type: String
   },
   source: {
-    type: String,
+    type: String
   },
   image: {
-    type: String,
-  },
+    type: String
+  }
 });
 
-const News = mongoose.models.News || mongoose.model("News", NewsSchema);
+const News = mongoose.models.News || mongoose.model('News', NewsSchema);
 module.exports = News;

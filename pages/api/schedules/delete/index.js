@@ -1,5 +1,5 @@
-import dbConnect from "../../../../utils/dbConnect";
-import PlaceSchedule from "../../../../models/PlaceSchedule";
+import dbConnect from '../../../../utils/dbConnect';
+import PlaceSchedule from '../../../../models/PlaceSchedule';
 
 dbConnect();
 

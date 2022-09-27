@@ -1,5 +1,5 @@
-import dbConnect from "../../../utils/dbConnect";
-import Organization from "../../../models/Organization";
+import dbConnect from '../../../utils/dbConnect';
+import Organization from '../../../models/Organization';
 
 dbConnect();
 
@@ -12,15 +12,15 @@ export default (req, res) => {
           res.end(JSON.stringify(err));
           resolve();
         } else {
-          let result = [];
-  
+          const result = [];
+
           docs.forEach((doc) => {
-            var name = doc.name;
+            const name = doc.name;
             if (name) {
               result.push({ name });
             }
           });
-  
+
           res.end(JSON.stringify(result));
           resolve();
         }

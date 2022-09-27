@@ -1,10 +1,10 @@
-import { useState } from "react";
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import PushNotifsForm from "../components/PushNotifsForm";
+import { useState } from 'react';
+import Head from 'next/head';
+import styles from '../styles/Home.module.css';
+import PushNotifsForm from '../components/PushNotifsForm';
 
-export default function PushNotifications() {
-  const [dataFetched, setDataFetched] = useState(false);  /** not sure if we need this but followed the file schedules.js */
+export default function PushNotifications () {
+  const [dataFetched, setDataFetched] = useState(false);
 
   return (
     <div className={styles.container}>
@@ -24,5 +24,5 @@ export default function PushNotifications() {
       <footer className={styles.footer}>
       </footer>
     </div>
-  )
+  );
 }

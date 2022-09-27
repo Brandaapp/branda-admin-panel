@@ -1,33 +1,33 @@
-import { useState, useEffect } from "react";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import DayEditor from "../DayEditor";
-import createTable from "../../utils/renderUtils/tableGenerator";
+import { useState } from 'react';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import DayEditor from '../DayEditor';
+import createTable from '../../utils/renderUtils/tableGenerator';
 import {
   getDefaultWeekTimes,
   getProperDate,
-  populateWeeksArray,
-} from "../../utils/dateUtils";
-import Tooltip from "@material-ui/core/Tooltip";
+  populateWeeksArray
+} from '../../utils/dateUtils';
+import Tooltip from '@material-ui/core/Tooltip';
 
-import axios from "axios";
+import axios from 'axios';
 
-import { useStyles } from "./styles";
-import constants from "./constants";
+import { useStyles } from './styles';
+import constants from './constants';
 
 const defaultTimes = getDefaultWeekTimes();
 
-export default function AddPlaceForm(props) {
+export default function AddPlaceForm (props) {
   const classes = useStyles();
 
   const [state, setState] = useState({
-    name: "",
-    group: "Dining",
+    name: '',
+    group: 'Dining',
     times: defaultTimes,
-    row: undefined, // cache of row components
+    row: undefined // cache of row components
   });
 
   const [sending, setSending] = useState(false);
@@ -42,7 +42,7 @@ export default function AddPlaceForm(props) {
 
     const data = {
       name: state.name,
-      group: state.group,
+      group: state.group
     };
 
     const { weeks, json } = populateWeeksArray(state.times);
@@ -50,12 +50,12 @@ export default function AddPlaceForm(props) {
     axios
       .post(`api/places/add`, data)
       .then((response) => {
-        const emp_id = response.data._id;
+        const empId = response.data._id;
         axios
-          .post(`api/schedules`, { ...data, emp_id, weeks, ...json })
+          .post(`api/schedules`, { ...data, emp_id: empId, weeks, ...json })
           .then((_response) => {
             setSending(false);
-            onSubmit(state.name + " added as a new place.");
+            onSubmit(state.name + ' added as a new place.');
           })
           .catch((err) => onError(`Failed to add place: ${err.response.data}`));
       })
@@ -63,9 +63,9 @@ export default function AddPlaceForm(props) {
   };
 
   const updateTimes = (_date, hour, day, start) => {
-    hour = hour.toLowerCase().replace(/\s/g, "");
+    hour = hour.toLowerCase().replace(/\s/g, '');
     const tempTimes = state.times;
-    tempTimes[day][start ? "start" : "end"] = hour;
+    tempTimes[day][start ? 'start' : 'end'] = hour;
     setState((prev) => ({ ...prev, times: tempTimes, row: undefined }));
   };
 
@@ -77,7 +77,7 @@ export default function AddPlaceForm(props) {
           start={getProperDate(state.times[day].start)}
           end={getProperDate(state.times[day].end)}
           callback={updateTimes}
-          key={"_" + Math.random().toString(36).substr(2, 9)}
+          key={'_' + Math.random().toString(36).substr(2, 9)}
         />
       );
     });
@@ -89,10 +89,10 @@ export default function AddPlaceForm(props) {
 
   return (
     <div className={classes.paper}>
-      <h4 style={{ color: "#1B4370" }}>Add Place</h4>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <h4 style={{ color: '#1B4370' }}>Add Place</h4>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <div
-          style={{ paddingBottom: "10px", color: "#1B4370", fontSize: "20px" }}
+          style={{ paddingBottom: '10px', color: '#1B4370', fontSize: '20px' }}
         >
           Place Name
         </div>
@@ -107,9 +107,9 @@ export default function AddPlaceForm(props) {
           }}
         />
       </div>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <div
-          style={{ paddingBottom: "10px", color: "#1B4370", fontSize: "20px" }}
+          style={{ paddingBottom: '10px', color: '#1B4370', fontSize: '20px' }}
         >
           Group
         </div>
@@ -131,40 +131,40 @@ export default function AddPlaceForm(props) {
           </Select>
         </FormControl>
       </div>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <div
-          style={{ paddingBottom: "10px", color: "#1B4370", fontSize: "20px" }}
+          style={{ paddingBottom: '10px', color: '#1B4370', fontSize: '20px' }}
         >
           Enter Hours
         </div>
         {createTable(
-          { width: "1400 px" },
+          { width: '1400 px' },
           labels,
           <tr>{state.row || createRow()}</tr>
         )}
       </div>
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Tooltip
           title={
             !state.name
-              ? "Please provide a place name"
+              ? 'Please provide a place name'
               : sending
-              ? "New place is being added"
-              : "Add a new place"
+                ? 'New place is being added'
+                : 'Add a new place'
           }
           arrow
         >
-          <span style={{ width: "20%" }}>
+          <span style={{ width: '20%' }}>
             <Button
               style={{
-                backgroundColor: !state.name || sending ? "#5482B6" : "#1B4370",
-                color: "white",
-                width: "100%",
+                backgroundColor: !state.name || sending ? '#5482B6' : '#1B4370',
+                color: 'white',
+                width: '100%'
               }}
               onClick={post}
               disabled={!state.name || sending}
             >
-              {sending ? "Adding new place..." : "Add new place"}
+              {sending ? 'Adding new place...' : 'Add new place'}
             </Button>
           </span>
         </Tooltip>
