@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 import { checkPassword } from '../../../utils/passwordUtils';
 import dbConnect from '../../../utils/dbConnect';
+import logger from '../../../utils/loggers/server';
 
 const User = require('../../../models/User');
 
@@ -20,13 +21,17 @@ const options = {
         await User.findOne({ username: credentials.username },
           (err, user) => {
             if (err) {
+              logger.error('Error authenticating user');
               result = Promise.resolve(null);
             } else if (!user) {
+              logger.warn('User not found');
               result = Promise.resolve(null);
             } else {
               if (checkPassword(credentials.password, user.salt, user.hash)) {
+                logger.info({ credentials }, 'User authenticated');
                 result = Promise.resolve(user);
               } else {
+                logger.warn('Incorrect user credentials');
                 result = Promise.resolve(null);
               }
             }
