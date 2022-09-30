@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import '../styles/materialize.css';
 import { useEffect } from 'react';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import { access } from '../utils/rolesUtils';
 import { useRouter } from 'next/router';
 import { getSession, Provider, signIn, useSession } from 'next-auth/client';
@@ -10,7 +10,7 @@ import LuxonUtils from '@date-io/luxon';
 import Navbar from '../components/Navbar';
 import Image from 'next/image';
 
-const inputTheme = createMuiTheme({ palette: { primary: { main: '#1B4370' } } });
+const inputTheme = createTheme({ palette: { primary: { main: '#1B4370' } } });
 
 function TLApp ({ Component, pageProps }) {
   const router = useRouter();
