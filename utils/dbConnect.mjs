@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import logger from './loggers/server';
+import logger from './loggers/server.mjs';
 
 const connection = {};
 

@@ -1,6 +1,6 @@
 import dbConnect from '../../../../../utils/dbConnect.mjs';
 import ShuttleRouteSchedule from '../../../../../models/ShuttleRouteSchedule';
-import logger from '../../../../../utils/loggers/server.js';
+import logger from '../../../../../utils/loggers/server';
 
 dbConnect();
 

@@ -1,5 +1,5 @@
 import dbConnect from '../../../../../utils/dbConnect.mjs';
-import logger from '../../../../../utils/loggers/server.js';
+import logger from '../../../../../utils/loggers/server';
 
 dbConnect();
 
