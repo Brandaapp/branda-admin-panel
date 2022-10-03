@@ -1,4 +1,5 @@
 import dbConnect from '../../../utils/dbConnect';
+import logger from '../../../utils/loggers/server.mjs';
 const Organization = require('../../../models/Organization');
 
 const axios = require('axios');
@@ -7,6 +8,7 @@ dbConnect();
 
 export default (req, res) => {
   return new Promise(resolve => {
+    logger.info({ req });
     if (req.method === 'POST') {
       let myArrayOfData = [];
 
@@ -34,7 +36,6 @@ export default (req, res) => {
 
           return organizationModel;
         })
-        .catch(() => {})
         .then((organizationModel) => {
         // here is where we are checking if the organization still is allowed to send notifications
 
@@ -81,19 +82,31 @@ export default (req, res) => {
                   errors.push(response);
                 }
               });
+              logger.debug({ errors }, 'Errors sending push notifications');
               res.status(200).send(errors).redirect('/'); // sending OK response
+              logger.info({ res }, 'Sent push notifications');
               resolve();
             });
           } else {
           // otherwise send a response saying \/
-            res.json({
-              message: 'YOU HAVE EXCEEDED THE MAX NUMBER OF MESSAGES ALLOWED '
+            logger.warn('YOU HAVE EXCEEDED THE MAX NUMBER OF MESSAGES ALLOWED');
+            res.status(412).json({
+              message: 'YOU HAVE EXCEEDED THE MAX NUMBER OF MESSAGES ALLOWED'
             });
+            logger.info({ res });
             resolve();
           }
+        })
+        .catch((err) => {
+          logger.error({ err }, 'Error getting organization to send notification to');
+          res.status(500).send({ err });
+          logger.info({ res });
+          resolve();
         });
     } else {
+      logger.warn(`HTTP method must be POST on ${req.url}`);
       res.status(405).send(`HTTP method must be POST on ${req.url}`);
+      logger.info({ res });
       resolve();
     }
   });

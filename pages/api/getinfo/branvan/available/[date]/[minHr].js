@@ -1,10 +1,12 @@
 import dbConnect from '../../../../../../utils/dbConnect';
 import Branvan from '../../../../../../models/BranvanTime';
+import logger from '../../../../../../utils/loggers/server.mjs';
 
 dbConnect();
 
 export default (req, res) => {
   return new Promise(resolve => {
+    logger.info({ req });
     if (req.method === 'GET') {
       Branvan.find({
         date: req.query.date,
@@ -13,7 +15,9 @@ export default (req, res) => {
         }
       }).exec((err, slots) => {
         if (err) {
-          res.send({ err });
+          logger.error({ err }, 'Error finding branvan availability');
+          res.status(500).send({ err });
+          logger.info({ res });
           resolve();
         } else {
           const hrs = {};
@@ -30,12 +34,16 @@ export default (req, res) => {
               hrs[`${slot.hour}:${slot.minute === 0 ? '00' : slot.minute}`] = open;
             }
           }
+          logger.debug({ hrs }, 'hours computed');
           res.send({ hrs });
+          logger.info({ res }, 'Hours availability fetched');
           resolve();
         }
       });
     } else {
+      logger.warn(`HTTP method must be GET on ${req.url}`);
       res.status(405).send(`HTTP method must be GET on ${req.url}`);
+      logger.info({ res });
       resolve();
     }
   });

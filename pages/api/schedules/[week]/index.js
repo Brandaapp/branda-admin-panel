@@ -1,14 +1,18 @@
 import dbConnect from '../../../../utils/dbConnect';
+import logger from '../../../../utils/loggers/server.mjs';
 const PlaceSchedule = require('../../../../models/PlaceSchedule');
 
 dbConnect();
 
 export default (req, res) => {
   return new Promise(resolve => {
+    logger.info({ req });
     if (req.method === 'GET') {
       PlaceSchedule.find({ active: 1 }, (err, docs) => {
         if (err) {
+          logger.error({ err }, 'Error fetching active place schedules');
           res.status(500).send({ err });
+          logger.info({ res });
           resolve();
         } else {
           const { query: { week } } = req;
@@ -30,11 +34,14 @@ export default (req, res) => {
             }
           });
           res.send(schedules);
+          logger.info({ res }, 'Fetched active place schedules');
           resolve();
         }
       });
     } else {
+      logger.warn(`HTTP method must be GET on ${req.url}`);
       res.status(405).send(`HTTP method must be GET on ${req.url}`);
+      logger.info({ res });
       resolve();
     }
   });

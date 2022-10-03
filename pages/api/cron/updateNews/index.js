@@ -1,5 +1,6 @@
 import dbConnect from '../../../../utils/dbConnect';
 import News from '../../../../models/News';
+import logger from '../../../../utils/loggers/server.mjs';
 const axios = require('axios');
 const cheerio = require('cheerio');
 const moment = require('moment');
@@ -8,6 +9,7 @@ dbConnect();
 
 export default (req, res) => {
   return new Promise(resolve => {
+    logger.info({ req });
     if (req.method === 'PATCH') {
       const result = axios.get('https://www.brandeis.edu/');
       result
@@ -123,6 +125,7 @@ export default (req, res) => {
                     (err, doc) => {
                       if (err) {
                         // later TODO: log
+                        logger.warn({ err }, `Error creating news article ${out[i].headline}`);
                         ok = false;
                       }
                     }
@@ -130,20 +133,27 @@ export default (req, res) => {
                   }
                 }
                 res.status(200).send(out.length + ' news articles fetched and saved.');
+                logger.info({ res }, out.length + ' news articles fetched and saved.');
                 resolve();
               });
             })
-            .catch((error) => {
-              res.status(500).send('Error fetching news: ' + error);
+            .catch((err) => {
+              logger.error({ err });
+              res.status(500).send('Error fetching news: ' + err);
+              logger.info({ res });
               resolve();
             });
         })
-        .catch((error) => {
-          res.status(500).send('Error fetching news: ' + error);
+        .catch((err) => {
+          logger.error({ err });
+          res.status(500).send('Error fetching news: ' + err);
+          logger.info({ res });
           resolve();
         });
     } else {
+      logger.warn(`HTTP method must be PATCH on ${req.url}`);
       res.status(405).send(`HTTP method must be PATCH on ${req.url}`);
+      logger.info({ res });
       resolve();
     }
   });

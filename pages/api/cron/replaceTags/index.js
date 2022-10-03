@@ -1,12 +1,14 @@
 import dbConnect from '../../../../utils/dbConnect';
 import fetch from 'node-fetch';
 import shuttleActivity from '../../../../models/ShuttleActivity';
+import logger from '../../../../utils/loggers/server.mjs';
 const moment = require('moment');
 
 dbConnect();
 
 export default function (req, res) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
+    logger.info({ req });
     if (req.method === 'PATCH') {
       const routesToUpdate = ['Campus', 'Waltham', 'Boston'];
       fetch(`https://api.samsara.com/v1/tags?access_token=${process.env.SAMSARA_API_KEY}`)
@@ -20,6 +22,7 @@ export default function (req, res) {
         }))
         .then(tags => tags.filter(tag => routesToUpdate.includes(tag.name)))
         .then(tags => {
+          logger.debug({ tags }, 'Taggs being updated');
           shuttleActivity.findOne({
             date: {
               $gte: moment().startOf('day'),
@@ -32,6 +35,7 @@ export default function (req, res) {
                 const now = moment().add(1, 'minute');
 
                 const currentTags = currentState.times.filter(time => now >= time.start && now <= time.end);
+                logger.debug({ currentTags }, 'Current tags');
 
                 Promise.all(tags.map(async tag => {
                   const response =
@@ -50,22 +54,30 @@ export default function (req, res) {
                     })
                   });
                   const text = await response.text();
+                  logger.debug({ text }, 'Text from samsara response');
                   return text;
-                })).catch(err => {
-                  res.status(500).send({ err });
-                  resolve();
-                }).then(() => {
+                })).then(() => {
                   res.status(200).send({});
+                  logger.info({ res }, 'Replaced tags');
+                  resolve();
+                }).catch(err => {
+                  logger.error({ err }, 'Error replacing tags');
+                  res.status(500).send({ err });
+                  logger.info({ res });
                   resolve();
                 });
               } else {
+                logger.warn('No shuttle activity found');
                 res.status(200).send('No shuttle activity found');
+                logger.info({ res });
                 resolve();
               }
             });
         });
     } else {
+      logger.warn(`HTTP method must be PATCH on ${req.url}`);
       res.status(405).send(`HTTP method must be PATCH on ${req.url}`);
+      logger.info({ res });
       resolve();
     }
   });

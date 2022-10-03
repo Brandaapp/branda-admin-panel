@@ -1,6 +1,6 @@
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 
-export function weekStart(day) {
+export function weekStart (day) {
   const date = DateTime.local(
     day.getFullYear(),
     day.getMonth() + 1,
@@ -9,7 +9,7 @@ export function weekStart(day) {
   return date.minus({ days: date.weekday % 7 }).toJSDate();
 }
 
-export function weekEnd(day) {
+export function weekEnd (day) {
   const date = DateTime.local(
     day.getFullYear(),
     day.getMonth() + 1,
@@ -18,66 +18,65 @@ export function weekEnd(day) {
   return date.plus({ days: 6 - (date.weekday % 7) }).toJSDate();
 }
 
-export function weekNum(day) {
-  
+export function weekNum (day) {
   const date = DateTime.local(
     day.getFullYear(),
     day.getMonth() + 1,
     day.getDate()
   );
-  
+
   return date.weekNumber % 53;
 }
 
-export function getProperDate(time) {
-  let am = time.indexOf("am") > -1;
+export function getProperDate (time) {
+  const am = time.indexOf('am') > -1;
   const date = new Date();
 
-  let strippedTime = undefined;
+  let strippedTime;
 
   if (am) {
-    strippedTime = time.substring(0, time.indexOf("am")).trim();
+    strippedTime = time.substring(0, time.indexOf('am')).trim();
   } else {
-    strippedTime = time.substring(0, time.indexOf("pm")).trim();
+    strippedTime = time.substring(0, time.indexOf('pm')).trim();
   }
 
-  let partition = strippedTime.split(":");
+  const partition = strippedTime.split(':');
   let hour = partition[0];
-  let minute = partition[1] === undefined ? "00" : partition[1];
+  const minute = partition[1] === undefined ? '00' : partition[1];
 
   if (am) {
-    if (hour === "12") {
-      hour = "0";
+    if (hour === '12') {
+      hour = '0';
     }
   } else {
-    if (hour !== "12") {
-      let n = parseInt(hour) + 12;
+    if (hour !== '12') {
+      const n = parseInt(hour) + 12;
       hour = n.toString();
     }
   }
-  
+
   date.setHours(hour);
   date.setMinutes(minute);
 
   return date;
 }
 
-export function getDefaultWeekTimes() {
+export function getDefaultWeekTimes () {
   return {
-    monday: { start: "7:30am", end: "2:00am" },
-    tuesday: { start: "7:30am", end: "2:00am" },
-    wednesday: { start: "7:30am", end: "2:00am" },
-    thursday: { start: "7:30am", end: "2:00am" },
-    friday: { start: "7:30am", end: "2:00am" },
-    saturday: { start: "7:30am", end: "2:00am" },
-    sunday: { start: "7:30am", end: "2:00am" },
+    monday: { start: '7:30am', end: '2:00am' },
+    tuesday: { start: '7:30am', end: '2:00am' },
+    wednesday: { start: '7:30am', end: '2:00am' },
+    thursday: { start: '7:30am', end: '2:00am' },
+    friday: { start: '7:30am', end: '2:00am' },
+    saturday: { start: '7:30am', end: '2:00am' },
+    sunday: { start: '7:30am', end: '2:00am' }
   };
 }
 
-export function populateWeeksArray(times) {
+export function populateWeeksArray (times) {
   const json = {};
   Object.keys(times).forEach((day) => {
-    json[day] = times[day].start + "-" + times[day].end;
+    json[day] = times[day].start + '-' + times[day].end;
   });
   const weeks = [];
   for (let i = 0; i < 54; i++) {

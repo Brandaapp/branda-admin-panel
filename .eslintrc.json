@@ -8,7 +8,10 @@
     "next"
   ],
   "env": {
-    "node" : true
+    "node" : true,
+    "mocha": true,
+    "commonjs": true,
+    "es6": true
   },
   "rules": {
     "max-len": [2, 120, 2],
