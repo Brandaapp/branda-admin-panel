@@ -2,6 +2,7 @@ import JSSoup from 'jssoup';
 import DiningHours from '../../../../models/DiningHours';
 import fetch, { FetchError } from 'node-fetch';
 import dbConnect from '../../../../utils/dbConnect.mjs';
+import logger from '../../../../utils/loggers/server.mjs';
 
 dbConnect();
 
@@ -9,6 +10,7 @@ const DINING_LINK = 'https://www.brandeishospitality.com/wp-admin/admin-ajax.php
 
 export default (req, res) => {
   return new Promise(resolve => {
+    logger.info({ req });
     if (req.method === 'PATCH') {
       fetch(DINING_LINK)
         .then(response => {
@@ -59,15 +61,20 @@ export default (req, res) => {
             matchLocationsToHours[locations[i]] = times[i];
           }
 
+          logger.debug({ matchLocationsToHours }, 'internal hours array');
+
           DiningHours.collection.drop();
           DiningHours.create(
             { _id: 1, Dining: matchLocationsToHours },
             (err, doc) => {
               if (err) {
+                logger.error({ err }, 'Problem creating new DiningHours document');
                 res.status(500).send({ err, msg: 'Problem creating new DiningHours document' });
+                logger.info({ res });
                 resolve();
               } else {
                 res.send(doc);
+                logger.info({ res }, 'Dining hours updated');
                 resolve();
               }
             }
@@ -77,23 +84,33 @@ export default (req, res) => {
           if (err instanceof FetchError) {
             if (err.message.includes('getaddrinfo ENOTFOUND')) {
               // error from fetch() because of incorrect domain
+              logger.error({ err }, 'Incorrect API domain');
               res.status(500).send({ err, msg: 'Incorrect API domain' });
+              logger.info({ res });
               resolve();
             } else {
+              logger.error({ err }, 'Could not fetch from external API');
               res.status(500).send({ err, msg: 'Could not fetch from external API' });
+              logger.info({ res });
               resolve();
             }
           } else if (err instanceof Error) {
+            logger.error({ err }, 'Could not fetch from external API');
             res.status(500).send({ err, msg: 'Could not fetch from external API' });
+            logger.info({ res });
             resolve();
           } else {
             // !response.ok
+            logger.error({ err }, 'Could not fetch from external API');
             res.status(err).send({ msg: 'Could not fetch from external API' });
+            logger.info({ res });
             resolve();
           }
         });
     } else {
+      logger.warn(`HTTP method must be PATCH on ${req.url}`);
       res.status(405).send(`HTTP method must be PATCH on ${req.url}`);
+      logger.info({ res });
       resolve();
     }
   });

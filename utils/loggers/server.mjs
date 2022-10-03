@@ -20,7 +20,7 @@ function credentialsSerializer (credentials) {
 
 const logger = bunyan.createLogger({
   name: 'branda-admin-panel-server',
-  level: bunyan.INFO,
+  level: bunyan.DEBUG,
   serializers: {
     req: reqSerializer,
     res: bunyan.stdSerializers.res,

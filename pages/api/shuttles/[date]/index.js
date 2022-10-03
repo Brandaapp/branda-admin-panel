@@ -1,4 +1,5 @@
 import dbConnect from '../../../../utils/dbConnect';
+import logger from '../../../../utils/loggers/server.mjs';
 const ShuttleActivity = require('../../../../models/ShuttleActivity');
 const { DateTime } = require('luxon');
 
@@ -6,9 +7,12 @@ dbConnect();
 
 export default (req, res) => {
   return new Promise(resolve => {
+    logger.info({ req });
     const { query: { date } } = req;
     const start = DateTime.fromISO(date).startOf('day').toJSDate();
     const end = DateTime.fromISO(date).endOf('day').toJSDate();
+    logger.debug({ start }, 'Parsed start time');
+    logger.debug({ end }, 'Parsed end time');
     if (req.method === 'PATCH') {
       const temp = {
         start: req.body.start,
@@ -29,10 +33,13 @@ export default (req, res) => {
         { $addToSet: { times: temp } },
         (err, result) => {
           if (err) {
+            logger.error({ err }, 'Error updating shuttle activity');
             res.status(500).send({ err });
+            logger.info({ res });
             resolve();
           } else {
             res.send(result);
+            logger.info({ res }, 'Updated shuttle activity');
             resolve();
             // TODO: connect to samsara api
           }
@@ -46,18 +53,25 @@ export default (req, res) => {
         }
       }, (err, doc) => {
         if (err) {
+          logger.error({ err }, 'Error fetching shuttle activity');
           res.status(500).send({ err });
+          logger.info({ res });
           resolve();
         } else if (!doc) {
+          logger.warn('Could not find shuttle activity with given date');
           res.status(404).send('Could not find date');
+          logger.info({ res });
           resolve();
         } else {
           res.send(doc);
+          logger.info({ res }, 'Fetched shuttle activity with date');
           resolve();
         }
       });
     } else {
+      logger.warn(`HTTP method must be PATCH or GET on ${req.url}`);
       res.status(405).send(`HTTP method must be PATCH or GET on ${req.url}`);
+      logger.info({ res });
       resolve();
     }
   });
