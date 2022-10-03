@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.0] - TBD
+
+### Added
+
+- All routes within the API now use Promises
+- API routes that `fetch` from external routes now have appropriate error handling
+- Server-side logging using `bunyan`
+
+### Fixed
+
+- Removed `MaterialUI` error by changing from deprecated `createMuiTheme` to `createTheme` in `pages/_app.js`
+- Login form now has password field type as `password` instead of `text`
+- Login form now no longer inconsistently logs in or doesn't log in user
+
 ## [0.1.0] - September 19, 2022
 
 ### Added
