@@ -13,30 +13,36 @@ const options = {
       name: 'Credentials',
       credentials: {
         username: { label: 'Username', type: 'text' },
-        password: { label: 'Password', type: 'text' }
+        password: { label: 'Password', type: 'password' }
       },
       authorize: async (credentials) => {
         await dbConnect();
-        let result = null;
-        await User.findOne({ username: credentials.username },
-          (err, user) => {
-            if (err) {
-              logger.error('Error authenticating user');
-              result = Promise.resolve(null);
-            } else if (!user) {
+
+        /**
+         * It seems Mongoose schema query methods do not execute the callback parameter
+         * in the await scope, and await ends once the query is done. Therefore, there
+         * was a chance a null result was being returned before its value was set. As a solution,
+         * just using Promise chaining.
+         */
+        return User.findOne({ username: credentials.username })
+          .then(user => {
+            if (!user) {
               logger.warn('User not found');
-              result = Promise.resolve(null);
+              return Promise.resolve(null);
             } else {
               if (checkPassword(credentials.password, user.salt, user.hash)) {
                 logger.info({ credentials }, 'User authenticated');
-                result = Promise.resolve(user);
+                return Promise.resolve(user);
               } else {
                 logger.warn('Incorrect user credentials');
-                result = Promise.resolve(null);
+                return Promise.resolve(null);
               }
             }
+          })
+          .catch(() => {
+            logger.error('Error authenticating user');
+            return Promise.resolve(null);
           });
-        return result;
       }
     })
   ],

@@ -46,7 +46,7 @@ export default function Login ({ csrfToken }) {
                   placeholder="Enter password"
                   size="small"
                   variant="outlined"
-                  type="text"
+                  type="password"
                   value={password}
                   name="password"
                   onChange={(e) => setPassword(e.target.value)}
