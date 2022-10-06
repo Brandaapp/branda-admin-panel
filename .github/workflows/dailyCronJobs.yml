@@ -7,18 +7,16 @@ on:
 jobs:
   updateDiningHours:
     runs-on: ubuntu-latest
+    env:
+      API_TOKEN: ${{ secrets.API_TOKEN }}
     steps:
-      - name: Run update dining hours cron job
-      env:
-        API_TOKEN: ${{ secrets.API_TOKEN }}
-      run: |
+      - run: |
         curl --request PATCH -H "api_token: $API_TOKEN" --url https://branda-admin-panel.herokuapp.com/api/cron/updateDiningHours
   updateNews:
     runs-on: ubuntu-latest
+    env:
+      API_TOKEN: ${{ secrets.API_TOKEN }}
     steps:
-      - name: Run update news cron job
-      env:
-        API_TOKEN: ${{ secrets.API_TOKEN }}
-      run: |
+      - run: |
         curl --request PATCH -H "api_token: $API_TOKEN" --url https://branda-admin-panel.herokuapp.com/api/cron/updateNews
     

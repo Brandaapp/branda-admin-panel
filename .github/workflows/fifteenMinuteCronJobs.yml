@@ -7,9 +7,8 @@ on:
 jobs:
   replaceTags:
     runs-on: ubuntu-latest
+    env:
+      API_TOKEN: ${{ secrets.API_TOKEN }}
     steps:
-      - name: Run replace tags cron job
-      run: |
+      - run: |
         curl --request PATCH -H "api_token: $API_TOKEN" --url https://branda-admin-panel.herokuapp.com/api/cron/replaceTags
-      env:
-        API_TOKEN: ${{ secrets.API_TOKEN }}
