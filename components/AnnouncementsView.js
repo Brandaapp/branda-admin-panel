@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import AnnouncementsDisplay from './AnnouncementsDisplay';
 import AnnouncementsForm from './AnnouncementsForm';
 import Image from 'next/image';
-
-const axios = require('axios');
+import axios from 'axios';
 
 export default function AnnouncementsView () {
   const [state, setState] = useState({

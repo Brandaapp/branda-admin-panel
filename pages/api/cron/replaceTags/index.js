@@ -1,10 +1,7 @@
-import dbConnect from '../../../../utils/dbConnect';
 import fetch from 'node-fetch';
 import shuttleActivity from '../../../../models/ShuttleActivity';
 import logger from '../../../../utils/loggers/server.mjs';
 const moment = require('moment');
-
-dbConnect();
 
 export default function (req, res) {
   return new Promise(resolve => {

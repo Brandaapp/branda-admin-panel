@@ -1,8 +1,5 @@
-import dbConnect from '../../../../utils/dbConnect';
 import Organization from '../../../../models/Organization';
 import logger from '../../../../utils/loggers/server.mjs';
-
-dbConnect();
 
 export default (req, res) => {
   return new Promise(resolve => {

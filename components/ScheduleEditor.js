@@ -10,10 +10,10 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Image from 'next/image';
 
-import axios from 'axios';
 import createTable from '../utils/renderUtils/tableGenerator';
 
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
 let M;
 if (typeof window !== 'undefined') {

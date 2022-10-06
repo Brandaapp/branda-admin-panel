@@ -10,13 +10,13 @@ describe('dbConnect', () => {
   before(() => {
     old = mongoose.connect;
     mongoose.connect = function () {
-      return {
+      return Promise.resolve({
         connections: [
           {
             readyState: true
           }
         ]
-      };
+      });
     };
     spy = sinon.spy(mongoose, 'connect');
   });

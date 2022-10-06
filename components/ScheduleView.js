@@ -4,8 +4,7 @@ import WeekPicker from './WeekPicker';
 import Popover from '@material-ui/core/Popover';
 import Button from '@material-ui/core/Button';
 import Image from 'next/image';
-
-const axios = require('axios');
+import axios from 'axios';
 
 export default function ScheduleView (props) {
   const [state, setState] = useState({

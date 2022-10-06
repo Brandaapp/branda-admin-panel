@@ -1,8 +1,5 @@
-import dbConnect from '../../../utils/dbConnect';
 import logger from '../../../utils/loggers/server';
 const Announcement = require('../../../models/Announcement');
-
-dbConnect();
 
 export default (req, res) => {
   return new Promise(resolve => {

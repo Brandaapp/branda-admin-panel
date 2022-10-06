@@ -1,9 +1,6 @@
-import dbConnect from '../../../utils/dbConnect';
 import logger from '../../../utils/loggers/server';
 const mongoose = require('mongoose');
 const Announcement = require('../../../models/Announcement');
-
-dbConnect();
 
 // POST method
 export default (req, res) => {

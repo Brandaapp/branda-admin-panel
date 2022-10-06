@@ -1,11 +1,8 @@
-import dbConnect from '../../../../utils/dbConnect';
 import fetch, { FetchError } from 'node-fetch';
 import logger from '../../../../utils/loggers/server.mjs';
 const moment = require('moment');
 
 const GYM_TIME_URL = 'https://brandeis.dserec.com/online/fcscheduling/api/space';
-
-dbConnect();
 
 const spaceIds = [ // tells us what ids to look for in the JSON file
   {

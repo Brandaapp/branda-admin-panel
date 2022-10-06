@@ -10,6 +10,12 @@ import LuxonUtils from '@date-io/luxon';
 import Navbar from '../components/Navbar';
 import Image from 'next/image';
 
+// set global headers - all internal axios requests use our API token
+import axios from 'axios';
+axios.defaults.headers.common = {
+  api_token: process.env.API_TOKEN_SECRET
+};
+
 const inputTheme = createTheme({ palette: { primary: { main: '#1B4370' } } });
 
 function TLApp ({ Component, pageProps }) {

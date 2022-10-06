@@ -4,13 +4,12 @@ import { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { isValidHttpUrl } from '../utils/httpUtils';
 import Image from 'next/image';
+import axios from 'axios';
 
 let M;
 if (typeof window !== 'undefined') {
   M = require('materialize-css');
 }
-
-const axios = require('axios');
 
 export default function PushNotifsForm (props) {
   const [state, setState] = useState({
@@ -28,7 +27,7 @@ export default function PushNotifsForm (props) {
     axios.get(`/api/brandeisclubs`).then((response) => {
       setState((prev) => ({ ...prev, clubData: response.data }));
     });
-  }, [state.clubData]);
+  }, []);
 
   function linkChange (event) {
     const userLink = event.target.value;

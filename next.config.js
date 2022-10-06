@@ -7,5 +7,8 @@ module.exports = {
     });
 
     return config;
+  },
+  env: {
+    API_TOKEN_SECRET: process.env.API_TOKEN_SECRET
   }
 };

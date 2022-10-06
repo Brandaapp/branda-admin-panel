@@ -1,9 +1,6 @@
-import dbConnect from '../../../../utils/dbConnect';
 import logger from '../../../../utils/loggers/server.mjs';
 const ShuttleActivity = require('../../../../models/ShuttleActivity');
 const { DateTime } = require('luxon');
-
-dbConnect();
 
 export default (req, res) => {
   return new Promise(resolve => {

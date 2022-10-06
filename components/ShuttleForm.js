@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { KeyboardTimePicker } from '@material-ui/pickers';
 import TextField from '@material-ui/core/TextField';
+import axios from 'axios';
 
 const Input = withStyles({ root: { width: '100% !important' } })(TextField);
-const axios = require('axios');
 
 export default function ShuttleForm (props) {
   const [state, setState] = useState({
