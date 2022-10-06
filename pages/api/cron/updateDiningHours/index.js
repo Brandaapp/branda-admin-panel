@@ -1,10 +1,7 @@
 import JSSoup from 'jssoup';
 import DiningHours from '../../../../models/DiningHours';
 import fetch, { FetchError } from 'node-fetch';
-import dbConnect from '../../../../utils/dbConnect.mjs';
 import logger from '../../../../utils/loggers/server.mjs';
-
-dbConnect();
 
 const DINING_LINK = 'https://www.brandeishospitality.com/wp-admin/admin-ajax.php?action=nmc_dining_whats_open_data';
 

@@ -1,9 +1,6 @@
-import dbConnect from '../../../utils/dbConnect';
 import logger from '../../../utils/loggers/server.mjs';
 import { hashPassword } from '../../../utils/passwordUtils';
 const User = require('../../../models/User');
-
-dbConnect();
 
 export default (req, res) => {
   return new Promise(resolve => {

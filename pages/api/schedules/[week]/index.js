@@ -1,8 +1,5 @@
-import dbConnect from '../../../../utils/dbConnect';
 import logger from '../../../../utils/loggers/server.mjs';
 const PlaceSchedule = require('../../../../models/PlaceSchedule');
-
-dbConnect();
 
 export default (req, res) => {
   return new Promise(resolve => {

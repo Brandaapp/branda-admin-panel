@@ -1,8 +1,5 @@
-import dbConnect from '../../../../../utils/dbConnect.mjs';
 import ShuttleRouteSchedule from '../../../../../models/ShuttleRouteSchedule';
 import logger from '../../../../../utils/loggers/server';
-
-dbConnect();
 
 export default (req, res) => {
   return new Promise(resolve => {

@@ -1,10 +1,6 @@
-import dbConnect from '../../../utils/dbConnect';
 import logger from '../../../utils/loggers/server.mjs';
+import axios from 'axios';
 const Organization = require('../../../models/Organization');
-
-const axios = require('axios');
-
-dbConnect();
 
 export default (req, res) => {
   return new Promise(resolve => {

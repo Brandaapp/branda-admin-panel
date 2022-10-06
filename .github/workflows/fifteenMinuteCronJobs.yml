@@ -8,4 +8,8 @@ jobs:
   replaceTags:
     runs-on: ubuntu-latest
     steps:
-      - run: curl --request PATCH --url https://branda-admin-panel.herokuapp.com/api/cron/replaceTags
+      - env:
+        API_TOKEN: ${{ secrets.API_TOKEN }}
+      - run: |
+        curl --request PATCH -H "api_token: $API_TOKEN" \
+        --url https://branda-admin-panel.herokuapp.com/api/cron/replaceTags

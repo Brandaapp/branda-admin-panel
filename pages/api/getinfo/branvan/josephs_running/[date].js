@@ -1,9 +1,6 @@
-import dbConnect from '../../../../../utils/dbConnect';
 import JosephRunning from '../../../../../models/Joseph';
 import moment from 'moment';
 import logger from '../../../../../utils/loggers/server.mjs';
-
-dbConnect();
 
 export default (req, res) => {
   return new Promise(resolve => {

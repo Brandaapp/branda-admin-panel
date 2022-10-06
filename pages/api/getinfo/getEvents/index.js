@@ -1,9 +1,6 @@
-import dbConnect from '../../../../utils/dbConnect';
 import CalendarEvent from '../../../../models/CalendarEvent';
 import logger from '../../../../utils/loggers/server.mjs';
 const _ = require('lodash');
-
-dbConnect();
 
 export default (req, res) => {
   return new Promise(resolve => {

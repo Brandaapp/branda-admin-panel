@@ -1,10 +1,9 @@
 import styles from '../styles/Home.module.css';
 import Remove from '@material-ui/icons/Remove';
 import Fab from '@material-ui/core/Fab';
+import axios from 'axios';
 
 const { DateTime } = require('luxon');
-
-const axios = require('axios');
 
 export default function ShuttleCard (props) {
   const time = props.time;

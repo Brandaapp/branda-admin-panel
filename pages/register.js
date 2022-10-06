@@ -5,8 +5,8 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Image from 'next/image';
+import axios from 'axios';
 
-const axios = require('axios');
 const Input = withStyles({ root: { width: '100% !important', textAlign: 'left' } })(TextField);
 const types = [
   { key: 'employee', label: 'Employee' },

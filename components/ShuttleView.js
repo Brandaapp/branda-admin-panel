@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import ShuttleList from './ShuttleList';
 import styles from '../styles/Home.module.css';
 import { KeyboardDatePicker } from '@material-ui/pickers';
-
-const axios = require('axios');
+import axios from 'axios';
 
 export default function ShuttleView () {
   const [date, setDate] = useState(new Date());

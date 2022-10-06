@@ -1,11 +1,8 @@
-import dbConnect from '../../../../utils/dbConnect';
 import News from '../../../../models/News';
 import logger from '../../../../utils/loggers/server.mjs';
-const axios = require('axios');
+import axios from 'axios';
 const cheerio = require('cheerio');
 const moment = require('moment');
-
-dbConnect();
 
 export default (req, res) => {
   return new Promise(resolve => {
