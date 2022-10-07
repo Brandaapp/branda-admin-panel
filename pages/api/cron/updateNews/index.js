@@ -43,14 +43,20 @@ export default (req, res) => {
         .then((out) => {
           const links = out.map((x) => axios.get(x.link));
           links.map((p) => p.catch((e) => e));
+          const workingLinks = [];
           Promise.allSettled(links)
             .then(function (result) {
               result.forEach(function (element, i) {
-                if (element.status === 'rejected') {
-                  out = out.filter((element) => element !== out[i]);
+                if (element.status === 'fulfilled') {
+                  /**
+                   * previous line: out = out.filter((element) => element !== out[i]);
+                   * for element.status === 'rejected'
+                   * didn't account for index shifting, is what caused issues
+                   */
+                  workingLinks.push(out[i]);
                 }
               });
-              return out;
+              return workingLinks;
             })
             .then((out) => {
               const links = out.map((x) => axios.get(x.link));
