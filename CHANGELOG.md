@@ -1,18 +1,39 @@
 # Changelog
 
-## [0.2.0] - TBD
+## [0.2.0] - October 10, 2022
 
 ### Added
 
 - All routes within the API now use Promises
 - API routes that `fetch` from external routes now have appropriate error handling
 - Server-side logging using `bunyan`
+- `dbConnect` functionality now has API endpoint
+    - GET `/api/admin/dbConnect`
+    - Protected behind auth
+- All routes now pass through `middleware` function
+    - first calls `dbConnect` endpoint
+    - then authenticates route based on set of available public routes
+    - redirects to approproate `401` or `500` errors
+- All uses of `mongoose.Schema.find` that were designed to only return one element, and checked for such, now correctly
+    use `mongoose.Schema.findOne`
+- All `/getinfo` resources now return the success status of their operation, to unify behavior, and for clear 
+    understanding in public use
+```javascript
+    res.status(200).send({ success: true, doc });
+    // OR
+    res.status(500).send({ success: false, err });
+```
 
 ### Fixed
 
 - Removed `MaterialUI` error by changing from deprecated `createMuiTheme` to `createTheme` in `pages/_app.js`
 - Login form now has password field type as `password` instead of `text`
 - Login form now no longer inconsistently logs in or doesn't log in user
+- Fixed bug in news cron job where rejected promises for links fetched from Brandies page were trying to be evaluated
+
+### Dev Tools
+
+- Linter now works properly (uses standard ESLint and Next.js rules)
 
 ## [0.1.0] - September 19, 2022
 
