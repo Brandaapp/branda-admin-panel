@@ -6,19 +6,19 @@ export default (req, res) => {
     logger.info({ req });
     if (req.method === 'GET') {
       const name = req.query.name;
-      ShuttleRouteSchedule.findOne({ name }, (err, doc) => {
+      ShuttleRouteSchedule.find({ name }, (err, docs) => {
         if (err) {
           logger.error({ err }, `Error finding shuttle with name ${name}`);
           res.status(500).send({ err });
           logger.info({ res });
           resolve();
-        } else if (!doc) {
+        } else if (!docs.length) {
           logger.warn(`Could not find a schedule for route with name ${name}`);
           res.status(404).send(`Could not find a schedule for route with name ${name}`);
           logger.info({ res });
           resolve();
         } else {
-          res.send(doc);
+          res.send(docs);
           logger.info({ res }, 'Shuttle route schedule fetched');
           resolve();
         }

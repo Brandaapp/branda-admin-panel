@@ -12,19 +12,19 @@ export default (req, res) => {
         logger.info({ res });
         resolve();
       } else {
-        ShuttleStop.findOne({ route }, (err, doc) => {
+        ShuttleStop.find({ route }, (err, docs) => {
           if (err) {
             logger.error({ err }, `Error finding shuttle for route ${route}`);
             res.status(500).send(err);
             logger.info({ res });
             resolve();
-          } else if (!doc) {
+          } else if (!docs.length) {
             logger.warn(`No shuttle found for route ${route}`);
             res.status(404).send(`No shuttle found for route ${route}`);
             logger.info({ res });
             resolve();
           } else {
-            res.status(200).send(doc);
+            res.status(200).send(docs);
             logger.info({ res }, 'Fetched shuttle stop');
             resolve();
           }
