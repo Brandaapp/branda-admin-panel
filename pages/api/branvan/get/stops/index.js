@@ -5,7 +5,7 @@ export default (req, res) => {
   return new Promise((resolve) => {
     logger.info({ req });
     if (req.method === 'GET') {
-      ShuttleStop.find({}, (err, docs) => {
+      ShuttleStop.findOne({}, (err, docs) => {
         if (err) {
           logger.error({ err }, 'Error getting stops');
           res.status(500).send(err);

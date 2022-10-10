@@ -6,7 +6,7 @@ export default (req, res) => {
     logger.info({ req });
     if (req.method === 'GET') {
       const name = req.query.name;
-      ShuttleRouteSchedule.find({ name }, (err, doc) => {
+      ShuttleRouteSchedule.findOne({ name }, (err, doc) => {
         if (err) {
           logger.error({ err }, `Error finding shuttle with name ${name}`);
           res.status(500).send({ err });
