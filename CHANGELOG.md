@@ -14,15 +14,8 @@
     - first calls `dbConnect` endpoint
     - then authenticates route based on set of available public routes
     - redirects to approproate `401` or `500` errors
-- All uses of `mongoose.Schema.find` that were designed to only return one element, and checked for such, now correctly
-    use `mongoose.Schema.findOne`
 - All `/getinfo` resources now return the success status of their operation, to unify behavior, and for clear 
     understanding in public use
-```javascript
-    res.status(200).send({ success: true, doc });
-    // OR
-    res.status(500).send({ success: false, err });
-```
 
 ### Fixed
 
@@ -30,6 +23,8 @@
 - Login form now has password field type as `password` instead of `text`
 - Login form now no longer inconsistently logs in or doesn't log in user
 - Fixed bug in news cron job where rejected promises for links fetched from Brandies page were trying to be evaluated
+- All uses of `mongoose.Schema.find` that were designed to only return one element, and checked for such, now correctly
+    use `mongoose.Schema.findOne`
 
 ### Dev Tools
 
