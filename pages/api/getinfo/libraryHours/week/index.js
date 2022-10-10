@@ -58,7 +58,7 @@ export default (req, res) => {
         })
         .then(data => parseAndReduceWeekHours(data.locations))
         .then(data => {
-          res.send(data);
+          res.send({ success: true, data });
           logger.info({ res }, 'Library week hours fetched');
           resolve();
         }).catch(err => {
@@ -66,39 +66,42 @@ export default (req, res) => {
             if (err.message.includes('getaddrinfo ENOTFOUND')) {
               // error from fetch() because of incorrect domain
               logger.error({ err }, 'Fetching weeks\'s library hours failed: Incorrect domain.');
-              res.status(500).send({ err, msg: 'Fetching weeks\'s library hours failed: Incorrect domain.' });
+              res.status(500)
+                .send({ success: false, error: err, msg: 'Fetching week\'s library hours failed: Incorrect domain.' });
               logger.info({ res });
               resolve();
             } else {
               logger.error(`Fetching weeks's library hours failed. Status code: ${err}`);
-              res.status(err).send({ err, msg: `Fetching weeks's library hours failed. Status code: ${err}` });
+              res.status(err)
+                .send({ success: false, error: err, msg: `Fetching week's library hours failed. Status code: ${err}` });
               resolve();
             }
           } else if (err instanceof SyntaxError) {
             // error from response.json(), non-json text received
             logger.error({ err }, `JSON syntax error. Check response data from ${BRANDEIS_LIBRARY_HOURS_WEEK}.`);
             res.status(500)
-              .send({ err, msg: `JSON syntax error. Check response data from ${BRANDEIS_LIBRARY_HOURS_WEEK}.` });
+              .send({ success: false, error: err, msg: `Check response data from ${BRANDEIS_LIBRARY_HOURS_WEEK}.` });
             logger.info({ res });
             resolve();
           } else if (err instanceof ReferenceError) {
             // error from parseAndReduceWeekHours(), json schema changed
             logger.error({ err }, `JSON schema error. Check response data from ${BRANDEIS_LIBRARY_HOURS_WEEK}.`);
             res.status(500)
-              .send({ err, msg: `JSON schema error. Check response data from ${BRANDEIS_LIBRARY_HOURS_WEEK}.` });
+              .send({ success: false, error: err, msg: `Check response data from ${BRANDEIS_LIBRARY_HOURS_WEEK}.` });
             logger.info({ res });
             resolve();
           } else {
             // response.ok == false
             logger.error(`Fetching weeks's library hours failed. Status code: ${err}`);
-            res.status(err).send({ msg: `Fetching weeks's library hours failed. Status code: ${err}` });
+            res.status(err)
+              .send({ success: false, error: `Fetching week's library hours failed. Status code: ${err}` });
             logger.info({ res });
             resolve();
           }
         });
     } else {
       logger.warn(`HTTP method must be GET on ${req.url}`);
-      res.status(405).send(`HTTP method must be GET on ${req.url}`);
+      res.status(405).send({ success: false, error: `HTTP method must be GET on ${req.url}` });
       logger.info({ res });
       resolve();
     }

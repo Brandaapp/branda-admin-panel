@@ -40,7 +40,7 @@ export default (req, res) => {
         })
         .then(data => parseAndReduceTodayHours(data.locations))
         .then(data => {
-          res.send(data);
+          res.send({ success: true, data });
           logger.info({ res }, 'Fetched today library hours');
           resolve();
         })
@@ -49,33 +49,35 @@ export default (req, res) => {
             if (err.message.includes('getaddrinfo ENOTFOUND')) {
               // error from fetch() because of incorrect domain
               logger.error({ err }, 'Fetching today\'s library hours failed: Incorrect domain.');
-              res.status(500).send({ err, msg: 'Fetching today\'s library hours failed: Incorrect domain.' });
+              res.status(500)
+                .send({ success: false, error: err, msg: 'Fetching today\'s library hours failed: Incorrect domain.' });
               logger.info({ res });
               resolve();
             } else {
               logger.error({ err }, 'Error fetching today library hours');
-              res.status(500).send({ err });
+              res.status(500).send({ success: false, error: err });
               logger.info({ res });
               resolve();
             }
           } else if (err instanceof SyntaxError) {
             // error from response.json(), non-json text received
-            logger.error({ err }, `JSON syntax error. Check response data from ${LIBRARY_HOURS_TODAY_URL}.`);
+            logger.error({ err }, `JSON syntax error. Check response from ${LIBRARY_HOURS_TODAY_URL}.`);
             res.status(500)
-              .send({ err, msg: `JSON syntax error. Check response data from ${LIBRARY_HOURS_TODAY_URL}.` });
+              .send({ success: false, error: err, msg: `Check response from ${LIBRARY_HOURS_TODAY_URL}.` });
             logger.info({ res });
             resolve();
           } else if (err instanceof ReferenceError) {
             // error from parseAndReduceTodayHours(), json schema changed
-            logger.error({ err }, `JSON schema error. Check response data from ${LIBRARY_HOURS_TODAY_URL}.`);
+            logger.error({ err }, `JSON schema error. Check response from ${LIBRARY_HOURS_TODAY_URL}.`);
             res.status(500)
-              .send({ err, msg: `JSON schema error. Check response data from ${LIBRARY_HOURS_TODAY_URL}.` });
+              .send({ success: false, error: err, msg: `Check response from ${LIBRARY_HOURS_TODAY_URL}.` });
             logger.info({ res });
             resolve();
           } else {
             // response.ok == false
             logger.error(`Fetching today's library hours failed. Status code: ${err}`);
-            res.status(err).send({ msg: `Fetching today's library hours failed. Status code: ${err}` });
+            res.status(err)
+              .send({ success: false, error: `Fetching today's library hours failed. Status code: ${err}` });
             logger.info({ res });
             resolve();
           }

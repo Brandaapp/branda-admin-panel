@@ -11,15 +11,15 @@ export default (req, res) => {
         (err, docs) => {
           if (err) {
             logger.error({ err }, 'Error fetching notifications');
-            res.status(500).send({ err });
+            res.status(500).send({ success: false, error: err });
             resolve();
           } else if (!docs.length) {
-            res.send({ empty: true });
+            res.status(404).send({ success: false, error: 'No branvan notifications found' });
             logger.info({ res }, 'No branvan notifications found');
             resolve();
           } else {
             res.send({
-              empty: false,
+              success: true,
               notifications: docs.map(doc => {
                 return {
                   type: doc.type,

@@ -78,7 +78,7 @@ export default (req, res) => {
         })
         .then(data => getInfo(data))
         .then(data => {
-          res.send(data);
+          res.send({ success: true, data });
           logger.info({ res }, 'Fetched gym times');
           resolve();
         })
@@ -87,38 +87,39 @@ export default (req, res) => {
             if (err.message.includes('getaddrinfo ENOTFOUND')) {
               // error from fetch() because of incorrect domain
               logger.error({ err }, 'Fetching gym times failed: Incorrect domain.');
-              res.status(500).send({ err, msg: 'Fetching gym times failed: Incorrect domain.' });
+              res.status(500).send({ success: false, error: err, msg: 'Fetching gym times failed: Incorrect domain.' });
               logger.info({ res });
               resolve();
             } else {
               logger.error({ err }, `Fetching gym times failed. Status code: ${err}`);
-              res.status(err).send({ err, msg: `Fetching gym times failed. Status code: ${err}` });
+              res.status(err)
+                .send({ success: false, error: err, msg: `Fetching gym times failed. Status code: ${err}` });
               logger.info({ res });
               resolve();
             }
           } else if (err instanceof SyntaxError) {
             // error from response.json(), non-json text received
-            logger.error({ err }, `JSON syntax error. Check response data from ${GYM_TIME_URL}.`);
-            res.status(500).send({ err, msg: `JSON syntax error. Check response data from ${GYM_TIME_URL}.` });
+            logger.error({ err }, `JSON syntax error. Check response from ${GYM_TIME_URL}.`);
+            res.status(500).send({ success: false, error: err, msg: `Check response from ${GYM_TIME_URL}.` });
             logger.info({ res });
             resolve();
           } else if (err instanceof ReferenceError || err instanceof TypeError) {
             // error from getInfo(), json schema changed
-            logger.error({ err }, `JSON schema error. Check response data from ${GYM_TIME_URL}.`);
-            res.status(500).send({ err, msg: `JSON schema error. Check response data from ${GYM_TIME_URL}.` });
+            logger.error({ err }, `JSON schema error. Check response from ${GYM_TIME_URL}.`);
+            res.status(500).send({ success: false, error: err, msg: `Check response from ${GYM_TIME_URL}.` });
             logger.info({ res });
             resolve();
           } else {
             // response.ok == false
             logger.error(`Fetching gym times failed. Status code: ${err}`);
-            res.status(err).send({ msg: `Fetching gym times failed. Status code: ${err}` });
+            res.status(err).send({ success: false, error: `Fetching gym times failed. Status code: ${err}` });
             logger.info({ res });
             resolve();
           }
         });
     } else {
       logger.warn(`HTTP method must be GET on ${req.url}`);
-      res.status(405).send(`HTTP method must be GET on ${req.url}`);
+      res.status(405).send({ success: false, error: `HTTP method must be GET on ${req.url}` });
       logger.info({ res });
       resolve();
     }

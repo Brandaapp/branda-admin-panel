@@ -8,18 +8,18 @@ export default (req, res) => {
       KB.find().exec((err, knowledge) => {
         if (err) {
           logger.error({ err }, 'Error getting knowledge');
-          res.status(500).send({ err: err });
+          res.status(500).send({ success: false, error: err });
           logger.info({ res });
           resolve();
         } else {
-          res.send({ kb: knowledge });
+          res.send({ success: true, kb: knowledge });
           logger.info({ res }, 'Fetched knowledge');
           resolve();
         }
       });
     } else {
       logger.warn(`HTTP method must be GET on ${req.url}`);
-      res.status(405).send(`HTTP method must be GET on ${req.url}`);
+      res.status(405).send({ success: false, error: `HTTP method must be GET on ${req.url}` });
       logger.info({ res });
       resolve();
     }
