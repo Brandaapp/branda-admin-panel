@@ -6,7 +6,7 @@ export default (req, res) => {
   return new Promise(resolve => {
     logger.info({ req });
     if (req.method === 'GET') {
-      BranvanNotif.findOne(
+      BranvanNotif.find(
         { startTime: { $lte: moment().toDate() }, endTime: { $gte: moment().toDate() } },
         (err, docs) => {
           if (err) {

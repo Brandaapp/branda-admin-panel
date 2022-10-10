@@ -5,13 +5,13 @@ export default (req, res) => {
   return new Promise((resolve) => {
     logger.info({ req });
     if (req.method === 'GET') {
-      ShuttleStop.findOne({}, (err, docs) => {
+      ShuttleStop.find({}, (err, docs) => {
         if (err) {
           logger.error({ err }, 'Error getting stops');
           res.status(500).send(err);
           logger.info({ res });
           resolve();
-        } else if (!docs) {
+        } else if (!docs.length) {
           logger.warn('No shuttles found');
           res.status(404).send('No shuttles found');
           logger.info({ res });
