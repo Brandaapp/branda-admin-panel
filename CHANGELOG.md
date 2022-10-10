@@ -25,6 +25,7 @@
 - Fixed bug in news cron job where rejected promises for links fetched from Brandies page were trying to be evaluated
 - All uses of `mongoose.Schema.find` that were designed to only return one element, and checked for such, now correctly
     use `mongoose.Schema.findOne`
+- Optimized `/getinfo/gymTimes` route
 
 ### Dev Tools
 
