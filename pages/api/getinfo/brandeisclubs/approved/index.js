@@ -8,7 +8,7 @@ export default function (req, res) {
       Organization.find({ active: true }, (err, approvedOrganizations) => {
         if (err) {
           logger.error({ err }, 'Error fetching active organizations');
-          res.send({ success: false, error: err });
+          res.status(500).send({ success: false, error: err });
           resolve();
         } else {
           res.send({ success: true, approvedOrganizations: approvedOrganizations });
@@ -18,7 +18,7 @@ export default function (req, res) {
       });
     } else {
       logger.warn(`HTTP method must be GET on ${req.url}`);
-      res.status(405).send(`HTTP method must be GET on ${req.url}`);
+      res.status(405).send({ success: false, error: `HTTP method must be GET on ${req.url}` });
       logger.info({ res });
       resolve();
     }

@@ -13,7 +13,7 @@ export default (req, res) => {
       }).exec((err, slots) => {
         if (err) {
           logger.error({ err }, 'Error finding branvan availability');
-          res.status(500).send({ err });
+          res.status(500).send({ success: false, error: err });
           logger.info({ res });
           resolve();
         } else {
@@ -32,14 +32,14 @@ export default (req, res) => {
             }
           }
           logger.debug({ hrs }, 'hours computed');
-          res.send({ hrs });
+          res.send({ sucess: true, hrs });
           logger.info({ res }, 'Hours availability fetched');
           resolve();
         }
       });
     } else {
       logger.warn(`HTTP method must be GET on ${req.url}`);
-      res.status(405).send(`HTTP method must be GET on ${req.url}`);
+      res.status(405).send({ success: false, error: `HTTP method must be GET on ${req.url}` });
       logger.info({ res });
       resolve();
     }

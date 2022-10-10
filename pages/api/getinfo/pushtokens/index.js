@@ -22,11 +22,11 @@ export default (req, res) => {
         (err, doc) => {
           if (err) {
             logger.error({ err }, 'Error adding push token to organization');
-            res.status(500).send({ err });
+            res.status(500).send({ success: false, error: err });
             logger.info({ res });
             resolve();
           } else {
-            res.json({ organization: doc });
+            res.json({ success: true, organization: doc });
             logger.info({ res }, 'Pushed token to org');
             resolve();
           }
@@ -34,7 +34,7 @@ export default (req, res) => {
       );
     } else {
       logger.warn(`HTTP method must be POST on ${req.url}`);
-      res.status(405).send(`HTTP method must be POST on ${req.url}`);
+      res.status(405).send({ success: false, error: `HTTP method must be POST on ${req.url}` });
       logger.info({ res });
       resolve();
     }
