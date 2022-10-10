@@ -12,7 +12,7 @@ export default (req, res) => {
         logger.info({ res });
         resolve();
       } else {
-        ShuttleStop.find({ route }, (err, doc) => {
+        ShuttleStop.findOne({ route }, (err, doc) => {
           if (err) {
             logger.error({ err }, `Error finding shuttle for route ${route}`);
             res.status(500).send(err);
