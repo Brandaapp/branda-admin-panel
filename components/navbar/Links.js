@@ -1,5 +1,5 @@
 import { access } from '../../utils/rolesUtils.mjs';
-import linksData from './links-data.json';
+import linksData from './linksData.json';
 import Link from 'next/link.js';
 
 function renderLinks (type) {
