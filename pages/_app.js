@@ -7,7 +7,7 @@ import { access } from '../utils/rolesUtils';
 import { useRouter } from 'next/router';
 import { getSession, Provider, signIn, useSession } from 'next-auth/client';
 import LuxonUtils from '@date-io/luxon';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/navbar/Navbar';
 import Image from 'next/image';
 
 // set global headers - all internal axios requests use our API token
