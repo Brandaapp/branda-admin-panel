@@ -1,16 +1,14 @@
 export const access = {
   manager: {
     allowed: new Set([
-      '/announcements',
       '/',
       '/docs',
       '/login',
-      '/push-notifications',
-      '/register',
-      '/reservations',
+      '/shuttles-management',
+      '/announcements',
       '/schedules',
-      '/screens',
-      '/shuttles-management'
+      '/register',
+      '/push-notifications'
     ]),
     redirectTo: '/'
   },

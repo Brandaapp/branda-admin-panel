@@ -1,0 +1,22 @@
+{
+  "/shuttles-management": {
+    "name": "Shuttles Management",
+    "icon": "directions_bus"
+  },
+  "/schedules": {
+    "name": "Schedules",
+    "icon": "access_time"
+  },
+  "/announcements": {
+    "name": "Announcements",
+    "icon": "notification_important"
+  },
+  "/register": {
+    "name": "Register",
+    "icon": "person_add_alt_1"
+  },
+  "/push-notifications": {
+    "name": "Push Notifications",
+    "icon": "sms"
+  }
+}
