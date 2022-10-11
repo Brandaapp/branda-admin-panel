@@ -7,14 +7,16 @@ function renderLinks (type) {
   return [...allowed]
     .filter(link => Object.keys(linksData).includes(link)) // filter links for nav bar, not all allowed
     .map((link, index) => {
-      return (<li key={index}>
-        <Link href={link}>
-          <a className="black-text">
-            {linksData[link].name}
-            <i className="material-icons right">{linksData[link].icon}</i>
-          </a>
-        </Link>
-      </li>);
+      return (
+        <li key={index}>
+          <Link href={link}>
+            <a className="black-text">
+              {linksData[link].name}
+              <i className="material-icons right">{linksData[link].icon}</i>
+            </a>
+          </Link>
+        </li>
+      );
     });
 }
 
