@@ -1,7 +1,8 @@
 import { access } from '../../utils/rolesUtils';
 import { useRouter } from 'next/router';
 import { signOut, useSession } from 'next-auth/client';
-import { AppBar,
+import {
+  AppBar,
   Avatar,
   Box,
   Container,
