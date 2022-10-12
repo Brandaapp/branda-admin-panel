@@ -2,9 +2,9 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Image from 'next/image';
 import { useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { TextField } from '@mui/material';
 import { csrfToken } from 'next-auth/client';
-import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@mui/styles';
 
 const Input = withStyles({ root: { width: '100% !important' } })(TextField);
 

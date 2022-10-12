@@ -1,4 +1,5 @@
-import { KeyboardTimePicker } from '@material-ui/pickers';
+import { TextField } from '@mui/material';
+import { TimePicker } from '@mui/x-date-pickers';
 
 export default function DayEditor (props) {
   return (
@@ -9,19 +10,21 @@ export default function DayEditor (props) {
         justifyContent: 'space-around',
         height: '120px'
       }}>
-        <KeyboardTimePicker
+        <TimePicker
           value={props.start}
           label="Start time"
-          onChange={(date, hour) => props.callback(date, hour, props.day, true)}
+          onChange={(date) => props.callback(date, props.day, true)}
           style={{ width: '125px' }}
+          renderInput={(params) => <TextField {...params} />}
         />
-        <KeyboardTimePicker
+        <TimePicker
           value={props.end}
           label="End time"
-          onChange={(date, hour) =>
-            props.callback(date, hour, props.day, false)
+          onChange={(date) =>
+            props.callback(date, props.day, false)
           }
           style={{ width: '125px' }}
+          renderInput={(params) => <TextField {...params} />}
         />
       </div>
     </td>

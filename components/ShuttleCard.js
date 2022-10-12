@@ -1,6 +1,6 @@
 import styles from '../styles/Home.module.css';
-import Remove from '@material-ui/icons/Remove';
-import Fab from '@material-ui/core/Fab';
+import { Remove } from '@mui/icons-material';
+import { Fab } from '@mui/material';
 import axios from 'axios';
 
 const { DateTime } = require('luxon');

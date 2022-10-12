@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { weekStart, weekEnd, weekNum } from '../utils/dateUtils';
 import WeekPicker from './WeekPicker';
-import Popover from '@material-ui/core/Popover';
-import Button from '@material-ui/core/Button';
 import WeekEditor from './WeekEditor';
-import Modal from '@material-ui/core/Modal';
 import AddPlaceForm from './addplace/AddPlaceForm';
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { CircularProgress, Backdrop, Modal, Button, Popover } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import Image from 'next/image';
 
 import createTable from '../utils/renderUtils/tableGenerator';
 
-import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
 let M;
@@ -20,12 +16,15 @@ if (typeof window !== 'undefined') {
   M = require('materialize-css');
 }
 
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#fff'
-  }
-}));
+const useStyles = makeStyles((theme) => {
+  // console.log('theme is', theme);
+  return {
+    backdrop: {
+      zIndex: 1,
+      color: '#fff'
+    }
+  };
+});
 
 export default function ScheduleEditor (props) {
   const classes = useStyles();
