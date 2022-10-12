@@ -22,7 +22,7 @@ export default function Links ({ type, drawer }) {
             : <Button
               key={`${index}`}
               onClick={() => { router.push(link); }}
-              sx={{ my: 2, color: '#1B4370', display: 'block' }}
+              sx={{ my: 2, color: 'white', display: 'block' }}
             >
               {linksData[link].name}
             </Button>
