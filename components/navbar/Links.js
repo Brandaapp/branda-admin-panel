@@ -12,7 +12,7 @@ color: inherit;
   position: relative;
   overflow: hidden;
   color: white;
-  border-radius: 0;
+  border-radius: 5px 5px 0 0;
   &::after {
     content: '';
     position: absolute;
