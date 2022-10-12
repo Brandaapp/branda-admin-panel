@@ -1,17 +1,12 @@
 import { useState } from 'react';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import DayEditor from '../DayEditor';
 import createTable from '../../utils/renderUtils/tableGenerator';
 import {
   getDefaultWeekTimes,
   getProperDate,
   populateWeeksArray
 } from '../../utils/dateUtils';
-import Tooltip from '@material-ui/core/Tooltip';
+import { Tooltip, TextField, Button, MenuItem, FormControl, Select } from '@mui/material';
+import DayEditor from '../DayEditor';
 
 import axios from 'axios';
 

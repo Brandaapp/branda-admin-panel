@@ -1,7 +1,5 @@
-import { Button } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { Autocomplete, TextField, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
-import TextField from '@material-ui/core/TextField';
 import { isValidHttpUrl } from '../utils/httpUtils';
 import Image from 'next/image';
 import axios from 'axios';

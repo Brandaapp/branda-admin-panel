@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { weekStart, weekEnd, weekNum } from '../utils/dateUtils';
 import WeekPicker from './WeekPicker';
-import Popover from '@material-ui/core/Popover';
-import Button from '@material-ui/core/Button';
+import { Button, Popover } from '@mui/material';
 import Image from 'next/image';
 import axios from 'axios';
 

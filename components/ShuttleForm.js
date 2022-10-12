@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { KeyboardTimePicker } from '@material-ui/pickers';
-import TextField from '@material-ui/core/TextField';
+import { TextField } from '@mui/material';
+import { TimePicker } from '@mui/x-date-pickers';
 import axios from 'axios';
+import { withStyles } from '@mui/styles';
 
 const Input = withStyles({ root: { width: '100% !important' } })(TextField);
 
@@ -92,20 +92,22 @@ export default function ShuttleForm (props) {
             <div className="row">
               <div className="col s6">
                 <div className="shuttle-form-label">Start Time</div>
-                <KeyboardTimePicker
+                <TimePicker
                   value={state.start}
                   onChange={(date) =>
                     setState((prev) => ({ ...prev, start: date.toJSDate() }))
                   }
+                  renderInput={(params) => <TextField {...params} />}
                 />
               </div>
               <div className="col s6">
                 <div className="shuttle-form-label">End Time</div>
-                <KeyboardTimePicker
+                <TimePicker
                   value={state.end}
                   onChange={(date) =>
                     setState((prev) => ({ ...prev, end: date.toJSDate() }))
                   }
+                  renderInput={(params) => <TextField {...params} />}
                 />
               </div>
             </div>

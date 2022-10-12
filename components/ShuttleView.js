@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import ShuttleList from './ShuttleList';
 import styles from '../styles/Home.module.css';
-import { KeyboardDatePicker } from '@material-ui/pickers';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import axios from 'axios';
+import { TextField } from '@mui/material';
 
 export default function ShuttleView () {
   const [date, setDate] = useState(new Date());
@@ -44,12 +45,13 @@ export default function ShuttleView () {
         >
           <h5>Shuttles Management</h5>
 
-          <KeyboardDatePicker
+          <DesktopDatePicker
             clearable
             placeholder="Enter Date"
             value={date}
             onChange={(newDate) => setDate(newDate.toJSDate())}
             format="MM/dd/yyyy"
+            renderInput={(params) => <TextField {...params} />}
           />
         </div>
       </div>

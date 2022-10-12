@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { KeyboardDatePicker } from '@material-ui/pickers';
-import MuiTextField from '@material-ui/core/TextField';
+import { TextField } from '@mui/material';
+import { DesktopDatePicker } from '@mui/x-date-pickers';
+import { withStyles } from '@mui/styles';
 
-const TextField = withStyles({ root: { width: '100% !important' } })(MuiTextField);
+const CustomTextField = withStyles({ root: { width: '100% !important' } })(TextField);
 
 export default function AnnouncementsForm (props) {
   const [state, setState] = useState({
@@ -37,7 +37,7 @@ export default function AnnouncementsForm (props) {
       <h5>Make an announcement</h5>
       <div style={{ marginTop: '40px' }}>
         <span className="input-label">Type</span>
-        <TextField
+        <CustomTextField
           id="type"
           placeholder="Enter type"
           rowsMax={1}
@@ -48,7 +48,7 @@ export default function AnnouncementsForm (props) {
       </div>
       <div style={{ marginTop: '40px' }}>
         <span className="input-label">Description</span>
-        <TextField
+        <CustomTextField
           id="content"
           placeholder="Enter description"
           rowsMax={4}
@@ -60,24 +60,26 @@ export default function AnnouncementsForm (props) {
       <div className="row" style={{ marginTop: '40px' }}>
         <div className="col s6">
           <div>Start Date</div>
-          <KeyboardDatePicker
+          <DesktopDatePicker
             clearable
             value={state.startTime}
             placeholder="Enter Date"
             onChange={(date) => handleChange(date, 'startTime')}
             minDate={new Date()}
             format="MM/dd/yyyy"
+            renderInput={(params) => <TextField {...params} />}
           />
         </div>
         <div className="col s6">
           <div>End Date</div>
-          <KeyboardDatePicker
+          <DesktopDatePicker
             clearable
             value={state.endTime}
             placeholder="Enter Date"
             onChange={(date) => handleChange(date, 'endTime')}
             minDate={new Date()}
             format="MM/dd/yyyy"
+            renderInput={(params) => <TextField {...params} />}
           />
         </div>
       </div>

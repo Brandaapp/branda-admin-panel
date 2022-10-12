@@ -1,12 +1,14 @@
 import '../styles/globals.css';
 import '../styles/materialize.css';
+import '../styles/mui.css';
 import { useEffect } from 'react';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { ThemeProvider } from 'styled-components';
+import { createTheme } from '@mui/material';
 import { access } from '../utils/rolesUtils';
 import { useRouter } from 'next/router';
 import { getSession, Provider, signIn, useSession } from 'next-auth/client';
-import LuxonUtils from '@date-io/luxon';
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import Navbar from '../components/navbar/Navbar';
 import Image from 'next/image';
 
@@ -38,12 +40,12 @@ function TLApp ({ Component, pageProps }) {
     <div style={{ height: '100%' }}>
       <Provider session={pageProps.session}>
         <Auth>
-          <MuiPickersUtilsProvider utils={LuxonUtils}>
+          <LocalizationProvider dateAdapter={AdapterLuxon}>
             <ThemeProvider theme={inputTheme}>
               {nav()}
               <div className="row"><Component {...pageProps} /></div>
             </ThemeProvider>
-          </MuiPickersUtilsProvider>
+          </LocalizationProvider>
         </Auth>
       </Provider>
     </div>

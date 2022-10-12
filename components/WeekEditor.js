@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import DayEditor from './DayEditor';
-import { Button } from '@material-ui/core';
 import { getProperDate } from '../utils/dateUtils';
 import { mergeStartEndToSchedule } from '../utils/scheduleUtils';
 import Confirmation from './Confirmation';
-import Tooltip from '@material-ui/core/Tooltip';
+import { Tooltip, Button } from '@mui/material';
 
 import axios from 'axios';
 
@@ -33,15 +32,13 @@ export default function WeekEditor (props) {
 
   const [confirmDelete, setConfirmDelete] = useState(false);
 
-  const updateOnChange = (date, hour, day, start) => {
-    hour = hour.toLowerCase();
-    const newDate = getProperDate(hour);
+  const updateOnChange = (date, day, start) => {
     const tempStart = state.startTimes;
     const tempEnd = state.endTimes;
     if (start) {
-      tempStart[day] = newDate;
+      tempStart[day] = date;
     } else {
-      tempEnd[day] = newDate;
+      tempEnd[day] = date;
     }
 
     setState((prev) => ({ ...prev, startTimes: tempStart, endTimes: tempEnd }));
