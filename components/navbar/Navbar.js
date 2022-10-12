@@ -46,7 +46,7 @@ export default function Navbar () {
 
   if (session) {
     return (
-      <AppBar position="static" sx={{ backgroundColor: '#1B4370', color: 'white' }}>
+      <AppBar position="sticky" sx={{ position: 'fixed', backgroundColor: '#1B4370', color: 'white' }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
