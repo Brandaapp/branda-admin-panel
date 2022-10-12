@@ -1,24 +1,12 @@
-import { access } from '../../utils/rolesUtils';
-import { Typography } from '@mui/material';
-import { useSession } from 'next-auth/client';
+import Image from 'next/image';
+import Link from 'next/link';
 
-export default function BrandaLogo ({ size }) {
-  const [session] = useSession();
-
+export default function BrandaLogo ({ redirectTo }) {
   return (
-    <Typography
-      variant={size}
-      noWrap
-      href={access[session.user.type].redirectTo}
-      sx={{
-        mr: 2,
-        display: { xs: 'none', md: 'flex' },
-        fontFamily: 'monospace',
-        letterSpacing: '.3rem',
-        textDecoration: 'none'
-      }}
-    >
-      BRANDA ADMIN
-    </Typography>
+    <Link href={redirectTo}>
+      <a className="nav-logo">
+        <Image alt='' src="/logo.png" width={60} height={60} />
+      </a>
+    </Link>
   );
 }
