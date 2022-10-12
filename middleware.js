@@ -12,6 +12,10 @@ export async function middleware (req) {
 
   // `/api/admin` routes will typically have their own authentication process
   if (route.startsWith('/api/admin')) return NextResponse.next();
+  // all auth routes don't need protection, since they require correct data anyways
+  else if (route.startsWith('/api/auth')) return NextResponse.next();
+  // similar with errors - they don't reveal any sensitive information
+  else if (route.startsWith('/api/errors')) return NextResponse.next();
   else {
     try {
       // ensure DB connection
