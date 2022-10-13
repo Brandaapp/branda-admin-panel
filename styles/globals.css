@@ -6,6 +6,10 @@ body {
   scrollbar-width: none;
 }
 
+img:hover {
+  cursor: pointer;
+}
+
 /* Hide scrollbar */
 body::-webkit-scrollbar {
   display: none;

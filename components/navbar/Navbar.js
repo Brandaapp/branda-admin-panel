@@ -6,22 +6,24 @@ import {
   Avatar,
   Box,
   Container,
-  Drawer,
   IconButton,
   List,
   Menu,
   MenuItem,
+  SwipeableDrawer,
   Toolbar,
   Typography
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
-import BrandaLogo from './BrandaLogo';
 import Links from './Links';
+import Image from 'next/image';
 
 export default function Navbar () {
   const [session] = useSession();
   const router = useRouter();
+
+  const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -36,8 +38,8 @@ export default function Navbar () {
   };
 
   const toggleDrawer = open => (event) => {
-    if (event.type === 'keydown' &&
-    (event.key === 'Tab' || event.key === 'Shift')) {
+    if (event?.type === 'keydown' &&
+    (event?.key === 'Tab' || event?.key === 'Shift')) {
       return;
     }
 
@@ -60,6 +62,7 @@ export default function Navbar () {
               noWrap
               component="a"
               align='center'
+              href={access[session.user.type].redirectTo}
               sx={{
                 mr: 2,
                 display: { xs: 'none', md: 'flex' },
@@ -71,7 +74,7 @@ export default function Navbar () {
                 paddingRight: 4
               }}
             >
-              <BrandaLogo redirectTo={access[session.user.type].redirectTo} />
+              <Image alt='' src="/logo-fancy.png" width={50} height={50} />
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -85,10 +88,13 @@ export default function Navbar () {
               >
                 <MenuIcon />
               </IconButton>
-              <Drawer
+              <SwipeableDrawer
                 anchor={'left'}
                 open={drawerOpen}
                 onClose={toggleDrawer(false)}
+                onOpen={toggleDrawer(true)}
+                disableBackdropTransition={!iOS}
+                disableDiscovery={iOS}
               >
                 <Box
                   sx={{ width: 250 }}
@@ -100,7 +106,7 @@ export default function Navbar () {
                     <Links type={session.user.type} drawer />
                   </List>
                 </Box>
-              </Drawer>
+              </SwipeableDrawer>
             </Box>
             <Typography
               variant="h5"
@@ -119,7 +125,7 @@ export default function Navbar () {
                 textDecoration: 'none'
               }}
             >
-              <BrandaLogo redirectTo={access[session.user.type].redirectTo} />
+              <Image alt='' src="/logo-fancy.png" width={50} height={50} />
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               <Links type={session.user.type} />
