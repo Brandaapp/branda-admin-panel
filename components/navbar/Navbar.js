@@ -1,5 +1,4 @@
 import { access } from '../../utils/rolesUtils';
-import { useRouter } from 'next/router';
 import { signOut, useSession } from 'next-auth/client';
 import {
   AppBar,
@@ -21,7 +20,6 @@ import Image from 'next/image';
 
 export default function Navbar () {
   const [session] = useSession();
-  const router = useRouter();
 
   const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
@@ -74,7 +72,7 @@ export default function Navbar () {
                 paddingRight: 4
               }}
             >
-              <Image alt='' src="/logo-fancy.png" width={50} height={50} />
+              <Image className='nav-logo' alt='' src="/logo-fancy.png" width={50} height={50} />
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -125,7 +123,7 @@ export default function Navbar () {
                 textDecoration: 'none'
               }}
             >
-              <Image alt='' src="/logo-fancy.png" width={50} height={50} />
+              <Image className='nav-logo' alt='' src="/logo-fancy.png" width={50} height={50} />
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               <Links type={session.user.type} />
@@ -151,7 +149,7 @@ export default function Navbar () {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem key={'Log Out'} onClick={async () => { await signOut(); router.push('/login'); }}>
+                <MenuItem key={'Log Out'} onClick={async () => { signOut(); }}>
                   <Typography textAlign="center">{'Log Out'}</Typography>
                 </MenuItem>
               </Menu>

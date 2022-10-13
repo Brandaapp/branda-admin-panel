@@ -1,5 +1,5 @@
 import styles from '../styles/Home.module.css';
-import { Remove } from '@mui/icons-material';
+import Remove from '@mui/icons-material/Remove';
 import { Fab } from '@mui/material';
 import axios from 'axios';
 
