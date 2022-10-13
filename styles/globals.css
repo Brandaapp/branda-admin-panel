@@ -2,6 +2,17 @@ html,
 body {
   padding: 0;
   margin: 0;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+img:hover {
+  cursor: pointer;
+}
+
+/* Hide scrollbar */
+body::-webkit-scrollbar {
+  display: none;
 }
 
 .brand-logo {
@@ -58,6 +69,7 @@ body {
   vertical-align: middle;
   margin-bottom: auto;
   margin-left: 20px;
+  padding-top: 10px;
 }
 
 .fixed-top {

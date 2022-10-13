@@ -3,7 +3,8 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "dev": "next dev | bunyan",
+    "dev": "next dev",
+    "dev-log": "next dev | bunyan",
     "build": "next build",
     "start": "next start",
     "depcheck": "npx depcheck",
