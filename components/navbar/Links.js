@@ -51,6 +51,7 @@ export default function Links ({ type, drawer }) {
               sx={{ my: 2, color: 'white', display: 'block' }}
             >
               {linksData[link].name}
+              <i className="material-icons right">{linksData[link].icon}</i>
             </UnderlineButton>
         );
       });
