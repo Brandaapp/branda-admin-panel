@@ -68,9 +68,6 @@ function Auth ({ children }) {
     }
     if (!isUser && router.pathname !== '/login') signIn(); // If not authenticated, force log in
     if (isUser) {
-      // if (access[session.user.type] === undefined) {
-      //   console.error('Unrecognized user type');
-      // }
       if (!access[session.user.type].allowed.has(router.pathname)) {
         router.push(access[session.user.type].redirectTo);
       }
