@@ -8,36 +8,36 @@ const weekUtilsFactory = (func, expected) => {
     day = new Date('2022-08-31T04:00:00.000Z');
     computed = func(day);
 
-    expect(computed.getDate()).to.equal(expected.getDate());
-    expect(computed.getMonth()).to.equal(expected.getMonth());
-    expect(computed.getFullYear()).to.equal(expected.getFullYear());
+    expect(computed.date()).to.equal(expected.getDate());
+    expect(computed.month()).to.equal(expected.getMonth());
+    expect(computed.year()).to.equal(expected.getFullYear());
   });
 
   it('works with a day in the middle of the week in another month', () => {
     day = new Date('2022-09-01T04:00:00.000Z');
     computed = func(day);
 
-    expect(computed.getDate()).to.equal(expected.getDate());
-    expect(computed.getMonth()).to.equal(expected.getMonth());
-    expect(computed.getFullYear()).to.equal(expected.getFullYear());
+    expect(computed.date()).to.equal(expected.getDate());
+    expect(computed.month()).to.equal(expected.getMonth());
+    expect(computed.year()).to.equal(expected.getFullYear());
   });
 
   it('works when the day is the start of the week', () => {
     day = new Date('2022-08-28T04:00:00.000Z');
     computed = func(day);
 
-    expect(computed.getDate()).to.equal(expected.getDate());
-    expect(computed.getMonth()).to.equal(expected.getMonth());
-    expect(computed.getFullYear()).to.equal(expected.getFullYear());
+    expect(computed.date()).to.equal(expected.getDate());
+    expect(computed.month()).to.equal(expected.getMonth());
+    expect(computed.year()).to.equal(expected.getFullYear());
   });
 
   it('works when the day is the last day of the week', () => {
     day = new Date('2022-09-03T04:00:00.000Z');
     computed = func(day);
 
-    expect(computed.getDate()).to.equal(expected.getDate());
-    expect(computed.getMonth()).to.equal(expected.getMonth());
-    expect(computed.getFullYear()).to.equal(expected.getFullYear());
+    expect(computed.date()).to.equal(expected.getDate());
+    expect(computed.month()).to.equal(expected.getMonth());
+    expect(computed.year()).to.equal(expected.getFullYear());
   });
 };
 
@@ -55,9 +55,9 @@ describe('dateUtils', () => {
   });
 
   describe('weekNum', () => {
-    it('works starts a new week on a Monday', () => {
-      const week1 = weekNum(new Date('2022-09-11T04:00:00.000Z'));
-      const week2 = weekNum(new Date('2022-09-12T04:00:00.000Z'));
+    it('works starts a new week on a Sunday', () => {
+      const week1 = weekNum(new Date('2022-09-10T04:00:00.000Z'));
+      const week2 = weekNum(new Date('2022-09-11T04:00:00.000Z'));
 
       expect(week1).to.equal(week2 - 1);
     });

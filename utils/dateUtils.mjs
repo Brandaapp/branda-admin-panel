@@ -1,31 +1,31 @@
-import { DateTime } from 'luxon';
+import dayjs from 'dayjs';
+import weekOfYear from 'dayjs/plugin/weekOfYear.js';
+import weekday from 'dayjs/plugin/weekday.js';
+
+dayjs.extend(weekOfYear);
+dayjs.extend(weekday);
+
+export function stringToTimeObject (time) {
+  const [hour, minute] = time.split(':');
+  const pmReg = /([0-9][0-9])([Pp][Mm])/;
+  return {
+    minute: parseInt(minute || 0),
+    hour: pmReg.test(minute)
+      ? (hour === '12' ? 12 : parseInt(hour) + 12)
+      : (hour === '12') ? 0 : parseInt(hour)
+  };
+}
 
 export function weekStart (day) {
-  const date = DateTime.local(
-    day.getFullYear(),
-    day.getMonth() + 1,
-    day.getDate()
-  );
-  return date.minus({ days: date.weekday % 7 }).toJSDate();
+  return dayjs(day).startOf('week');
 }
 
 export function weekEnd (day) {
-  const date = DateTime.local(
-    day.getFullYear(),
-    day.getMonth() + 1,
-    day.getDate()
-  );
-  return date.plus({ days: 6 - (date.weekday % 7) }).toJSDate();
+  return dayjs(day).endOf('week');
 }
 
 export function weekNum (day) {
-  const date = DateTime.local(
-    day.getFullYear(),
-    day.getMonth() + 1,
-    day.getDate()
-  );
-
-  return date.weekNumber % 53;
+  return dayjs(day).week() - 1;
 }
 
 export function getProperDate (time) {
