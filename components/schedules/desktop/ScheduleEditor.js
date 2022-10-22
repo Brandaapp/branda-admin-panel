@@ -26,7 +26,7 @@ import WeekPicker from './WeekPicker.js';
 import WeekEditor from './WeekEditor.js';
 import DeleteConfirmation from './DeleteConfirmation.js';
 import AddPlaceModal from './AddPlaceModal.js';
-import DesktopSkeleton from './DesktopSkeleton.js';
+import Image from 'next/image.js';
 
 dayjs.extend(isBetweenPlugin);
 
@@ -54,7 +54,7 @@ export default function ScheduleEditor () {
       setSchedules(tempSchedule);
       setPlace(tempSchedule[0].name);
     } else {
-      setSchedules(undefined);
+      // setSchedules(undefined);
       axios
         .get(`/api/schedules/${week}`)
         .then((response) => {
@@ -72,7 +72,7 @@ export default function ScheduleEditor () {
     const week = weekNum(day);
     const body = packageScheduleData(times);
     axios.patch(`/api/schedules/${week}/${empId}`, body)
-      .then(res => {
+      .then(() => {
         setSnackMeta({
           open: true,
           severity: 'success',
@@ -108,6 +108,9 @@ export default function ScheduleEditor () {
       tempSchedules.splice(index, 1);
       setPlace(tempSchedules[0].name);
       setSchedules(tempSchedules);
+      Object.keys(schedulesCache).forEach(week => {
+        schedulesCache[week].splice(index, 1);
+      });
       // TODO: not considering edge case when there are no schedules left. Not a problem for now.
     }).catch(() => {
       setSnackMeta({
@@ -154,7 +157,7 @@ export default function ScheduleEditor () {
                 updateData={fetchWeekSchedule}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={6} textAlign='center'>
               <Typography
                 fontSize={30}
                 fontWeight={100}
@@ -183,22 +186,24 @@ export default function ScheduleEditor () {
               </FormControl>
             </Grid>
           </Grid>
-          <Grid item sx={{ mt: 5 }}>
+          <Grid item sx={{ mt: 10 }}>
             <WeekEditor
               schedule={schedules.find(s => s.name === place)}
               times={times}
               setTimes={setTimes}
             />
           </Grid>
-          <Grid item xs={2} display='flex' justifyContent={'space-around'} pt={5} flexWrap='wrap'>
+          <Grid item xs={2} display='flex' justifyContent={'space-around'} mt={5} flexWrap='wrap'>
             <Grid item>
               <Tooltip title='Apply changes to just this week' >
-                <Button variant='contained' sx={{ backgroundColor: '#1B4370' }}
-                  onClick={patchWeekSchedule}
-                  disabled={sendingData}
-                >
+                <div>
+                  <Button variant='contained' sx={{ backgroundColor: '#1B4370' }}
+                    onClick={patchWeekSchedule}
+                    disabled={sendingData}
+                  >
                   Update Week
-                </Button>
+                  </Button>
+                </div>
               </Tooltip>
             </Grid>
             <Grid item>
@@ -206,28 +211,32 @@ export default function ScheduleEditor () {
                 title={`Clear all current edits for ${place}, 
                 restoring the schedule to how it was when the page was loaded.`}
               >
-                <Button variant='contained' sx={{ backgroundColor: '#1B4370' }} onClick={() => {
-                  fetchWeekSchedule(day);
-                  setSnackMeta({
-                    open: true,
-                    message: `Edits for ${place} cleared`,
-                    severity: 'success'
-                  });
-                }}
-                disabled={sendingData}
-                >
+                <div>
+                  <Button variant='contained' sx={{ backgroundColor: '#1B4370' }} onClick={() => {
+                    fetchWeekSchedule(day);
+                    setSnackMeta({
+                      open: true,
+                      message: `Edits for ${place} cleared`,
+                      severity: 'success'
+                    });
+                  }}
+                  disabled={sendingData}
+                  >
                   Clear Edits
-                </Button>
+                  </Button>
+                </div>
               </Tooltip>
             </Grid>
             <Grid item>
               <Tooltip title={`Delete ${place}`} >
-                <Button variant='contained' sx={{ backgroundColor: '#1B4370' }}
-                  disabled={sendingData}
-                  onClick={() => setDeleteModal(true)}
-                >
+                <div>
+                  <Button variant='contained' sx={{ backgroundColor: '#1B4370' }}
+                    disabled={sendingData}
+                    onClick={() => setDeleteModal(true)}
+                  >
                   Delete Place
-                </Button>
+                  </Button>
+                </div>
               </Tooltip>
             </Grid>
           </Grid>
@@ -288,6 +297,10 @@ export default function ScheduleEditor () {
       </Box>
     );
   } else {
-    return <DesktopSkeleton day={day}/>;
+    return (
+      <Box height='90vh' display={'flex'} flexDirection='column' alignItems={'center'} justifyContent='center'>
+        <Image alt='' src="/branda-admin-loading-gif.gif" width={280} height={280} />
+      </Box>
+    );
   }
 }

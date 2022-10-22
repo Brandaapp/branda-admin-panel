@@ -10,7 +10,7 @@ export default function Schedules ({ isMobile }) {
       </Head>
 
       <main className={styles.main}>
-        { isMobile ? null : <ScheduleEditor isMobile={isMobile} />}
+        { isMobile ? null : <ScheduleEditor />}
       </main>
 
       <footer className={styles.footer}></footer>
