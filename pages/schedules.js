@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import ScheduleEditor from '../components/schedules/ScheduleEditor';
+import ScheduleEditor from '../components/schedules/desktop/ScheduleEditor';
 import styles from '../styles/Home.module.css';
 
 export default function Schedules ({ isMobile }) {
@@ -10,7 +10,7 @@ export default function Schedules ({ isMobile }) {
       </Head>
 
       <main className={styles.main}>
-        <ScheduleEditor isMobile={isMobile} />
+        { isMobile ? null : <ScheduleEditor isMobile={isMobile} />}
       </main>
 
       <footer className={styles.footer}></footer>

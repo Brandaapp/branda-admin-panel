@@ -1,10 +1,10 @@
 import { Grid, Stack, TextField, Typography } from '@mui/material';
-import { stringToTimeObject } from '../../utils/dateUtils.mjs';
+import { stringToTimeObject } from '../../../utils/dateUtils.mjs';
 import dayjs from 'dayjs';
 import { TimePicker } from '@mui/x-date-pickers';
 import { useEffect } from 'react';
 
-const DAYS = [
+export const DAYS = [
   'Sunday',
   'Monday',
   'Tuesday',
@@ -48,14 +48,12 @@ export default function WeekEditor ({ schedule, times, setTimes }) {
             <Typography fontWeight={1000} textAlign='center'>
               {day}
             </Typography>
-            <Grid item>
-              <TimePicker
-                label='Start'
-                value={times[day]?.start}
-                onChange={updateTimes.bind(this, day, true)}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </Grid>
+            <TimePicker
+              label='Start'
+              value={times[day]?.start}
+              onChange={updateTimes.bind(this, day, true)}
+              renderInput={(params) => <TextField {...params} />}
+            />
             <TimePicker
               label='End'
               value={times[day]?.end}
@@ -70,7 +68,7 @@ export default function WeekEditor ({ schedule, times, setTimes }) {
 
   if (schedule) {
     return (
-      <Grid container mt={5} pl={5} mb={5} spacing={5} direction='row' flexWrap={'wrap'}>
+      <Grid container pl={5} mb={5} spacing={5} direction='row' flexWrap={'wrap'}>
         { renderWeek() }
       </Grid>
     );
