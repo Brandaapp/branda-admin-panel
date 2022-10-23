@@ -189,7 +189,7 @@ export default function ScheduleEditor () {
                 setTimes={setTimes}
                 editMode={edit}
               />
-              <Grid item display={'flex'} flexDirection='row' justifyContent={'space-evenly'}>
+              <Grid item display={'flex'} flexDirection='row' justifyContent={'space-evenly'} pt={4}>
                 <Tooltip
                   title={
                     edit

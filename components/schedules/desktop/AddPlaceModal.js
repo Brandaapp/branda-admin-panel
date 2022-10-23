@@ -8,6 +8,7 @@ import {
   Modal,
   Select,
   TextField,
+  Tooltip,
   Typography
 } from '@mui/material';
 import axios from 'axios';
@@ -97,10 +98,12 @@ export default function AddPlaceModal ({ open, setOpen, onCreate, setSnackMeta }
       });
   };
 
+  const validInput = () => name && group;
+
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
       <Box sx={style}>
-        <Grid container direction={'column'} spacing={3}>
+        <Grid container direction={'column'} spacing={5}>
           <Grid item xs={1}>
             <Typography
               fontSize={40}
@@ -144,16 +147,28 @@ export default function AddPlaceModal ({ open, setOpen, onCreate, setSnackMeta }
               </Select>
             </FormControl>
           </Grid>
-          <WeekEditor schedule={schedule} times={times} setTimes={setTimes} editMode={true}/>
+          <Grid item>
+            <WeekEditor schedule={schedule} times={times} setTimes={setTimes} editMode={true}/>
+          </Grid>
           <Grid item sx={{ display: 'flex', flexDirection: 'row-reverse' }} xs={1}>
-            <Button
-              variant='contained'
-              sx={{ backgroundColor: '#1B4370' }}
-              onClick={postPlace}
-              disabled={dataSending || !name}
+            <Tooltip title={
+              !validInput()
+                ? 'Please fill out necessary fields'
+                : 'Add new place'
+            }
+            placement='left'
             >
-              {dataSending ? 'Adding place...' : 'Add Place'}
-            </Button>
+              <div>
+                <Button
+                  variant='contained'
+                  sx={{ backgroundColor: '#1B4370' }}
+                  onClick={postPlace}
+                  disabled={dataSending || !validInput()}
+                >
+                  {dataSending ? 'Adding place...' : 'Add Place'}
+                </Button>
+              </div>
+            </Tooltip>
           </Grid>
         </Grid>
       </Box>

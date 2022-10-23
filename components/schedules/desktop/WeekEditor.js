@@ -43,7 +43,7 @@ export default function WeekEditor ({ schedule, times, setTimes, editMode }) {
   const renderWeek = () => {
     return DAYS.map(day => {
       return (
-        <Grid key={day} item xs={1.7} pr={3}>
+        <Grid key={day} item xs={1.7} pr={3} mt={3} sx={{ minWidth: '150px' }}>
           <Stack spacing={3}>
             <Typography fontWeight={1000} textAlign='center'>
               {day}
@@ -70,7 +70,7 @@ export default function WeekEditor ({ schedule, times, setTimes, editMode }) {
 
   if (schedule) {
     return (
-      <Grid item pl={5} display='flex' flexDirection='row' flexWrap={'wrap'} >
+      <Grid item pl={5} display='flex' flexWrap={'wrap'}>
         { renderWeek() }
       </Grid>
     );
