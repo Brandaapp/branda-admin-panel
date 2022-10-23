@@ -14,7 +14,7 @@ export const DAYS = [
   'Saturday'
 ];
 
-export default function WeekEditor ({ schedule, times, setTimes }) {
+export default function WeekEditor ({ schedule, times, setTimes, editMode }) {
   useEffect(() => {
     if (schedule) {
       const res = {};
@@ -43,7 +43,7 @@ export default function WeekEditor ({ schedule, times, setTimes }) {
   const renderWeek = () => {
     return DAYS.map(day => {
       return (
-        <Grid key={day} item xs={12 / 7}>
+        <Grid key={day} item xs={1.7} pr={3}>
           <Stack spacing={3}>
             <Typography fontWeight={1000} textAlign='center'>
               {day}
@@ -53,12 +53,14 @@ export default function WeekEditor ({ schedule, times, setTimes }) {
               value={times[day]?.start}
               onChange={updateTimes.bind(this, day, true)}
               renderInput={(params) => <TextField {...params} />}
+              disabled={!editMode}
             />
             <TimePicker
               label='End'
               value={times[day]?.end}
               onChange={updateTimes.bind(this, day, false)}
               renderInput={(params) => <TextField {...params} />}
+              disabled={!editMode}
             />
           </Stack>
         </Grid>
@@ -68,7 +70,7 @@ export default function WeekEditor ({ schedule, times, setTimes }) {
 
   if (schedule) {
     return (
-      <Grid container pl={5} mb={5} spacing={5} direction='row' flexWrap={'wrap'}>
+      <Grid item pl={5} display='flex' flexDirection='row' flexWrap={'wrap'} >
         { renderWeek() }
       </Grid>
     );

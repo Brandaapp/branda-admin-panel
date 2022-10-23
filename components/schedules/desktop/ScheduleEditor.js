@@ -2,13 +2,12 @@ import {
   Alert,
   Box,
   Button,
-  Fab,
-  FormControl,
+  Divider,
   Grid,
   IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
+  List,
+  ListItemButton,
+  ListItemText,
   Snackbar,
   Tooltip,
   Typography
@@ -16,7 +15,6 @@ import {
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { weekStart, weekEnd, weekNum, packageScheduleData } from '../../../utils/dateUtils.mjs';
-import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
 import dayjs from 'dayjs';
@@ -27,6 +25,7 @@ import WeekEditor from './WeekEditor.js';
 import DeleteConfirmation from './DeleteConfirmation.js';
 import AddPlaceModal from './AddPlaceModal.js';
 import Image from 'next/image.js';
+import SpeedDialPicker from './SpeedDialPicker.js';
 
 dayjs.extend(isBetweenPlugin);
 
@@ -34,16 +33,17 @@ const schedulesCache = {};
 
 export default function ScheduleEditor () {
   const [schedules, setSchedules] = useState(undefined);
-  const [place, setPlace] = useState('');
+  const [placeIndex, setPlaceIndex] = useState(0);
   const [day, setDay] = useState('');
   const [times, setTimes] = useState({});
+  const [edit, setEdit] = useState(false);
 
   const [snackMeta, setSnackMeta] = useState({ open: false, message: undefined, severity: 'success' });
 
-  const [sendingData, setSendingData] = useState(false);
-
   const [deleteModal, setDeleteModal] = useState(false);
   const [addPlaceModal, setAddPlaceModal] = useState(false);
+
+  const place = schedules ? schedules[placeIndex].name : undefined;
 
   const fetchWeekSchedule = (day) => {
     setDay(day);
@@ -52,23 +52,21 @@ export default function ScheduleEditor () {
     if (schedulesCache[week]) {
       const tempSchedule = JSON.clone(schedulesCache[week]);
       setSchedules(tempSchedule);
-      setPlace(place ?? tempSchedule[0].name);
+      setPlaceIndex(placeIndex ?? 0);
     } else {
-      // setSchedules(undefined);
       axios
         .get(`/api/schedules/${week}`)
         .then((response) => {
           schedulesCache[week] = JSON.clone(response.data);
           setSchedules(response.data);
-          const tempPlace = place || response.data[0].name;
-          setPlace(tempPlace);
+          const tempPlaceIndex = placeIndex || 0;
+          setPlaceIndex(tempPlaceIndex);
         });
     }
   };
 
   const patchWeekSchedule = () => {
-    setSendingData(true);
-    const empId = schedules.find(schedule => schedule.name === place).emp_id;
+    const empId = schedules[placeIndex].emp_id;
     const week = weekNum(day);
     const body = packageScheduleData(times);
     axios.patch(`/api/schedules/${week}/${empId}`, body)
@@ -85,16 +83,12 @@ export default function ScheduleEditor () {
           severity: 'error',
           message: `Error updating ${place}`
         });
-      })
-      .finally(() => {
-        setSendingData(false);
       });
   };
 
   const deactivatePlace = () => {
     setDeleteModal(false);
-    setSendingData(true);
-    const index = schedules.findIndex(schedule => schedule.name === place);
+    const index = placeIndex;
     const empId = schedules[index].emp_id;
     axios.patch(`/api/schedules/delete`, {
       emp_id: empId
@@ -106,7 +100,7 @@ export default function ScheduleEditor () {
       });
       const tempSchedules = JSON.clone(schedules);
       tempSchedules.splice(index, 1);
-      setPlace(tempSchedules[0].name);
+      setPlaceIndex(0);
       setSchedules(tempSchedules);
       Object.keys(schedulesCache).forEach(week => {
         schedulesCache[week].splice(index, 1);
@@ -118,8 +112,6 @@ export default function ScheduleEditor () {
         severity: 'error',
         message: `Error deleting ${place}`
       });
-    }).finally(() => {
-      setSendingData(false);
     });
   };
 
@@ -146,18 +138,16 @@ export default function ScheduleEditor () {
     fetchWeekSchedule(dayjs(new Date()));
   }, []);
 
+  useEffect(() => {
+    setEdit(false);
+  }, [placeIndex]);
+
   if (schedules) {
     return (
-      <Box pt={12} px={5} display='flex' flexDirection={'column'}>
-        <Grid container spacing={2} direction='column'>
-          <Grid container display='flex' justifyContent={'space-around'} alignItems={'center'} pl={3}>
-            <Grid item xs={2}>
-              <WeekPicker
-                day={day}
-                updateData={fetchWeekSchedule}
-              />
-            </Grid>
-            <Grid item xs={6} textAlign='center'>
+      <Box p={5} height='85vh'>
+        <Grid container spacing={3} direction='column'>
+          <Grid container directon='row' alignItems={'center'} justifyContent='space-between'>
+            <Grid item xs={6}>
               <Typography
                 fontSize={30}
                 fontWeight={100}
@@ -167,98 +157,88 @@ export default function ScheduleEditor () {
                 {weekEnd(day).format('L')}
               </Typography>
             </Grid>
-            <Grid item xs={2}>
-              <FormControl fullWidth>
-                <InputLabel id="place-select-label">Place</InputLabel>
-                <Select
-                  labelId="place-select-label"
-                  id="place-select"
-                  value={place}
-                  label='Place'
-                  onChange={(e) => setPlace(e.target.value)}
+            <Grid item xs={6} display='flex' flexDirection='row' justifyContent='flex-end'>
+              <WeekPicker
+                day={day}
+                updateData={fetchWeekSchedule}
+              />
+            </Grid>
+          </Grid>
+          <Grid container direction={'row'} height='75vh' pt={3} >
+            <Grid item xs={2} maxHeight='100%'>
+              <List component={'div'} sx={{ maxHeight: '100%', overflow: 'auto' }}>
+                {schedules.map((schedule, index) => {
+                  const { name } = schedule;
+                  return (
+                    <ListItemButton
+                      key={name}
+                      selected={placeIndex === index}
+                      onClick={() => setPlaceIndex(index)}
+                    >
+                      <ListItemText primary={name} />
+                    </ListItemButton>
+                  );
+                })}
+              </List>
+            </Grid>
+            <Divider orientation='vertical' />
+            <Grid item xs={9.8} display='flex' flexDirection={'column'} justifyContent='space-evenly'>
+              <WeekEditor
+                schedule={schedules[placeIndex]}
+                times={times}
+                setTimes={setTimes}
+                editMode={edit}
+              />
+              <Grid item display={'flex'} flexDirection='row' justifyContent={'space-evenly'}>
+                <Tooltip
+                  title={
+                    edit
+                      ? `Clear all current edits for ${place}, 
+                          restoring the schedule to how it was when the page was loaded.`
+                      : 'Turn on edit mode to use this feature'
+                  }
                 >
-                  {schedules.map(schedule => {
-                    return (
-                      <MenuItem key={schedule.name} value={schedule.name}>{schedule.name}</MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Grid item sx={{ mt: 10 }}>
-            <WeekEditor
-              schedule={schedules.find(s => s.name === place)}
-              times={times}
-              setTimes={setTimes}
-            />
-          </Grid>
-          <Grid item xs={2} display='flex' justifyContent={'space-around'} mt={5} flexWrap='wrap'>
-            <Grid item>
-              <Tooltip title='Apply changes to just this week' >
-                <div>
-                  <Button variant='contained' sx={{ backgroundColor: '#1B4370' }}
-                    onClick={patchWeekSchedule}
-                    disabled={sendingData}
-                  >
-                  Update Week
-                  </Button>
-                </div>
-              </Tooltip>
-            </Grid>
-            <Grid item>
-              <Tooltip
-                title={`Clear all current edits for ${place}, 
-                restoring the schedule to how it was when the page was loaded.`}
-              >
-                <div>
-                  <Button variant='contained' sx={{ backgroundColor: '#1B4370' }} onClick={() => {
-                    fetchWeekSchedule(day);
-                    setSnackMeta({
-                      open: true,
-                      message: `Edits for ${place} cleared`,
-                      severity: 'success'
-                    });
-                  }}
-                  disabled={sendingData}
-                  >
-                  Clear Edits
-                  </Button>
-                </div>
-              </Tooltip>
-            </Grid>
-            <Grid item>
-              <Tooltip title={`Delete ${place}`} >
-                <div>
-                  <Button variant='contained' sx={{ backgroundColor: '#1B4370' }}
-                    disabled={sendingData}
-                    onClick={() => setDeleteModal(true)}
-                  >
-                  Delete Place
-                  </Button>
-                </div>
-              </Tooltip>
+                  <div>
+                    <Button
+                      variant='contained'
+                      disabled={!edit}
+                      onClick={() => {
+                        fetchWeekSchedule(day);
+                        setSnackMeta({
+                          open: true,
+                          message: `Edits for ${place} cleared`,
+                          severity: 'success'
+                        });
+                      }}
+                    >
+                      Clear Edits
+                    </Button>
+                  </div>
+                </Tooltip>
+                <Tooltip title={
+                  edit
+                    ? `Apply changes for ${place} to just this week`
+                    : 'Turn on edit mode to use this feature'
+                }>
+                  <div>
+                    <Button
+                      variant='contained'
+                      disabled={!edit}
+                      onClick={patchWeekSchedule}
+                    >
+                      Update Week
+                    </Button>
+                  </div>
+                </Tooltip>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-        <Tooltip title='Add place' placement='left' >
-          <Fab
-            color='primary'
-            aria-label='add'
-            sx={{
-              margin: 0,
-              top: 'auto',
-              right: 50,
-              bottom: 50,
-              left: 'auto',
-              position: 'fixed',
-              backgroundColor: '#1B4370'
-            }}
-            onClick={() => setAddPlaceModal(true)}
-          >
-            <AddIcon />
-          </Fab>
-        </Tooltip>
+        <SpeedDialPicker
+          editAction={() => setEdit(true)}
+          deleteAction={() => setDeleteModal(true)}
+          addAction={() => setAddPlaceModal(true)}
+        />
         <Snackbar
           open={snackMeta.open}
           autoHideDuration={3500}
@@ -281,13 +261,13 @@ export default function ScheduleEditor () {
           open={addPlaceModal}
           setOpen={setAddPlaceModal}
           setSnackMeta={setSnackMeta}
-          onCreate={(placeName, placeTimes) => {
+          onCreate={(placeTimes) => {
             if (placeTimes) {
               // placeTimes only set if successful push to DB
               const temp = JSON.clone(schedules);
               temp.push(placeTimes);
               setSchedules(temp);
-              setPlace(placeName);
+              setPlaceIndex(temp.length - 1);
               Object.keys(schedulesCache).forEach(week => {
                 schedulesCache[week].push(JSON.clone(placeTimes));
               });

@@ -30,8 +30,8 @@ export default function DeleteConfirmation ({ open, setOpen, place, onDelete }) 
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={onDelete} autoFocus sx={{ color: 'red' }}>
+          <Button onClick={handleClose} autoFocus>Cancel</Button>
+          <Button onClick={onDelete} sx={{ color: 'red' }}>
             Delete
           </Button>
         </DialogActions>

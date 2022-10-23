@@ -1,4 +1,5 @@
-import { Button, Popover, TextField } from '@mui/material';
+import { Fab, Popover, TextField, Tooltip } from '@mui/material';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { PickersDay, StaticDatePicker } from '@mui/x-date-pickers';
 import { useState } from 'react';
 import { styled } from '@mui/material/styles';
@@ -59,13 +60,15 @@ export default function WeekPicker ({ day, updateData }) {
 
   return (
     <>
-      <Button
-        variant="contained"
-        onClick={(e) => setAnchorEl(e.currentTarget)}
-        sx={{ backgroundColor: '#1B4370' }}
-      >
-          Choose Week
-      </Button>
+      <Tooltip title='Choose week' placement='right'>
+        <Fab
+          color='primary'
+          aria-label='choose week'
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+        >
+          <CalendarMonthIcon />
+        </Fab>
+      </Tooltip>
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}

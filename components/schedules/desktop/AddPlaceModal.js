@@ -2,11 +2,11 @@ import {
   Box,
   Button,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Modal,
   Select,
-  Stack,
   TextField,
   Typography
 } from '@mui/material';
@@ -21,7 +21,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   display: 'flex',
-  width: '85%',
+  width: '80%',
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4
@@ -83,7 +83,7 @@ export default function AddPlaceModal ({ open, setOpen, onCreate, setSnackMeta }
         // place exists already
         setSnackMeta({
           open: true,
-          message: `${name} already exits! If it does not appear in the dropdown list, 
+          message: `"${name}" already exits! If it does not appear in the dropdown list, 
             and you would like to re-activate it, please contact a Branda administrator.`,
           severity: 'error'
         });
@@ -93,23 +93,23 @@ export default function AddPlaceModal ({ open, setOpen, onCreate, setSnackMeta }
         setName('');
         setGroup('');
         setOpen(false);
-        onCreate(name, payload);
+        onCreate(payload);
       });
   };
 
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
       <Box sx={style}>
-        <Stack spacing={3} textAlign='center'>
-          <div>
+        <Grid container direction={'column'} spacing={3}>
+          <Grid item xs={1}>
             <Typography
-              fontSize={50}
+              fontSize={40}
               textAlign='center'
             >
-              Add Place
+              Add a New Place
             </Typography>
-          </div>
-          <div>
+          </Grid>
+          <Grid item xs={1} display='flex' justifyContent={'center'}>
             <FormControl fullWidth sx={{
               minWidth: '10%',
               width: '60%'
@@ -122,8 +122,8 @@ export default function AddPlaceModal ({ open, setOpen, onCreate, setSnackMeta }
                 onChange={(event) => setName(event.target.value)}
               />
             </FormControl>
-          </div>
-          <div>
+          </Grid>
+          <Grid item xs={1} display='flex' justifyContent={'center'}>
             <FormControl fullWidth
               sx={{
                 minWidth: '10%',
@@ -143,21 +143,19 @@ export default function AddPlaceModal ({ open, setOpen, onCreate, setSnackMeta }
                 <MenuItem value={'Library'}>Library</MenuItem>
               </Select>
             </FormControl>
-          </div>
-          <div>
-            <WeekEditor schedule={schedule} times={times} setTimes={setTimes}/>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
+          </Grid>
+          <WeekEditor schedule={schedule} times={times} setTimes={setTimes} editMode={true}/>
+          <Grid item sx={{ display: 'flex', flexDirection: 'row-reverse' }} xs={1}>
             <Button
               variant='contained'
               sx={{ backgroundColor: '#1B4370' }}
               onClick={postPlace}
-              disabled={dataSending}
+              disabled={dataSending || !name}
             >
               {dataSending ? 'Adding place...' : 'Add Place'}
             </Button>
-          </div>
-        </Stack>
+          </Grid>
+        </Grid>
       </Box>
     </Modal>
   );
