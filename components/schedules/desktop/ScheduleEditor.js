@@ -52,7 +52,7 @@ export default function ScheduleEditor () {
     if (schedulesCache[week]) {
       const tempSchedule = JSON.clone(schedulesCache[week]);
       setSchedules(tempSchedule);
-      setPlace(tempSchedule[0].name);
+      setPlace(place ?? tempSchedule[0].name);
     } else {
       // setSchedules(undefined);
       axios
