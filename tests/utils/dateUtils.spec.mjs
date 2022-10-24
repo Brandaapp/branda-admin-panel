@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import { getProperDate, populateWeeksArray, weekEnd, weekNum, weekStart } from '../../utils/dateUtils.mjs';
+import dayjs from 'dayjs';
+import { packageScheduleData, stringToTimeObject, weekEnd, weekNum, weekStart } from '../../utils/dateUtils.mjs';
 
 const weekUtilsFactory = (func, expected) => {
   let day, computed;
@@ -69,94 +70,85 @@ describe('dateUtils', () => {
     });
   });
 
-  describe('getProperDate', () => {
-    let time, proper;
+  describe('stringToTimeObject', () => {
+    it('works with a normal morning time', () => {
+      const time = '6:45 am';
+      const expected = {
+        hour: 6,
+        minute: 45
+      };
 
-    it('returns a date', () => {
-      time = '6:00 am';
-      proper = getProperDate(time);
-
-      expect(proper).to.be.a('date');
+      expect(stringToTimeObject(time)).to.deep.equal(expected);
     });
 
-    it('works with the first time of the day', () => {
-      time = '12:00 am';
-      proper = getProperDate(time);
+    it('works with a normal evening time', () => {
+      const time = '6:45 pm';
+      const expected = {
+        hour: 18,
+        minute: 45
+      };
 
-      expect(proper.getHours()).to.equal(0);
-      expect(proper.getMinutes()).to.equal(0);
+      expect(stringToTimeObject(time)).to.deep.equal(expected);
     });
 
-    it('works with a non-12am morning time', () => {
-      time = '6:45 am';
-      proper = getProperDate(time);
+    it('works with a random amount of spaces before the AM/PM', () => {
+      const random = x => Math.floor(Math.random() * x);
+      const spaces = Array(random(10))
+        .fill()
+        .map(e => ' ')
+        .join('');
+      const time = '6:45' + spaces + 'pm';
+      const expected = {
+        hour: 18,
+        minute: 45
+      };
 
-      expect(proper.getHours()).to.equal(6);
-      expect(proper.getMinutes()).to.equal(45);
-    });
-
-    it('works with a time during noon', () => {
-      time = '12:45 pm';
-      proper = getProperDate(time);
-
-      expect(proper.getHours()).to.equal(12);
-      expect(proper.getMinutes()).to.equal(45);
-    });
-
-    it('works with a time after 12pm', () => {
-      time = '5:45 pm';
-      proper = getProperDate(time);
-
-      expect(proper.getHours()).to.equal(17);
-      expect(proper.getMinutes()).to.equal(45);
+      expect(stringToTimeObject(time)).to.deep.equal(expected);
     });
   });
 
-  describe('populateWeeksArray', () => {
-    it('works with normal input', () => {
-      const times = {
-        monday: {
-          start: '6:45 am',
-          end: '6:45 pm'
-        },
-        tuesday: {
-          start: '6:45 am',
-          end: '6:45 pm'
-        },
-        wednesday: {
-          start: '6:45 am',
-          end: '6:45 pm'
-        },
-        thursday: {
-          start: '6:45 am',
-          end: '6:45 pm'
-        },
-        friday: {
-          start: '6:45 am',
-          end: '6:45 pm'
-        },
-        saturday: {
-          start: '6:45 am',
-          end: '6:45 pm'
-        },
-        sunday: {
-          start: '6:45 am',
-          end: '6:45 pm'
-        }
-      };
+  describe('packageScheduleData', () => {
+    const times = {
+      sunday: {
+        start: dayjs().hour(11).minute(0),
+        end: dayjs().hour(11).minute(1)
+      },
+      monday: {
+        start: dayjs().hour(9).minute(0),
+        end: dayjs().hour(17).minute(0)
+      },
+      tuesday: {
+        start: dayjs().hour(9).minute(0),
+        end: dayjs().hour(17).minute(0)
+      },
+      wednesday: {
+        start: dayjs().hour(9).minute(0),
+        end: dayjs().hour(17).minute(0)
+      },
+      thursday: {
+        start: dayjs().hour(9).minute(0),
+        end: dayjs().hour(17).minute(0)
+      },
+      friday: {
+        start: dayjs().hour(9).minute(0),
+        end: dayjs().hour(16).minute(0)
+      },
+      saturday: {
+        start: dayjs().hour(11).minute(0),
+        end: dayjs().hour(11).minute(1)
+      }
+    };
 
-      const { weeks, json } = populateWeeksArray(times);
+    const expected = {
+      sunday: '11:00am-11:01am',
+      monday: '9:00am-5:00pm',
+      tuesday: '9:00am-5:00pm',
+      wednesday: '9:00am-5:00pm',
+      thursday: '9:00am-5:00pm',
+      friday: '9:00am-4:00pm',
+      saturday: '11:00am-11:01am'
+    };
 
-      expect(weeks.length).to.equal(54);
-      expect(json).to.deep.equal({
-        monday: '6:45 am-6:45 pm',
-        tuesday: '6:45 am-6:45 pm',
-        wednesday: '6:45 am-6:45 pm',
-        thursday: '6:45 am-6:45 pm',
-        friday: '6:45 am-6:45 pm',
-        saturday: '6:45 am-6:45 pm',
-        sunday: '6:45 am-6:45 pm'
-      });
-    });
+    expect(packageScheduleData(times)).to.deep.equal(expected);
   });
 });
