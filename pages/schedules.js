@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import ScheduleEditor from '../components/schedules/desktop/ScheduleEditor';
+import ScheduleView from '../components/schedules/mobile/ScheduleView';
 import styles from '../styles/Home.module.css';
 
 export default function Schedules ({ isMobile }) {
@@ -10,7 +11,7 @@ export default function Schedules ({ isMobile }) {
       </Head>
 
       <main className={styles.main}>
-        { isMobile ? null : <ScheduleEditor />}
+        { isMobile ? <ScheduleView forEditPage/> : <ScheduleEditor />}
       </main>
 
       <footer className={styles.footer}></footer>

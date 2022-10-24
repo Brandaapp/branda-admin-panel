@@ -31,7 +31,7 @@ const CustomPickersDay = styled(PickersDay, {
   })
 }));
 
-export default function WeekPicker ({ day, updateData }) {
+export default function WeekPicker ({ day, updateData, isMobile }) {
   const [anchorEl, setAnchorEl] = useState(undefined);
 
   const renderWeekPickerDay = (date, _, pickersDayProps) => {
@@ -79,7 +79,7 @@ export default function WeekPicker ({ day, updateData }) {
         }}
       >
         <StaticDatePicker
-          displayStaticWrapperAs="desktop"
+          displayStaticWrapperAs={isMobile ? 'mobile' : 'desktop'}
           label="Week picker"
           value={dayjs(day)}
           onChange={(newValue) => {

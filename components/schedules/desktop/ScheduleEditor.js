@@ -34,7 +34,7 @@ const schedulesCache = {};
 export default function ScheduleEditor () {
   const [schedules, setSchedules] = useState(undefined);
   const [placeIndex, setPlaceIndex] = useState(0);
-  const [day, setDay] = useState('');
+  const [day, setDay] = useState(undefined);
   const [times, setTimes] = useState({});
   const [edit, setEdit] = useState(false);
 
@@ -135,7 +135,7 @@ export default function ScheduleEditor () {
   );
 
   useEffect(() => {
-    fetchWeekSchedule(dayjs(new Date()));
+    fetchWeekSchedule(dayjs());
   }, []);
 
   useEffect(() => {
