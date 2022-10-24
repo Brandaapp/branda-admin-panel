@@ -40,39 +40,34 @@ export default function WeekEditor ({ schedule, times, setTimes, editMode }) {
     const { hour, minute } = stringToTimeObject(time);
     return dayjs().hour(hour).minute(minute);
   };
-  const renderWeek = () => {
-    return DAYS.map(day => {
-      return (
-        <Grid key={day} item xs={1.7} pr={3} mt={3} sx={{ minWidth: '150px' }}>
-          <Stack spacing={3}>
-            <Typography fontWeight={1000} textAlign='center'>
-              {day}
-            </Typography>
-            <TimePicker
-              label='Start'
-              value={times[day]?.start}
-              onChange={updateTimes.bind(this, day, true)}
-              renderInput={(params) => <TextField {...params} />}
-              disabled={!editMode}
-            />
-            <TimePicker
-              label='End'
-              value={times[day]?.end}
-              onChange={updateTimes.bind(this, day, false)}
-              renderInput={(params) => <TextField {...params} />}
-              disabled={!editMode}
-            />
-          </Stack>
-        </Grid>
-      );
-    });
-  };
 
-  if (schedule) {
-    return (
-      <Grid item pl={5} display='flex' flexWrap={'wrap'}>
-        { renderWeek() }
-      </Grid>
-    );
-  } else return null;
+  return (
+    <Grid item pl={5} display='flex' flexWrap={'wrap'}>
+      {DAYS.map(day => {
+        return (
+          <Grid key={day} item xs={1.7} pr={3} mt={3} sx={{ minWidth: '150px' }}>
+            <Stack spacing={3}>
+              <Typography fontWeight={1000} textAlign='center'>
+                {day}
+              </Typography>
+              <TimePicker
+                label='Start'
+                value={times[day]?.start}
+                onChange={updateTimes.bind(this, day, true)}
+                renderInput={(params) => <TextField {...params} />}
+                disabled={!editMode}
+              />
+              <TimePicker
+                label='End'
+                value={times[day]?.end}
+                onChange={updateTimes.bind(this, day, false)}
+                renderInput={(params) => <TextField {...params} />}
+                disabled={!editMode}
+              />
+            </Stack>
+          </Grid>
+        );
+      })}
+    </Grid>
+  );
 }

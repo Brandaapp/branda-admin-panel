@@ -9,25 +9,21 @@ import {
   ListItemButton,
   ListItemText,
   Snackbar,
-  Tooltip,
-  Typography
+  Tooltip
 } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { weekStart, weekEnd, weekNum, packageScheduleData } from '../../../utils/dateUtils.mjs';
+import { weekNum, packageScheduleData } from '../../../utils/dateUtils.mjs';
 import CloseIcon from '@mui/icons-material/Close';
 
 import dayjs from 'dayjs';
-import isBetweenPlugin from 'dayjs/plugin/isBetween';
 
-import WeekPicker from './WeekPicker.js';
 import WeekEditor from './WeekEditor.js';
 import DeleteConfirmation from './DeleteConfirmation.js';
 import AddPlaceModal from './AddPlaceModal.js';
-import Image from 'next/image.js';
 import SpeedDialPicker from './SpeedDialPicker.js';
-
-dayjs.extend(isBetweenPlugin);
+import WeekPickerHeader from './WeekPickerHeader.js';
+import LoadingLogo from '../../shared/LoadingLogo.js';
 
 const schedulesCache = {};
 
@@ -146,24 +142,7 @@ export default function ScheduleEditor () {
     return (
       <Box p={5} height='85vh'>
         <Grid container spacing={3} direction='column'>
-          <Grid container directon='row' alignItems={'center'} justifyContent='space-between'>
-            <Grid item xs={6}>
-              <Typography
-                fontSize={30}
-                fontWeight={100}
-              >
-                <b>Current Week: {' '}</b>
-                {weekStart(day).format('L')} {' - '}
-                {weekEnd(day).format('L')}
-              </Typography>
-            </Grid>
-            <Grid item xs={6} display='flex' flexDirection='row' justifyContent='flex-end'>
-              <WeekPicker
-                day={day}
-                updateData={fetchWeekSchedule}
-              />
-            </Grid>
-          </Grid>
+          <WeekPickerHeader day={day} fetchWeekSchedule={fetchWeekSchedule} />
           <Grid container direction={'row'} height='75vh' pt={3} >
             <Grid item xs={2} maxHeight='100%'>
               <List component={'div'} sx={{ maxHeight: '100%', overflow: 'auto' }}>
@@ -234,6 +213,7 @@ export default function ScheduleEditor () {
             </Grid>
           </Grid>
         </Grid>
+        {/* All pop-ups, modals, and speed dials can go below this line */}
         <SpeedDialPicker
           editAction={() => setEdit(true)}
           deleteAction={() => setDeleteModal(true)}
@@ -278,9 +258,7 @@ export default function ScheduleEditor () {
     );
   } else {
     return (
-      <Box height='90vh' display={'flex'} flexDirection='column' alignItems={'center'} justifyContent='center'>
-        <Image alt='' src="/branda-admin-loading-gif.gif" width={280} height={280} />
-      </Box>
+      <LoadingLogo />
     );
   }
 }
