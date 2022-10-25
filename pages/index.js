@@ -1,51 +1,18 @@
-import { useState } from 'react';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import ScheduleView from '../components/ScheduleView';
+import { default as ScheduleViewMobile } from '../components/schedules/mobile/ScheduleView';
+import { default as ScheduleViewDesktop } from '../components/schedules/desktop/ScheduleView';
 
-export default function Home () {
-  const [dataFetched, setDataFetched] = useState(false);
-
+export default function Home ({ isMobile }) {
   return (
     <div className={styles.container}>
       <Head>
         <title>Branda - Home</title>
-        <style>{`
-          .DayPicker-Day {
-            outline: none;
-            border: 1px solid transparent;
-            color: #171b1f !important;
-          }
-          .WeekPicker .DayPicker-Day--hoverRange {
-            background-color: #EFEFEF !important;
-            border-radius: 0;
-          }
-          .WeekPicker .DayPicker-Day--selectedRange {
-            background-color: #b5d0ed !important;
-            border-radius: 0;
-          }
-          .WeekPicker .DayPicker-Day--start {
-            background-color: #22568e !important;
-            color: white !important;
-            border-top-left-radius: 50% !important;
-            border-bottom-left-radius: 50% !important;
-            border-top-right-radius: 0 !important;
-            border-bottom-right-radius: 0 !important;
-          }
-          .WeekPicker .DayPicker-Day--end {
-            background-color: #22568e !important;
-            color: white !important;
-            border-top-left-radius: 0 !important;
-            border-bottom-left-radius: 0 !important;
-            border-top-right-radius: 50% !important;
-            border-bottom-right-radius: 50% !important;
-          }
-        `}</style>
       </Head>
 
       <main className={styles.main}>
         <div className="row">
-          <ScheduleView dataFetched={dataFetched} setDataFetched={setDataFetched} />
+          { isMobile ? <ScheduleViewMobile /> : <ScheduleViewDesktop />}
         </div>
       </main>
 
@@ -53,4 +20,13 @@ export default function Home () {
       </footer>
     </div>
   );
+}
+
+export async function getServerSideProps ({ req }) {
+  const userAgent = req ? req.headers['user-agent'] : navigator.userAgent;
+  const isMobile = Boolean(userAgent.match(
+    /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+  ));
+
+  return { props: { isMobile } };
 }

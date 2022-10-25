@@ -3,12 +3,12 @@ import '../styles/materialize.css';
 import '../styles/mui.css';
 import { useEffect } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ThemeProvider } from 'styled-components';
 import { createTheme } from '@mui/material';
 import { access } from '../utils/rolesUtils';
 import { useRouter } from 'next/router';
 import { getSession, Provider, signIn, useSession } from 'next-auth/client';
-import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import Navbar from '../components/navbar/Navbar';
 import Image from 'next/image';
 
@@ -16,6 +16,11 @@ import Image from 'next/image';
 import axios from 'axios';
 axios.defaults.headers.common = {
   api_token: process.env.API_TOKEN_SECRET
+};
+
+// set up clone function for objects used in react hooks
+JSON.clone = function (obj) {
+  return JSON.parse(JSON.stringify(obj));
 };
 
 const inputTheme = createTheme({ palette: { primary: { main: '#1B4370' } } });
@@ -40,7 +45,7 @@ function TLApp ({ Component, pageProps }) {
     <div style={{ height: '100%' }}>
       <Provider session={pageProps.session}>
         <Auth>
-          <LocalizationProvider dateAdapter={AdapterLuxon}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
             <ThemeProvider theme={inputTheme}>
               {nav()}
               <div className="row"><Component {...pageProps} /></div>
