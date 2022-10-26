@@ -469,7 +469,7 @@ paths:
         schema:
           type: string
     patch:
-      summary: Change a place schedule to inactive
+      summary: Change a Place Schedule to Inactive
       description: Effectively delete a place schedule by setting it's `active` property to `0`.
       tags:
         - Schedules
