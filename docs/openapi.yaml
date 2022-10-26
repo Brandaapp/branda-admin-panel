@@ -1,87 +1,266 @@
 openapi: 3.0.3
 info:
+  description: |
+    # Introduction
+
+    Welcome to the Branda API documentation! The Branda API is used by both the Branda app and the Branda Admin
+    Panel. While the API has some publicly-accessible routes, most require an API key to successfully complete an 
+    operation (see the [Authentication and Security](#section/Authentication-and-Security) section for more details).
+
+    # Authentication and Security
+
+    Petstore offers two forms of authentication:
+      - API Key
+      - DB Key
+
+    The API Key is a general-use token specified in the header of almost all requests sent to our API. Because the majority
+    of this API deals with sensitive information related to service tracking, push notifications, or backend operations, API
+    security is a crucial part of our development. Some routes are publicly-available, and will not have the API key marked as 
+    *required* in the header parameters. If you would like more information regarding this key, and possibly gaining access
+    for personal development or integration with other applications, please reach out to the Branda team.
+
+    The DB Key is specific to `Admin`-related routes, and will be marked as such in routes that use it. This key will
+    not be given out under any circumstances.
+
+     # OpenAPI Specification
+    This API is documented in **OpenAPI format**.
+    It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
+    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. 
   title: Branda Admin Panel Backend
-  description: Backend for the Branda admin panel
-  version: 1.0.1
+  version: 2.0.0
+  contact:
+    name: Branda Support
+    email: brandaapp@gmail.com
+    url: https://branda.app
+  x-logo:
+    url: 'https://branda.app/assets/img/icon/logo.png'
+    altText: Petstore logo
+    width: 100
+  license:
+    name: MIT License
+    url: 'https://github.com/Brandaapp/branda-admin-panel/blob/main/LICENSE'
+tags:
+  - name: Admin
+    description: Special resources used for administrative and diagnostic purposes within the Branda backend team.
+  - name: Schedules
+    description: CRUD resources related to creating and maintaining Place Schedules.
 paths:
-  /api/announcements:
-    post:
+  /api/admin/dbConnect:
+    get:
       tags:
-        - announcements
-      summary: Creates a new announcement with the given data
-      requestBody:
-        description: The announcement to add to the database
-        content:
-          application/json:
-            schema:
-              $ref: #/components/schemas/Announcement
-            examples:
-              announcement:
-                type: Branvan Schedule Change
-                content: >-
-                  Branvan schedule after winter break has been changed. Please
-                  see website for details.
-                startTime: '2020-11-22T14:57:00.000+00:00'
-                endTime: '2021-01-15T02:57:00.000+00:00'
+        - Admin
+      summary: Establish a DB Connection
+      description: Opens a Mongoose connection to the Branda DB instance
+      parameters:
+        - in: header
+          name: db_access_token
+          description: DB Key that grants access to the function of this route
+          required: true
+          schema:
+            type: string
       responses:
-        '200':
-          description: The announcement document
+        200:
+          description: Successfully opened DB connection
+        401:
+          description: Incorrect DB Key credentials
+        405:
+          description: Incorrect HTTP Method
+        500:
+          description: Internal server error, likely caused by Mongoose
           content:
             application/json:
               schema:
-                $ref: #/components/schemas/Announcement
-              examples:
-                announcement:
-                  type: Branvan Schedule Change
-                  content: >-
-                    Branvan schedule after winter break has been changed. Please
-                    see website for details.
-                  startTime: '2020-11-22T14:57:00.000+00:00'
-                  endTime: '2021-01-15T02:57:00.000+00:00'
-        '500':
-          description: Error creating announcement
-  /api/announcements/{date}:
+                type: object
+                properties:
+                  err:
+                    type: string
+                    description: Error thrown from internal service
+                    example: |
+                      MongooseError: The `uri` parameter to `openUri()` must be a string, got "undefined". 
+                      Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+                  msg:
+                    type: string
+                    description: Indication of why error was thrown
+                    example: Error establishing connection to db
+  /api/schedules:
+    parameters:
+      - in: header
+        name: api_token
+        description: API Key for sender verification and general security
+        required: true
+        schema:
+          type: string
     get:
       tags:
-        - announcements
-      summary: Returns all announcements that are active during the given date
+        - Schedules
+      summary: Fetch All Place Schedules
+      description: Returns an array of the names and groups of all active place schedules
       responses:
-        '200':
-          description: Array of all announcements that are active during the given date
+        200:
+          description: Returns an array of place schedules
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: #/components/schemas/Announcement
-              examples:
-                announcements:
-                  - type: Branvan Schedule Change
-                    content: >-
-                      Branvan schedule after winter break has been changed.
-                      Please see website for details.
-                    startTime: '2020-11-22T14:57:00.000+00:00'
-                    endTime: '2021-01-15T02:57:00.000+00:00'
-                  - type: Alert
-                    content: >-
-                      Rogue squirrel on the great lawn. Please stay in your
-                      dorm.
-                    startTime: '2020-11-22T14:57:00.000+00:00'
-                    endTime: '2021-01-15T02:57:00.000+00:00'
-        '500':
-          description: Error finding announcments
-  /api/schedules:
+                  schema: object
+                  properties:
+                    name:
+                      description: Name of the place
+                      example: The Stein
+                    group:
+                      description: Group the place belongs to
+                      example: Dining
+        405:
+          description: Incorrect HTTP method
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/mongoError"
+    post:
+      tags:
+        - Schedules
+      summary: Add a New Place Schedule
+      description: Constructs and adds a new place schedule with a given name, eomployee ID, group and weeks data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - emp_id
+                - Name
+                - group
+              properties:
+                emp_id:
+                  type: string
+                  description: Employee ID for the new place schedule
+                  example: 5b9b485dabd11f5920423a1c
+                Name:
+                  type: string
+                  description: Name for the new place schedule
+                  example: The Stein
+                group:
+                  type: String
+                  description: The group the new place schedule belongs to
+                  example: Dining
+                active:
+                  type: integer
+                  description: 1 represents an active place schedule, 0 represents an inactive place schedule
+                  exmaple: 1
+                  default: 1
+                  format: int32
+                weeks:
+                  type: array
+                  default: []
+                  description: Array with the schedules for each week of the year.
+                  items:
+                    type: object
+                    properties:
+                      sunday:
+                        description: Schedule on a Sunday of a given week (based on the array index)
+                        type: string
+                        format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                      monday:
+                        description: Schedule on a Monday of a given week (based on the array index)
+                        type: string
+                        format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                      tuesday:
+                        description: Schedule on a Tuesday of a given week (based on the array index)
+                        type: string
+                        format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                      wednesday:
+                        description: Schedule on a Wednesday of a given week (based on the array index)
+                        type: string
+                        format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                      thursday:
+                        description: Schedule on a Thursday of a given week (based on the array index)
+                        type: string
+                        format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                      friday:
+                        description: Schedule on a Friday of a given week (based on the array index)
+                        type: string
+                        format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                      saturday:
+                        description: Schedule on a Saturday of a given week (based on the array index)
+                        type: string
+                        format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                sunday:
+                  description: General Sunday schedule
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                  example: "12:00pm-5:00pm"
+                monday:
+                  description: General Monday schedule
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                  example: "9:00am-5:00pm"
+                tuesday:
+                  description: General Tuesday schedule
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                  example: "9:00am-5:00pm"
+                wednesday:
+                  description: General Wednesday schedule
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                  example: "9:00am-5:00pm"
+                thursday:
+                  description: General Thursday schedule
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                  example: "9:00am-5:00pm"
+                friday:
+                  description: General Friday schedule
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                  example: "9:00am-5:00pm"
+                saturday:
+                  description: General Saturday schedule
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                  example: "11:00am-5:00pm"
+      responses:
+        200:
+          description: Schedule successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlaceSchedule"
+        405:
+          description: Incorrect HTTP method
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/mongoError"
+  /api/schedules/{week}:
     get:
       tags:
-        - schedules
-      summary: >-
-        Returns an array of objects representing all of the places that are
-        currently active
+        - Schedules
+      summary: Get Week Schedule for All Places
+      description: Fetches the week data for all places based on a spacific week
+      parameters:
+        - in: header
+          name: api_token
+          description: API Key for sender verification and general security
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: week
+          description: Week of the year to get schedules for (0-based)
+          required: true,
+          schema:
+            type: integer
+            format: int32
+          example: 30
       responses:
-        '200':
-          description: >-
-            An array of objects representing all of the places that are
-            currently active
+        200:
+          description: Successfully fetched all schedules for a given week
           content:
             application/json:
               schema:
@@ -90,368 +269,338 @@ paths:
                   type: object
                   properties:
                     name:
+                      description: Place name
                       type: string
-                    group:
+                      example: The Stein
+                    emp_id:
+                      description: Place employee ID
                       type: string
-              examples:
-                schedules:
-                  - name: The Stein
-                    group: Dining
-                  - name: Dunkin Donuts
-                    group: Dining
-                  - name: Lower Usdan
-                    group: Dining
-        '500':
-          description: Error finding schedules
-    post:
-      tags:
-        - schedules
-      summary: Creates a new schedule with the given data
-      requestBody:
-        description: The schedule to create in the database
-        content:
-          application/json:
-            schema:
-              $ref: #/components/schemas/PlaceSchedule
-            examples:
-              schedule:
-                emp_id: 5b9b485dabd11f5920423a1c
-                Name: Jim's Fried Chicken and Hand Grenades
-                group: Dining
-                weeks: []
-                active: 1
-      responses:
-        '200':
-          description: The schedule document
+                      example: 5b9b485dabd11f5920423a1c
+                    sunday:
+                      description: Place's week schedule for Sunday
+                      type: string
+                      example: "12:00pm-5:00pm"
+                    monday:
+                      description: Place's week schedule for Monday
+                      type: string
+                      example: "9:00am-5:00pm"
+                    tuesday:
+                      description: Place's week schedule for Tuesday
+                      type: string
+                      example: "9:00am-5:00pm"
+                    wednesday:
+                      description: Place's week schedule for Wednesday
+                      type: string
+                      example: "9:00am-5:00pm"
+                    thursday:
+                      description: Place's week schedule for Thursday
+                      type: string
+                      example: "9:00am-5:00pm"
+                    friday:
+                      description: Place's week schedule for Friday
+                      type: string
+                      example: "9:00am-5:00pm"
+                    saturday:
+                      description: Place's week schedule for Saturday
+                      type: string
+                      example: "11:00am-5:00pm"
+        405:
+          description: Incorrect HTTP method
+        500:
+          description: Internal server error
           content:
             application/json:
               schema:
-                $ref: #/components/schemas/PlaceSchedule
-              examples:
-                schedule:
-                  emp_id: 5b9b485dabd11f5920423a1c
-                  Name: Jim's Fried Chicken and Hand Grenades
-                  group: Dining
-                  weeks: []
-                  active: 1
-        '500':
-          description: Error adding schedule to database
-  /api/schedules/{week}:
-    get:
-      tags:
-        - schedules
-      summary: >-
-        Returns an array containing the name, hours, and employee id of each
-        active place during the given week
-      responses:
-        '200':
-          description: >-
-            An array of objects where each object contains the name, hours, and
-            employee of a given place
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: #/components/schemas/Week
-            examples:
-              schdules:
-                - name: Einstein Bros. Bagels
-                  sunday: '10:00am-9:00pm'
-                  saturday: '10:00am-5:00pm'
-                  friday: '8:00am-5:00pm'
-                  thursday: '8:00am-10:00pm'
-                  wednesday: '8:00am-10:00pm'
-                  tuesday: '8:00am-10:00pm'
-                  monday: '8:00am-10:00pm'
-                  emp_id: 5b9b445daad11f3920023a1f
-                - name: Dunkin Donuts
-                  sunday: '8:00am-1:00pm'
-                  saturday: '8:00am-1:00pm'
-                  friday: '7:30am-4:00pm'
-                  thursday: '7:30am-4:00pm'
-                  wednesday: '7:30am-4:00pm'
-                  tuesday: '7:30am-4:00pm'
-                  monday: '7:30am-4:00pm'
-                  emp_id: 5b9b4387f9974b333c04a2ec
-                - name: Library
-                  sunday: '9:00am-2:00am'
-                  saturday: '11:00am-11:01am'
-                  friday: '11:00am-11:01am'
-                  thursday: '11:00am-11:01am'
-                  wednesday: '7:30am-5:30pm'
-                  tuesday: '7:30am-2:00am'
-                  monday: '7:30am-2:00am'
-                  emp_id: 5b9b493525547384f80a4119
-        '500':
-          description: Error getting places
+                $ref: "#/components/responses/mongoError"
   /api/schedules/{week}/{id}:
+    parameters:
+      - in: header
+        name: api_token
+        description: API Key for sender verification and general security
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: week
+        description: Week of the year to get schedules for (0-based)
+        required: true
+        schema:
+          type: integer
+          format: int32
+        example: 30
+      - in: path
+        name: id
+        description: Employee ID to get the schedule for
+        required: true
+        schema:
+          type: string
+        example: 5b9b46afd5e64959c00eb455
     get:
       tags:
-        - schedules
-      summary: >-
-        Returns the hours for the specified week of the place with the specified
-        employee id
+        - Schedules
+      summary: Get Week Schedule for A Specific Place
+      description: Fetches the week data for a specific schedule based on week and place id
       responses:
-        '200':
-          description: The hours of operation of the given place during the given week
+        200:
+          description: Successfully fetched specific place's schedule on a specific week
           content:
             application/json:
               schema:
-                $ref: #/components/schemas/Week
-              examples:
-                schedule:
-                  sunday: '10:00am-9:00pm'
-                  saturday: '10:00am-5:00pm'
-                  friday: '8:00am-5:00pm'
-                  thursday: '8:00am-10:00pm'
-                  wednesday: '8:00am-10:00pm'
-                  tuesday: '8:00am-10:00pm'
-                  monday: '8:00am-10:00pm'
-                  week: 48
-        '404':
-          description: Could not find a schedule with the given employee id
-        '500':
-          description: Error finding hours
-    patch:
-      tags:
-        - schedules
-      summary: >-
-        Updates the hours for the schedule with the specified employee id at the
-        specified week with the given data
-      requestBody:
-        description: The data with which to update the schedule
-        content:
-          application/json:
-            schema:
-              $ref: #/components/schemas/Week
-            examples:
-              schedule:
-                sunday: '9:00am-10:00pm'
-                saturday: '10:00am-5:00pm'
-                friday: '8:00am-5:00pm'
-                thursday: '8:00am-10:00pm'
-                wednesday: '8:00am-10:00pm'
-                tuesday: '8:00am-10:00pm'
-                monday: '8:00am-10:00pm'
-      responses:
-        '200':
-          description: >-
-            Either the week was successfully updated or a document with the
-            specified employee id was not found
-        '500':
-          description: Error updating week
-  /api/shuttles/{date}:
-    get:
-      tags:
-        - shuttles
-      summary: Returns the shuttle schedule for the given date
-      responses:
-        '200':
-          description: The shuttle schedule for the given date
+                type: object
+                properties:
+                  week:
+                    description: Week selected
+                    type: integer
+                    format: int32
+                    example: 30
+                  sunday:
+                    description: Sunday schedule for the specific week
+                    type: string
+                    example: "12:00pm-7:00pm"
+                  monday:
+                    description: Monday schedule for the specific week
+                    type: string
+                    example: "11:00am-11:00pm"
+                  tuesday:
+                    description: Tuesday schedule for the specific week
+                    type: string
+                    example: "11:00am-11:00pm"
+                  wednesday:
+                    description: Wednesday schedule for the specific week
+                    type: string
+                    example: "11:00am-11:00pm"
+                  thursday:
+                    description: Thursday schedule for the specific week
+                    type: string
+                    example: "11:00am-11:00pm"
+                  friday:
+                    description: Friday schedule for the specific week
+                    type: string
+                    example: "11:00am-8:00pm"
+                  saturday:
+                    description: Saturday schedule for the specific week
+                    type: string
+                    example: "12:00am-8:00pm"
+        404:
+          description: Place schedule not found, indicative of non-existent employee ID
+        405:
+          description: Incorrect HTTP method
+        500:
+          description: Internal server error
           content:
             application/json:
               schema:
-                $ref: #/components/schemas/ShuttleActivity
-              examples:
-                shuttle:
-                  date: '2019-12-15T23:40:27.884+00:00'
-                  times:
-                    - start: '2019-12-14T05:01:00.000+00:00'
-                      end: '2019-12-14T07:30:00.000+00:00'
-                      busID: '212014918347301'
-                      route: Campus
-                      ID: '1576341408576'
-                      busName: Van 56
-                    - start: '2019-12-14T05:01:00.000+00:00'
-                      end: '2019-12-14T07:45:00.000+00:00'
-                      busID: '212014918515926'
-                      route: Waltham
-                      ID: '1576341426603'
-                      busName: Van 52
-        '404':
-          description: Could not find shuttle schedule for the given date
-        '500':
-          description: Error finding shuttle schedule
+                $ref: "#/components/responses/mongoError"
     patch:
       tags:
-        - shuttles
-      summary: >-
-        Adds a shuttle time with the given data to the shuttle schedule for the
-        specified date
+        - Schedules
+      summary: Update Week Schedule for A Specific Place
+      description: Updates the week data for a specific schedule based on week and place id
       requestBody:
-        description: The shuttle time to add to the shuttle schedule for the specified date
-        content:
-          application/json:
-            schema:
-              $ref: #/components/schemas/ShuttleTime
-            examples:
-              shuttle:
-                start: '2019-12-14T05:01:00.000+00:00'
-                end: '2019-12-14T07:30:00.000+00:00'
-                busID: '212014918347301'
-                route: Campus
-                ID: '1576341408576'
-                busName: Van 56
-      responses:
-        '200':
-          description: Shuttle time successfully added
-        '500':
-          description: Error adding shuttle time
-  /api/shuttles/{date}/{id}:
-    get:
-      tags:
-        - shuttles
-      summary: Returns the shuttle time with the given id on the given date
-      responses:
-        '200':
-          description: The shuttle time object
-          content:
-            application/json:
-              schema:
-                $ref: #/components/schemas/ShuttleTime.yaml
-              examples:
-                shuttle:
-                  start: '2019-12-14T05:01:00.000+00:00'
-                  end: '2019-12-14T07:30:00.000+00:00'
-                  busID: '212014918347301'
-                  route: Campus
-                  ID: '1576341408576'
-                  busName: Van 56
-        '404':
-          description: Could not find a shuttle time with the given id
-        '500':
-          description: Error finding shuttle time
-    patch:
-      tags:
-        - shuttles
-      summary: >-
-        Finds the shuttle time with the specified date and id and updates it
-        with the given information
-      requestBody:
-        description: The information with which to update the specified shuttle time
         content:
           application/json:
             schema:
               type: object
+              required:
+                - sunday
+                - monday
+                - tuesday
+                - wednesday
+                - thursday
+                - friday
+                - saturday
               properties:
-                start:
-                  type: date
-                end:
-                  type: date
-                busID:
+                sunday:
+                  description: New Sunday schedule for the place on a specific week
                   type: string
-                busName:
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                  example: "12:00pm-5:00pm"
+                monday:
+                  description: New Monday schedule for the place on a specific week
                   type: string
-                route:
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                  example: "9:00am-5:00pm"
+                tuesday:
+                  description: New Tuesday schedule for the place on a specific week
                   type: string
-            examples:
-              update-route:
-                route: Campus
-              update-busID-&-busName:
-                busName: Van 25
-                busID: '212014918515746'
-              update-startTime-&-endTime:
-                end: '2019-09-16T23:16:33.000+00:00'
-                start: '2019-09-16T23:16:33.000+00:00'
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                  example: "9:00am-5:00pm"
+                wednesday:
+                  description: New Wednesday schedule for the place on a specific week
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                  example: "9:00am-5:00pm"
+                thursday:
+                  description: New Thursday schedule for the place on a specific week
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                  example: "9:00am-5:00pm"
+                friday:
+                  description: New Friday schedule for the place on a specific week
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                  example: "9:00am-5:00pm"
+                saturday:
+                  description: New Saturday schedule for the place on a specific week
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                  example: "11:00am-5:00pm"
       responses:
-        '200':
-          description: >-
-            Either the shuttle time was successfully updated or a shuttle time
-            with the given date and id was not found
-        '500':
-          description: Error updating shuttle time
-    delete:
-      tags:
-        - shuttles
-      summary: >-
-        Finds the shuttle time with the specified date and id and removes it
-        from database
-      responses:
-        '200':
-          description: Shuttle time was successfully removed
-        '500':
-          description: Error removing shuttle time
-  /api/users:
-    get:
-      tags:
-        - users
-      summary: Returns a list of objects representing each user in the database
-      responses:
-        '200':
-          description: An array of shortened user objects
+        200:
+          description: Successfully patched week schedule
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    _id:
-                      type: string
-                    username:
-                      type: string
-                    email:
-                      type: string
-                    userType:
-                      type: string
-              examples:
-                users:
-                  - _id: 5fedfffd1412d319a82f0a5c
-                    username: testmngr
-                    email: testmnger@mngr.com
-                    userType: manager
-                  - _id: 5fee156936cf4436b874978a
-                    username: testmngr2
-                    email: testmngr2@mngr.com
-                    userType: manager
-                  - _id: 5fee179923def939185af4b0
-                    username: testemp
-                    email: testemp@emp.com
-                    userType: employee
-        '500':
-          description: Error getting users
-    post:
+                $ref: '#/components/schemas/PlaceSchedule'
+        405:
+          description: Incorrect HTTP method
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/mongoError"
+  /api/schedules/delete:
+    parameters:
+      - in: header
+        name: api_token
+        description: API Key for sender verification and general security
+        required: true
+        schema:
+          type: string
+    patch:
+      summary: Change a place schedule to inactive
+      description: Effectively delete a place schedule by setting it's `active` property to `0`.
       tags:
-        - users
-      summary: Creates a new user with the given information
+        - Schedules
       requestBody:
-        description: The user to create in the database
         content:
           application/json:
             schema:
               type: object
+              required:
+                - emp_id
               properties:
-                username:
+                emp_id:
+                  description: Employee ID for the place to "delete"
                   type: string
-                email:
-                  type: string
-                password:
-                  type: string
-                userType:
-                  type: string
-                picture:
-                  type: string
-            examples:
-              user:
-                username: SteveThaMngr
-                email: stevethemngr@mngr.com
-                password: iamthemngr1234!
-                userType: manager
-                picture: 'https://raw.githubusercontent.com/...'
       responses:
-        '200':
-          description: The newly created user
+        200:
+          description: Successfully deactivated the place
           content:
             application/json:
               schema:
-                $ref: #/components/schemas/User
-              examples:
-                user:
-                  username: SteveThaMngr
-                  email: stevethemngr@mngr.com
-                  userType: manager
-                  picture: 'https://raw.githubusercontent.com/...'
-                  salt: 6dbe9be92e9bbe7f870fd1da25cd03d7f50036d...
-                  hash: 0eb538af6c1606bc99a78ce6dc3dfe12649efb4...
-        '500':
-          description: Error creating user
+                $ref: '#/components/schemas/PlaceSchedule'
+        405:
+          description: Incorrect HTTP method
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/mongoError"
+components:
+  responses:
+    mongoError:
+      type: object
+      properties:
+        err:
+          description: Error thrown
+          type: string
+          example: |
+            MongooseError: The `uri` parameter to `openUri()` must be a string, got "undefined". 
+            Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+  schemas:
+    PlaceSchedule:
+      type: object
+      properties:
+          _id:
+            description: Mongoose-assigned Object Id
+            type: ObjectId
+          emp_id:
+            type: string
+            description: Employee ID for the new place schedule
+          Name:
+            type: string
+            description: Name for the new place schedule
+          group:
+            type: string
+            description: Group for the new place schedule
+          weeks:
+            type: array
+            description: Array with the schedules for each week of the year.
+            items:
+              type: object
+              properties:
+                sunday:
+                  description: Schedule on a Sunday of a given week (based on the array index)
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                monday:
+                  description: Schedule on a Monday of a given week (based on the array index)
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                tuesday:
+                  description: Schedule on a Tuesday of a given week (based on the array index)
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                wednesday:
+                  description: Schedule on a Wednesday of a given week (based on the array index)
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                thursday:
+                  description: Schedule on a Thursday of a given week (based on the array index)
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                friday:
+                  description: Schedule on a Friday of a given week (based on the array index)
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+                saturday:
+                  description: Schedule on a Saturday of a given week (based on the array index)
+                  type: string
+                  format: "h:mm[aApP][mM]-h:mm[aApP][mM]"
+          sunday:
+            description: General Sunday schedule
+            type: string
+          monday:
+            description: General Sunday schedule
+            type: string
+          tuesday:
+            description: General Sunday schedule
+            type: string
+          wednesday:
+            description: General Sunday schedule
+            type: string
+          thursday:
+            description: General Sunday schedule
+            type: string
+          friday:
+            description: General Sunday schedule
+            type: string
+          saturday:
+            description: General Sunday schedule
+            type: string
+          active:
+            description: 1 represents an active place schedule, 0 represents an inactive place schedule
+            type: integer
+            format: int32
+          __v:
+            description: Mongoose-tracked internal revision of the document
+            type: integer
+            format: int32
+      example:
+          _id: 6bcb285dabd114f592f423a6c
+          emp_id: 5b9b485dabd11f5920423a1c
+          Name: The Stein
+          group: Dining
+          weeks: []
+          sunday: '12:00pm-5:00pm'
+          monday: '9:00am-5:00pm'
+          tuesday: '9:00am-5:00pm'
+          wednesday: '9:00am-5:00pm'
+          thursday: '9:00am-5:00pm'
+          friday: '9:00am-5:00pm'
+          saturday: '11:00am-5:00pm'
+          active: 1
+          __v: 0

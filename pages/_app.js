@@ -1,5 +1,4 @@
 import '../styles/globals.css';
-import '../styles/materialize.css';
 import '../styles/mui.css';
 import { useEffect } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -26,6 +25,11 @@ JSON.clone = function (obj) {
 const inputTheme = createTheme({ palette: { primary: { main: '#1B4370' } } });
 
 function TLApp ({ Component, pageProps }) {
+  if (Component.name !== 'Docs') {
+    // materialize-css was messing with docs styling
+    // only loading style on non-docs pages
+    import('../styles/materialize.css');
+  }
   const router = useRouter();
 
   useEffect(() => {

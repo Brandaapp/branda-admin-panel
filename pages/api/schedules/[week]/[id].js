@@ -23,7 +23,7 @@ export default (req, res) => {
         { $set: { [`weeks.${week}`]: weekInfo } },
         (err, result) => {
           if (err) {
-            logger.error({ err }, 'Error updaying place schedule');
+            logger.error({ err }, 'Error updating place schedule');
             res.status(500).send({ err });
             logger.info({ res });
             resolve();
