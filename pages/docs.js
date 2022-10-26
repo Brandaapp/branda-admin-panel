@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { RedocStandalone } from 'redoc';
 
-const Spec = require('../docs/openapi.yaml');
+import Spec from '../docs/openapi.yaml';
 
 export default function Docs () {
   return (
