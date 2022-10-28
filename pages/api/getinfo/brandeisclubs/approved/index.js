@@ -11,7 +11,10 @@ export default function (req, res) {
           res.status(500).send({ success: false, error: err });
           resolve();
         } else {
-          res.send({ success: true, approvedOrganizations: approvedOrganizations });
+          res.send({
+            success: true,
+            approvedOrganizations: approvedOrganizations.map(club => ({ name: club.name, members: club.members }))
+          });
           logger.info({ approvedOrganizations }, 'Fetched active organization');
           resolve();
         }
