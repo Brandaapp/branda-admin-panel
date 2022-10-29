@@ -1,4 +1,4 @@
-import logger from '../../../../../../utils/loggers/server';
+import logger from '../../../../../utils/loggers/server';
 const mongoose = require('mongoose');
 const BranvanNotif = require('../../../../../models/BranvanNotif');
 
