@@ -13,11 +13,11 @@ export default (req, res) => {
             logger.error({ err }, 'Error fetching notifications');
             res.status(500).send({ success: false, error: err });
             resolve();
-          } else if (!docs.length) {
-            res.status(404).send({ success: false, error: 'No branvan notifications found' });
-            logger.info({ res }, 'No branvan notifications found');
-            resolve();
           } else {
+            /*
+            Not sending 404 for empty result because client codes are usually
+            for displaying purpose, where diplaying an empty list is straitforward
+            */
             res.send({
               success: true,
               notifications: docs.map(doc => {

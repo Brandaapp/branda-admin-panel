@@ -11,10 +11,10 @@ export default function AnnouncementsView () {
   });
 
   function getAnnouncements () {
-    axios.get(`/api/announcements/${(new Date()).toString()}`)
+    axios.get(`/api/getinfo/branvan/notifications/${(new Date()).toString()}`)
       .then(response => {
         setState({
-          announcements: response.data,
+          announcements: response.data.notifications,
           dataFetched: true
         });
       });
@@ -27,7 +27,7 @@ export default function AnnouncementsView () {
   });
 
   function createAnnouncement (data) {
-    axios.post('/api/announcements', data)
+    axios.post('/api/getinfo/branvan/notifications/post', data)
       .then(() => { getAnnouncements(); });
   }
 

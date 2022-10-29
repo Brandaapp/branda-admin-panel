@@ -1,6 +1,6 @@
 import logger from '../../../../../../utils/loggers/server';
 const mongoose = require('mongoose');
-const BranvanNotif = require('../../../../../../models/BranvanNotif');
+const BranvanNotif = require('../../../../../models/BranvanNotif');
 
 // POST method
 export default (req, res) => {
