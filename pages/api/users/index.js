@@ -8,10 +8,7 @@ export default (req, res) => {
     if (req.method === 'POST') {
       const [hash, salt] = hashPassword(req.body.password);
       const temp = new User({
-        username: req.body.username,
-        email: req.body.email,
-        userType: req.body.userType,
-        picture: req.body.picture,
+        ...req.body,
         salt: salt,
         hash: hash
       });

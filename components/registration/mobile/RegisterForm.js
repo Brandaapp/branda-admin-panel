@@ -120,13 +120,13 @@ export default function RegisterForm () {
   if (approvedClubs) {
     return (
       <Box p={5} display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-        <Paper elevation={15} sx={{ p: 5, width: '60vw' }}>
+        <Paper elevation={15} sx={{ p: 5, width: '90vw' }}>
           <Stack spacing={5} width='100%'>
-            <Typography textAlign='center' fontSize={30}>
+            <Typography textAlign='center' fontSize={25}>
                 Register a New User
             </Typography>
             <Grid container direction='row' justifyContent='space-evenly'>
-              <Grid item width='40%'>
+              <Grid item width='100%'>
                 <FormControl fullWidth>
                   <Stack spacing={3}>
                     <TextField
@@ -162,72 +162,68 @@ export default function RegisterForm () {
                       error={!passwordsMatch(password, passwordConfirmation)}
                       helperText={!passwordsMatch(password, passwordConfirmation) ? 'Passwords must match' : ''}
                     />
+                    <FormControl>
+                      <InputLabel id='usertype-label' required>User Type</InputLabel>
+                      <Select
+                        labelId='usertype-label'
+                        id='usertype'
+                        value={userType}
+                        label='User Type'
+                        onChange={event => {
+                          const type = event.target.value;
+                          setUserType(type);
+                          if (['employee', 'publicsafety', 'joseph'].includes(type)) {
+                            setDisableOrgSelect(true);
+                            if (['publicsafety', 'joseph'].includes(type)) {
+                              setOrgAccess(['General']);
+                            } else {
+                              setOrgAccess([]);
+                            }
+                          } else {
+                            setDisableOrgSelect(false);
+                            const orgs = JSON.clone(orgAccess);
+                            orgs.splice(orgs.find(name => name === 'General'), 1);
+                            setOrgAccess(orgs);
+                          }
+                        }}
+                        required
+                      >
+                        {userTypes.map(type => {
+                          return <MenuItem key={type.key} value={type.key}>{type.label}</MenuItem>;
+                        })}
+                      </Select>
+                    </FormControl>
+                    <FormControl>
+                      <InputLabel id='org-access-select'>Push Notification Access</InputLabel>
+                      <Select
+                        labelId='org-access-select'
+                        multiple
+                        disabled={disableOrgSelect}
+                        value={orgAccess}
+                        onChange={event => handleChange(setOrgAccess, event)}
+                        input={<OutlinedInput label='Push Notification Access' />}
+                        renderValue={(selected) => (
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                            {selected.map((value) => (
+                              <Chip key={value} label={value} />
+                            ))}
+                          </Box>
+                        )}
+                        MenuProps={MenuProps}
+                      >
+                        {approvedClubs.map(({ name }) => (
+                          <MenuItem
+                            key={name}
+                            value={name}
+                            style={getStyles(name, orgAccess, theme)}
+                          >
+                            {name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
                   </Stack>
                 </FormControl>
-              </Grid>
-              <Grid item width='40%'>
-                <Stack spacing={3}>
-                  <FormControl>
-                    <InputLabel id='usertype-label' required>User Type</InputLabel>
-                    <Select
-                      labelId='usertype-label'
-                      id='usertype'
-                      value={userType}
-                      label='User Type'
-                      onChange={event => {
-                        const type = event.target.value;
-                        setUserType(type);
-                        if (['employee', 'publicsafety', 'joseph'].includes(type)) {
-                          setDisableOrgSelect(true);
-                          if (['publicsafety', 'joseph'].includes(type)) {
-                            setOrgAccess(['General']);
-                          } else {
-                            setOrgAccess([]);
-                          }
-                        } else {
-                          setDisableOrgSelect(false);
-                          const orgs = JSON.clone(orgAccess);
-                          orgs.splice(orgs.find(name => name === 'General'), 1);
-                          setOrgAccess(orgs);
-                        }
-                      }}
-                      required
-                    >
-                      {userTypes.map(type => {
-                        return <MenuItem key={type.key} value={type.key}>{type.label}</MenuItem>;
-                      })}
-                    </Select>
-                  </FormControl>
-                  <FormControl>
-                    <InputLabel id='org-access-select'>Push Notification Access</InputLabel>
-                    <Select
-                      labelId='org-access-select'
-                      multiple
-                      value={orgAccess}
-                      disabled={disableOrgSelect}
-                      onChange={event => handleChange(setOrgAccess, event)}
-                      input={<OutlinedInput label='Push Notification Access' />}
-                      renderValue={(selected) => (
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                          {selected.map((value) => (
-                            <Chip key={value} label={value} />
-                          ))}
-                        </Box>
-                      )}
-                      MenuProps={MenuProps}
-                    >
-                      {approvedClubs.map(({ name }) => (
-                        <MenuItem
-                          key={name}
-                          value={name}
-                          style={getStyles(name, orgAccess, theme)}
-                        >
-                          {name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Stack>
               </Grid>
             </Grid>
             <Grid container direction='row' alignItems='center' justifyContent='end'>

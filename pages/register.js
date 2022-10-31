@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import RegisterForm from '../components/registration/desktop/RegisterForm';
+import { default as DesktopRegisterForm } from '../components/registration/desktop/RegisterForm';
+import { default as MobileRegisterForm } from '../components/registration/mobile/RegisterForm';
 
 export default function Register ({ isMobile }) {
   return (
@@ -10,7 +11,7 @@ export default function Register ({ isMobile }) {
       </Head>
 
       <main className={styles.main} style={{ width: '100%' }}>
-        <RegisterForm isMobile={isMobile}/>
+        { isMobile ? <MobileRegisterForm /> : <DesktopRegisterForm />}
       </main>
 
       <footer className={styles.footer}>

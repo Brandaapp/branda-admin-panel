@@ -1,0 +1,10 @@
+{
+  "defaultUserImageURI": "https://raw.githubusercontent.com/clsavino/react-shift-scheduler/master/public/assets/images/logo.png",
+  "userTypes": [
+    { "key": "employee", "label": "Employee" },
+    { "key": "manager", "label": "Manager" },
+    { "key": "publicsafety", "label": "Public Safety" },
+    { "key": "joseph", "label": "Joseph" },
+    { "key": "organizationAdmin", "label": "Organization Admin" }
+  ]
+}
