@@ -14,13 +14,14 @@ export default function AnnouncementsForm (props) {
   });
 
   function handleChange (output, toChange) {
-    if (toChange === 'reset') {
+    if (toChange === 'submit') {
       setState({
         type: '',
         content: '',
         startTime: new Date(),
         endTime: new Date()
       });
+      props.handleClose();
     } else if (toChange === 'type') {
       setState(prev => ({ ...prev, type: output.target.value }));
     } else if (toChange === 'content') {
@@ -84,7 +85,7 @@ export default function AnnouncementsForm (props) {
         </div>
       </div>
       <button className="btn waves-effect waves-light" type="submit"
-        name="action" onClick={() => { props.create(state); handleChange(null, 'reset'); }}
+        name="action" onClick={() => { props.create(state); handleChange(null, 'submit'); }}
         style={{ backgroundColor: '#1B4370', color: 'white', marginTop: '40px', padding: '0 1.5rem' }}>
                 Submit
         <i className="material-icons right">send</i>

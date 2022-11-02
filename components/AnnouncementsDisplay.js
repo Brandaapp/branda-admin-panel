@@ -1,21 +1,47 @@
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Stack
+} from '@mui/material';
 
 export default function AnnouncementsDisplay (props) {
   function renderAnnouncements () {
-    return (props.announcements.map(a => {
+    if (props.announcements.length) {
+      return (props.announcements.map(a => {
+        return (
+          <Card key={'_' + Math.random().toString(36).substr(2, 9)} className="announcement-card">
+            <CardContent>
+              <Typography variant="h5">{a.type}</Typography>
+              <Typography sx={{ margin: 1.5 }}>{a.content}</Typography>
+            </CardContent>
+          </Card>
+        );
+      }));
+    } else {
       return (
-        <li key={'_' + Math.random().toString(36).substr(2, 9)}>
-          <div className="announcement-item">
-            <span>{a.type}</span>
-            <p>{a.content}</p>
-          </div>
-        </li>
+        <Card className="announcement-card">
+          <CardContent>
+            <Typography variant="h5">{'No current announcement.'}</Typography>
+          </CardContent>
+        </Card>
       );
-    }));
+    }
   }
+
   return (
-    <div className="announcement-card">
-      <h5>Latest Announcements</h5>
-      <ul>{renderAnnouncements()}</ul>
-    </div>
+    <Box sx={{
+      bgcolor: 'background.paper',
+      width: 'auto',
+      minHeight: 200,
+      maxWidth: 800,
+      marginLeft: 'auto',
+      marginRight: 'auto'
+    }}>
+      <Stack spacing={3} sx={{ padding: 5 }}>
+        {renderAnnouncements()}
+      </Stack>
+    </Box>
   );
 }
