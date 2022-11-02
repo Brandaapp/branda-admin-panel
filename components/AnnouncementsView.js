@@ -51,6 +51,8 @@ export default function AnnouncementsView () {
           <AnnouncementsForm create={createAnnouncement} handleClose={handleCloseEditor}/>
         </Dialog>
         <Fab
+        // the botton on the lower right corner
+        // position: 'fixed' sticks it to the corner
           color='primary'
           aria-label='add'
           style={{ position: 'fixed', right: 50, bottom: 50 }}

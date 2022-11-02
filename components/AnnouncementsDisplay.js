@@ -35,8 +35,8 @@ export default function AnnouncementsDisplay (props) {
       bgcolor: 'background.paper',
       width: 'auto',
       minHeight: 200,
-      maxWidth: 800,
-      marginLeft: 'auto',
+      maxWidth: 800, // limit width on laptops making it look better
+      marginLeft: 'auto', // together with marginRight, place the view in the center
       marginRight: 'auto'
     }}>
       <Stack spacing={3} sx={{ padding: 5 }}>
