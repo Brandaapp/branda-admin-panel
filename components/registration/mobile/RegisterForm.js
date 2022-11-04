@@ -2,15 +2,10 @@ import {
   Alert,
   Box,
   Button,
-  Chip,
   FormControl,
   Grid,
   IconButton,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
   Paper,
-  Select,
   Snackbar,
   Stack,
   TextField,
@@ -20,27 +15,21 @@ import {
 import LoadingLogo from '../../shared/LoadingLogo';
 import { useState } from 'react';
 import axios from 'axios';
-import { useTheme } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import consts from '../consts.json';
 import {
-  getStyles,
-  MenuProps,
-  handleChange,
   validEmail,
   validUserState,
   passwordsMatch
 } from '../utils';
+import UserRoleContent from '../shared/UserTypeSelect';
 
-const { defaultUserImageURI, userTypes } = consts;
+const { defaultUserImageURI } = consts;
 
 export default function RegisterForm () {
-  const theme = useTheme();
-
   // Metadata
   const [approvedClubs, setApprovedClubs] = useState(undefined);
   const [snackMeta, setSnackMeta] = useState({ open: false, message: undefined, severity: 'success' });
-  const [disableOrgSelect, setDisableOrgSelect] = useState(false);
 
   const closeSnack = () => {
     const snack = JSON.clone(snackMeta);
@@ -117,6 +106,10 @@ export default function RegisterForm () {
       });
   }, []);
 
+  const notValidEmail = !validEmail(email);
+  const passwordsDontMatch = !passwordsMatch(password, passwordConfirmation);
+  const notValidUser = !validUserState(username, email, password, userType, passwordConfirmation);
+
   if (approvedClubs) {
     return (
       <Box p={5} display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
@@ -141,8 +134,8 @@ export default function RegisterForm () {
                       label='Email'
                       value={email}
                       onChange={handleFieldChange.bind(null, setEmail)}
-                      error={!validEmail(email)}
-                      helperText={!validEmail(email) ? 'Please enter a valid email' : ''}
+                      error={notValidEmail}
+                      helperText={notValidEmail ? 'Please enter a valid email' : ''}
                       required
                     />
                     <TextField
@@ -159,77 +152,24 @@ export default function RegisterForm () {
                       type='password'
                       value={passwordConfirmation}
                       onChange={handleFieldChange.bind(null, setPasswordConfirmation)}
-                      error={!passwordsMatch(password, passwordConfirmation)}
-                      helperText={!passwordsMatch(password, passwordConfirmation) ? 'Passwords must match' : ''}
+                      error={passwordsDontMatch}
+                      helperText={passwordsDontMatch ? 'Passwords must match' : ''}
                     />
-                    <FormControl>
-                      <InputLabel id='usertype-label' required>User Type</InputLabel>
-                      <Select
-                        labelId='usertype-label'
-                        id='usertype'
-                        value={userType}
-                        label='User Type'
-                        onChange={event => {
-                          const type = event.target.value;
-                          setUserType(type);
-                          if (['employee', 'publicsafety', 'joseph'].includes(type)) {
-                            setDisableOrgSelect(true);
-                            if (['publicsafety', 'joseph'].includes(type)) {
-                              setOrgAccess(['General']);
-                            } else {
-                              setOrgAccess([]);
-                            }
-                          } else {
-                            setDisableOrgSelect(false);
-                            const orgs = JSON.clone(orgAccess);
-                            orgs.splice(orgs.find(name => name === 'General'), 1);
-                            setOrgAccess(orgs);
-                          }
-                        }}
-                        required
-                      >
-                        {userTypes.map(type => {
-                          return <MenuItem key={type.key} value={type.key}>{type.label}</MenuItem>;
-                        })}
-                      </Select>
-                    </FormControl>
-                    <FormControl>
-                      <InputLabel id='org-access-select'>Push Notification Access</InputLabel>
-                      <Select
-                        labelId='org-access-select'
-                        multiple
-                        disabled={disableOrgSelect}
-                        value={orgAccess}
-                        onChange={event => handleChange(setOrgAccess, event)}
-                        input={<OutlinedInput label='Push Notification Access' />}
-                        renderValue={(selected) => (
-                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                            {selected.map((value) => (
-                              <Chip key={value} label={value} />
-                            ))}
-                          </Box>
-                        )}
-                        MenuProps={MenuProps}
-                      >
-                        {approvedClubs.map(({ name }) => (
-                          <MenuItem
-                            key={name}
-                            value={name}
-                            style={getStyles(name, orgAccess, theme)}
-                          >
-                            {name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                    <UserRoleContent
+                      approvedClubs={approvedClubs}
+                      orgAccess={orgAccess}
+                      setOrgAccess={setOrgAccess}
+                      setUserType={setUserType}
+                      userType={userType}
+                    />
                   </Stack>
                 </FormControl>
               </Grid>
             </Grid>
-            <Grid container direction='row' alignItems='center' justifyContent='end'>
+            <Grid container direction='row' alignItems='center' justifyContent='center'>
               <Tooltip
                 title={
-                  !validUserState(username, email, password, userType, passwordConfirmation)
+                  notValidUser
                     ? 'Please fill out all of the required fields'
                     : 'Register user'
                 }
@@ -238,7 +178,7 @@ export default function RegisterForm () {
                   <Button
                     variant='contained'
                     onClick={register}
-                    disabled={!validUserState(username, email, password, userType, passwordConfirmation)}
+                    disabled={notValidUser}
                   >
                     Register User
                   </Button>
