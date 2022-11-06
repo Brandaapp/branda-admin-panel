@@ -1,4 +1,4 @@
-import { Button, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { Button, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { access } from '../../utils/rolesUtils';
 import linksData from './linksData.json';
@@ -34,7 +34,12 @@ export default function Links ({ type, drawer }) {
               onClick={() => { router.push(link); }}
               sx={{ my: 2, color: 'white', display: 'block' }}
             >
-              {linksData[link].name}
+              <Typography
+                fontSize={15}
+                fontWeight={1}
+              >
+                {linksData[link].name}
+              </Typography>
             </UnderlineButton>
         );
       });

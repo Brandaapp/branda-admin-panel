@@ -113,8 +113,15 @@ export default function RegisterForm () {
   if (approvedClubs) {
     return (
       <Box p={5} display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-        <Paper elevation={15} sx={{ p: 5, width: '90vw' }}>
-          <Stack spacing={5} width='100%'>
+        <Paper elevation={15} sx={{
+          py: 5,
+          width: '90vw',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <Stack spacing={5} width='85%'>
             <Typography textAlign='center' fontSize={25}>
                 Register a New User
             </Typography>

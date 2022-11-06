@@ -8,6 +8,7 @@ export const access = {
       '/announcements',
       '/schedules',
       '/register',
+      '/clubs',
       '/push-notifications'
     ]),
     redirectTo: '/'
