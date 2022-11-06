@@ -3,7 +3,7 @@ import ScheduleEditor from '../components/schedules/desktop/ScheduleEditor';
 import ScheduleView from '../components/schedules/mobile/ScheduleView';
 import styles from '../styles/Home.module.css';
 
-export default function Schedules ({ isMobile }) {
+export default function Schedules ({ isMobile, snackMeta, setSnackMeta }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -11,7 +11,9 @@ export default function Schedules ({ isMobile }) {
       </Head>
 
       <main className={styles.main}>
-        { isMobile ? <ScheduleView forEditPage/> : <ScheduleEditor />}
+        { isMobile
+          ? <ScheduleView forEditPage />
+          : <ScheduleEditor setSnackMeta={setSnackMeta} snackMeta={snackMeta}/>}
       </main>
 
       <footer className={styles.footer}></footer>
