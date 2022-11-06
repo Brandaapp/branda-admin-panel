@@ -1,11 +1,12 @@
 import '../styles/globals.css';
-import '../styles/materialize.css';
+// import '../styles/materialize.css';
 import '../styles/mui.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ThemeProvider } from 'styled-components';
-import { createTheme } from '@mui/material';
+import { Alert, createTheme, IconButton, Snackbar } from '@mui/material';
 import { access } from '../utils/rolesUtils';
 import { useRouter } from 'next/router';
 import { getSession, Provider, signIn, useSession } from 'next-auth/client';
@@ -28,6 +29,8 @@ const inputTheme = createTheme({ palette: { primary: { main: '#1B4370' } } });
 function TLApp ({ Component, pageProps }) {
   const router = useRouter();
 
+  const [snackMeta, setSnackMeta] = useState({ open: false, message: undefined, severity: 'success' });
+
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles) {
@@ -41,6 +44,25 @@ function TLApp ({ Component, pageProps }) {
     } else return null;
   }
 
+  const closeSnack = () => {
+    const snack = JSON.clone(snackMeta);
+    snack.open = false;
+    setSnackMeta(snack);
+  };
+
+  const snackAction = (
+    <div>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={closeSnack}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </div>
+  );
+
   return (
     <div style={{ height: '100%' }}>
       <Provider session={pageProps.session}>
@@ -48,7 +70,21 @@ function TLApp ({ Component, pageProps }) {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <ThemeProvider theme={inputTheme}>
               {nav()}
-              <div className="row"><Component {...pageProps} /></div>
+              <div className="row">
+                <Component {...pageProps} snackMeta={snackMeta} setSnackMeta={setSnackMeta}/>
+                <Snackbar
+                  open={snackMeta.open}
+                  autoHideDuration={3500}
+                  onClose={closeSnack}
+                  action={snackAction}
+                  key='topright'
+                  sx={{ maxWidth: 600 }}
+                >
+                  <Alert onClose={closeSnack} severity={snackMeta.severity} sx={{ width: '100%' }}>
+                    {snackMeta.message}
+                  </Alert>
+                </Snackbar>
+              </div>
             </ThemeProvider>
           </LocalizationProvider>
         </Auth>
