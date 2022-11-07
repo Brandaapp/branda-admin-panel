@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.0.0] - TBD
+
+### Added
+
+- Refactored navigation bar links to be dynamic instead of separate files. 
+    This will make adding different user types in the future smoother.
+- Switched from MUI 4 (Material UI) to MUI 5, and removed dependencies on `materialize.css`
+- UI Re-work: All pages, redesigned for practicality, and for mobile devices
+    - *Navbar*: dynamic sizing change to either have list of links on the top, or in a slideable drawer
+    - *Login*: Login form now looks and functions better with appropriate error message on failed login
+    - *Schedules Page and Home Page*: Simpler UI for schedule editing so the page doesn't seem too crowded. Home page
+        features similar features as before, with a better UI. ALl functionality from before remains.
+- API endpoints
+- Documentation: All API endpoints, both publically available and not, are documented using the OpenAPI 3.0 specification
+    using Redoc. More info can be seen in the README for this repository. 
+
+### Fixed
+
+- Fixed an issue where not providing a field on login will redirect to `401` error
+
 ## [0.2.0] - October 10, 2022
 
 ### Added
