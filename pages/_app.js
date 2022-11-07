@@ -71,7 +71,7 @@ function TLApp ({ Component, pageProps }) {
             <ThemeProvider theme={inputTheme}>
               {nav()}
               <div className="row">
-                <Component {...pageProps} snackMeta={snackMeta} setSnackMeta={setSnackMeta}/>
+                <Component {...pageProps} setSnackMeta={setSnackMeta}/>
                 <Snackbar
                   open={snackMeta.open}
                   autoHideDuration={3500}

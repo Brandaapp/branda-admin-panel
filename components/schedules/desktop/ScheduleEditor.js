@@ -23,7 +23,7 @@ import LoadingLogo from '../../shared/LoadingLogo.js';
 
 const schedulesCache = {};
 
-export default function ScheduleEditor ({ snackMeta, setSnackMeta }) {
+export default function ScheduleEditor ({ setSnackMeta }) {
   const [schedules, setSchedules] = useState(undefined);
   const [placeIndex, setPlaceIndex] = useState(0);
   const [day, setDay] = useState(undefined);

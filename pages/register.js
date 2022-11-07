@@ -3,7 +3,7 @@ import styles from '../styles/Home.module.css';
 import { default as DesktopRegisterForm } from '../components/registration/desktop/RegisterForm';
 import { default as MobileRegisterForm } from '../components/registration/mobile/RegisterForm';
 
-export default function Register ({ isMobile }) {
+export default function Register ({ isMobile, setSnackMeta }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -11,7 +11,11 @@ export default function Register ({ isMobile }) {
       </Head>
 
       <main className={styles.main} style={{ width: '100%' }}>
-        { isMobile ? <MobileRegisterForm /> : <DesktopRegisterForm />}
+        {
+          isMobile
+            ? <MobileRegisterForm setSnackMeta={setSnackMeta}/>
+            : <DesktopRegisterForm setSnackMeta={setSnackMeta}/>
+        }
       </main>
 
       <footer className={styles.footer}>

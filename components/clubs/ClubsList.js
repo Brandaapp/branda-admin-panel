@@ -6,7 +6,7 @@ import ClubCard from './ClubCard';
 
 import AddIcon from '@mui/icons-material/Add';
 
-export default function ClubsList ({ isMobile }) {
+export default function ClubsList ({ isMobile, setSnackMeta }) {
   const [clubs, setClubs] = useState(undefined);
 
   useEffect(() => {
@@ -20,6 +20,18 @@ export default function ClubsList ({ isMobile }) {
     axios.patch('/api/getinfo/brandeisclubs', {
       id: club.id,
       maxMessagesAllowed: max
+    }).then(() => {
+      setSnackMeta({
+        open: true,
+        severity: 'success',
+        message: `Changed max messages for ${club.name}`
+      });
+    }).catch(() => {
+      setSnackMeta({
+        open: true,
+        severity: 'error',
+        message: `Error changing max messages for ${club.name}`
+      });
     });
   };
 
@@ -27,7 +39,40 @@ export default function ClubsList ({ isMobile }) {
     axios.patch('/api/getinfo/brandeisclubs', {
       id: club.id,
       active
+    }).then(() => {
+      setSnackMeta({
+        open: true,
+        severity: 'success',
+        message: `Toggled ${club.name} to ${active ? 'active' : 'inactive'}`
+      });
+    }).catch(() => {
+      setSnackMeta({
+        open: true,
+        severity: 'error',
+        message: `Error toggling active state of ${club.name}`
+      });
     });
+  };
+
+  const onDeleteClub = (club, index) => {
+    axios.delete('/api/getinfo/brandeisclubs', { data: { id: club.id } })
+      .then(() => {
+        setSnackMeta({
+          open: true,
+          severity: 'success',
+          message: `Successfully deleted ${club.name}`
+        });
+        // remove club from array
+        const tempClubs = JSON.clone(clubs);
+        tempClubs.splice(index, 1);
+        setClubs(tempClubs);
+      }).catch(() => {
+        setSnackMeta({
+          open: true,
+          severity: 'error',
+          message: `Error deleting ${club.name}`
+        });
+      });
   };
 
   if (clubs) {
@@ -45,6 +90,7 @@ export default function ClubsList ({ isMobile }) {
                   messageNumber={club.messageNumber}
                   onMaxMessagesChange={onClubMaxMessageChange.bind(this, club)}
                   onActivationToggle={onClubActivationToggle.bind(this, club)}
+                  onDelete={onDeleteClub.bind(this, club, index)}
                   isMobile={isMobile}
                 />
               </Grid>

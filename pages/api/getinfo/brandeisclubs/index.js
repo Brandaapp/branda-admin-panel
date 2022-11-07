@@ -58,7 +58,7 @@ export default (req, res) => {
         });
     } else if (req.method === 'DELETE') {
       const id = req.body.id;
-      Organization.findOneAndDelete({ _id: id }, { new: true }, (err, doc) => {
+      Organization.findOneAndDelete({ _id: id }, (err, doc) => {
         if (err) {
           logger.error({ err }, 'Error deleting club');
           res.status(500).send({ err });

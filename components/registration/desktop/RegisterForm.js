@@ -1,12 +1,9 @@
 import {
-  Alert,
   Box,
   Button,
   FormControl,
   Grid,
-  IconButton,
   Paper,
-  Snackbar,
   Stack,
   TextField,
   Tooltip,
@@ -15,7 +12,6 @@ import {
 import LoadingLogo from '../../shared/LoadingLogo';
 import { useState } from 'react';
 import axios from 'axios';
-import CloseIcon from '@mui/icons-material/Close';
 import consts from '../consts.json';
 import {
   validEmail,
@@ -26,29 +22,9 @@ import UserRoleContent from '../shared/UserTypeSelect';
 
 const { defaultUserImageURI } = consts;
 
-export default function RegisterForm () {
+export default function RegisterForm ({ setSnackMeta }) {
   // Metadata
   const [approvedClubs, setApprovedClubs] = useState(undefined);
-  const [snackMeta, setSnackMeta] = useState({ open: false, message: undefined, severity: 'success' });
-
-  const closeSnack = () => {
-    const snack = JSON.clone(snackMeta);
-    snack.open = false;
-    setSnackMeta(snack);
-  };
-
-  const snackAction = (
-    <div>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={closeSnack}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </div>
-  );
 
   // User information
   const [username, setUsername] = useState('');
@@ -191,18 +167,6 @@ export default function RegisterForm () {
             </Grid>
           </Stack>
         </Paper>
-        <Snackbar
-          open={snackMeta.open}
-          autoHideDuration={3500}
-          onClose={closeSnack}
-          action={snackAction}
-          key='topright'
-          sx={{ maxWidth: 600 }}
-        >
-          <Alert onClose={closeSnack} severity={snackMeta.severity} sx={{ width: '100%' }}>
-            {snackMeta.message}
-          </Alert>
-        </Snackbar>
       </Box>
     );
   } else {
