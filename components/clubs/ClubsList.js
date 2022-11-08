@@ -139,7 +139,7 @@ export default function ClubsList ({ isMobile, setSnackMeta }) {
   if (clubs) {
     return (
       <Box p={5}>
-        <Grid container direction={isMobile ? 'column' : 'row'} spacing={5} justifyContent='center'>
+        <Grid container direction='row' spacing={5} justifyContent='center'>
           {clubsData}
         </Grid>
         <Tooltip title='Add Club'>
