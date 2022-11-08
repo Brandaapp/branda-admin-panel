@@ -1,6 +1,18 @@
 import Organization from '../../../../models/Organization';
 import logger from '../../../../utils/loggers/server.mjs';
 
+const filterDoc = doc => {
+  const { name, active, members, messageNumber, maxMessagesAllowed, _id } = doc;
+  return {
+    name,
+    active,
+    members: members.length,
+    messageNumber,
+    maxMessagesAllowed,
+    id: _id
+  };
+};
+
 export default (req, res) => {
   return new Promise(resolve => {
     logger.info({ req });
@@ -16,17 +28,7 @@ export default (req, res) => {
           const result = [];
 
           docs.forEach((doc) => {
-            const { name, active, members, messageNumber, maxMessagesAllowed, _id } = doc;
-            if (name) {
-              result.push({
-                name,
-                active,
-                members: members.length,
-                messageNumber,
-                maxMessagesAllowed,
-                id: _id
-              });
-            }
+            if (doc.name) result.push(filterDoc(doc));
           });
 
           res.end(JSON.stringify(result));
@@ -51,7 +53,7 @@ export default (req, res) => {
             logger.info({ res });
             resolve();
           } else {
-            res.send(doc);
+            res.send(filterDoc(doc));
             logger.info({ res }, 'Updated club');
             resolve();
           }
@@ -70,8 +72,25 @@ export default (req, res) => {
           logger.info({ res });
           resolve();
         } else {
-          res.send(doc);
+          res.send(filterDoc(doc));
           logger.info({ res }, 'Deleted club');
+          resolve();
+        }
+      });
+    } else if (req.method === 'POST') {
+      // precondition: req.body contains all and only name, maxMessagesAllowed, active
+      const club = new Organization({
+        ...req.body
+      });
+      club.save((err, doc) => {
+        if (err) {
+          logger.error({ err }, 'Error adding new club');
+          res.status(500).send({ err });
+          logger.info({ res });
+          resolve();
+        } else {
+          res.send(filterDoc(doc));
+          logger.info({ res }, 'Club created');
           resolve();
         }
       });

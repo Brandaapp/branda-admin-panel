@@ -9,7 +9,10 @@ const OrganizationSchema = new Schema({
     type: String,
     default: 'Club'
   },
-  members: [String], // the push token of each member of this club
+  members: {
+    type: [String],
+    default: []
+  }, // the push token of each member of this club
   maxMessagesAllowed: {
     type: Number,
     default: 5
@@ -18,17 +21,20 @@ const OrganizationSchema = new Schema({
     type: Number, // where this message falls in the chronological order of all messages sent by this org
     default: 0
   },
-  messagesSent: [
-    {
-      title: String,
-      message: String,
-      date: Date,
-      deliveredSuccessfully: {
-        type: Boolean,
-        default: false
+  messagesSent: {
+    type: [
+      {
+        title: String,
+        message: String,
+        date: Date,
+        deliveredSuccessfully: {
+          type: Boolean,
+          default: false
+        }
       }
-    }
-  ],
+    ],
+    default: []
+  },
   active: {
     type: Boolean,
     default: false
