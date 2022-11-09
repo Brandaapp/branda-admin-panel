@@ -40,6 +40,10 @@ export function sendPushNotification (to, title, body, link) {
             body
           };
 
+          // a bit weird, but should look like 'From: Test Notification Club', if sent from a specific club
+          // if sent from general, it shouldn't display this
+          if (to !== 'General') data.subtitle = `From: ${to}`;
+
           promises.push(
             axios.post('https://exp.host/--/api/v2/push/send', data, {
               headers
