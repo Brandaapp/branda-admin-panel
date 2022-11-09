@@ -10,5 +10,5 @@ const PushNotificationSchema = new Schema({
 });
 
 export default (
-  mongoose.models.pushNotifications || mongoose.model('pushNotification', PushNotificationSchema)
+  mongoose.models.pushNotification || mongoose.model('pushNotification', PushNotificationSchema)
 );
