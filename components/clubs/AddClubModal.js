@@ -15,10 +15,12 @@ export default function AddClubModal ({ open, setOpen, isMobile, onSubmit }) {
   return (
     <Modal
       open={open}
-      onClose={() => setOpen(false)}
+      onClose={() => {
+        setOpen(false);
+        clearForm();
+      }}
       aria-labelledby='Add a new club'
       aria-describedby='Fill out fields to add a new club'
-      onBlur={clearForm}
     >
       <Card sx={{
         position: 'absolute',

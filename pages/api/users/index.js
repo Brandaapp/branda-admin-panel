@@ -1,3 +1,4 @@
+import Organization from '../../../models/Organization.js';
 import logger from '../../../utils/loggers/server.mjs';
 import { hashPassword } from '../../../utils/passwordUtils';
 const User = require('../../../models/User');
@@ -7,23 +8,36 @@ export default (req, res) => {
     logger.info({ req });
     if (req.method === 'POST') {
       const [hash, salt] = hashPassword(req.body.password);
-      const temp = new User({
-        ...req.body,
-        salt: salt,
-        hash: hash
-      });
-      temp.save((err, doc) => {
-        if (err) {
-          logger.error({ err }, 'Error creating user');
+
+      Organization.find({})
+        .then(organizations => {
+          if (req.body.userType === 'manager') {
+            req.body.organizations = organizations.map(organization => organization.name);
+          }
+
+          const temp = new User({
+            ...req.body,
+            salt: salt,
+            hash: hash
+          });
+          temp.save((err, doc) => {
+            if (err) {
+              logger.error({ err }, 'Error creating user');
+              res.status(500).send({ err });
+              logger.info({ res });
+              resolve();
+            } else {
+              res.send(doc);
+              logger.info({ res }, 'Created user');
+              resolve();
+            }
+          });
+        }).catch(err => {
+          logger.error({ err }, 'Error finding all organizations to check against user type');
           res.status(500).send({ err });
           logger.info({ res });
           resolve();
-        } else {
-          res.send(doc);
-          logger.info({ res }, 'Created user');
-          resolve();
-        }
-      });
+        });
     } else if (req.method === 'GET') {
       User.find({}, (err, docs) => {
         if (err) {
@@ -37,7 +51,8 @@ export default (req, res) => {
               _id: user._id,
               username: user.username,
               email: user.email,
-              userType: user.userType
+              userType: user.userType,
+              organizations: user.organizations
             };
           });
           res.send(users);

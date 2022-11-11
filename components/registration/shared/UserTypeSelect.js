@@ -22,7 +22,7 @@ export default function UserRoleContent ({ userType, setUserType, setOrgAccess, 
           onChange={event => {
             const type = event.target.value;
             setUserType(type);
-            if (['employee', 'publicsafety', 'joseph'].includes(type)) {
+            if (['employee', 'publicsafety', 'joseph', 'manager'].includes(type)) {
               setDisableOrgSelect(true);
               if (['publicsafety', 'joseph'].includes(type)) {
                 setOrgAccess(['General']);
