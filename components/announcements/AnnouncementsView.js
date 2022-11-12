@@ -47,7 +47,7 @@ export default function AnnouncementsView () {
     return (
       <div>
         <AnnouncementsDisplay announcements={state.announcements}/>
-        <Dialog open={openEditor} onClose={handleCloseEditor}>
+        <Dialog open={openEditor} onClose={handleCloseEditor} fullWidth={ true }>
           <AnnouncementsForm create={createAnnouncement} handleClose={handleCloseEditor}/>
         </Dialog>
         <Fab

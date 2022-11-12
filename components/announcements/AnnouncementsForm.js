@@ -1,5 +1,10 @@
 import { useState } from 'react';
-import { TextField } from '@mui/material';
+import {
+  TextField,
+  Typography,
+  Button
+} from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { withStyles } from '@mui/styles';
 
@@ -35,7 +40,7 @@ export default function AnnouncementsForm (props) {
 
   return (
     <div className="announcement-card">
-      <h5>Make an announcement</h5>
+      <Typography variant="h5">Make an announcement</Typography>
       <div style={{ marginTop: '40px' }}>
         <span className="input-label">Type</span>
         <CustomTextField
@@ -84,12 +89,13 @@ export default function AnnouncementsForm (props) {
           />
         </div>
       </div>
-      <button className="btn waves-effect waves-light" type="submit"
+      <Button variant="contained"
         name="action" onClick={() => { props.create(state); handleChange(null, 'submit'); }}
-        style={{ backgroundColor: '#1B4370', color: 'white', marginTop: '40px', padding: '0 1.5rem' }}>
-                Submit
-        <i className="material-icons right">send</i>
-      </button>
-    </div>
+        sx={{ backgroundColor: '#1B4370', color: 'white', marginTop: '20px' }}
+        size="medium"
+        endIcon={<SendIcon />}>
+        Submit
+      </Button>
+    </div >
   );
 }
