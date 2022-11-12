@@ -19,7 +19,7 @@ import { getSession, signIn } from 'next-auth/client';
 import { access } from '../../utils/rolesUtils.mjs';
 import Link from 'next/link.js';
 
-export default function LoginForm () {
+export default function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPW, setShowPW] = useState(false);
@@ -117,6 +117,7 @@ export default function LoginForm () {
                   )
                 }}
               />
+              <Button onClick={() => setShowPW(!showPW)}>{showPW ? 'hide password' : 'show password'}</Button>
               <Button
                 sx={{ mt: 5 }}
                 variant='contained'
