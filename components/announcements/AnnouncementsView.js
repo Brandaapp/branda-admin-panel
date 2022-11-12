@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import AnnouncementsDisplay from './AnnouncementsDisplay';
 import AnnouncementsForm from './AnnouncementsForm';
 import axios from 'axios';
-import LoadingLogo from './shared/LoadingLogo.js';
+import LoadingLogo from '../shared/LoadingLogo.js';
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab';
 import Dialog from '@mui/material/Dialog';
