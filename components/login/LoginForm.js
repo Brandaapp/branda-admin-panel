@@ -8,7 +8,9 @@ import {
   Grid,
   Paper,
   TextField,
-  Typography
+  Typography,
+  InputAdornment,
+  IconButton
 } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -98,8 +100,23 @@ export default function LoginForm () {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={handleKeyPress}
+                InputProps={{ // <-- This is where the toggle button is added.
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        sx = {{
+                          fontSize: '12px'
+                        }}
+                        aria-label="toggle password visibility"
+                        onClick={() => setShowPW(!showPW)}
+                        // onMouseDown={setShowPW(!showPW)}
+                      >
+                        {showPW ? 'Hide' : 'Show'}
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
               />
-              <Button onClick={() => setShowPW(!showPW)}>{showPW ? 'hide password' : 'show password'}</Button>
               <Button
                 sx={{ mt: 5 }}
                 variant='contained'
