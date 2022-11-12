@@ -117,7 +117,6 @@ export default function LoginForm () {
                   )
                 }}
               />
-              <Button onClick={() => setShowPW(!showPW)}>{showPW ? 'hide password' : 'show password'}</Button>
               <Button
                 sx={{ mt: 5 }}
                 variant='contained'
