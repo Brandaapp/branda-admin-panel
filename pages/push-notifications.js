@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import PushNotificationDashboard from '../components/pushnotifications/desktop/PushNotificationDashboard';
+import PushNotificationForm from '../components/pushnotifications/mobile/PushNotificationForm';
 import styles from '../styles/Home.module.css';
 
 export default function PushNotifications ({ isMobile, setSnackMeta }) {
@@ -13,7 +14,7 @@ export default function PushNotifications ({ isMobile, setSnackMeta }) {
         <div>
           {
             isMobile
-              ? null
+              ? <PushNotificationForm setSnackMeta={setSnackMeta} />
               : <PushNotificationDashboard setSnackMeta={setSnackMeta} />
           }
         </div>
