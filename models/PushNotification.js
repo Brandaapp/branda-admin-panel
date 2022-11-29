@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const PushNotificationSchema = new Schema({
+  author: String,
   title: String,
   body: String,
   link: String,

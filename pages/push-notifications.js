@@ -2,7 +2,7 @@ import Head from 'next/head';
 import PushNotificationDashboard from '../components/pushnotifications/desktop/PushNotificationDashboard';
 import styles from '../styles/Home.module.css';
 
-export default function PushNotifications ({ isMobile }) {
+export default function PushNotifications ({ isMobile, setSnackMeta }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -14,7 +14,7 @@ export default function PushNotifications ({ isMobile }) {
           {
             isMobile
               ? null
-              : <PushNotificationDashboard />
+              : <PushNotificationDashboard setSnackMeta={setSnackMeta} />
           }
         </div>
       </main>
