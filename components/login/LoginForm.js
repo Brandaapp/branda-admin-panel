@@ -8,7 +8,9 @@ import {
   Grid,
   Paper,
   TextField,
-  Typography
+  Typography,
+  InputAdornment,
+  IconButton
 } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -20,6 +22,7 @@ import Link from 'next/link.js';
 export default function LoginForm () {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPW, setShowPW] = useState(false);
 
   const router = useRouter();
 
@@ -48,7 +51,7 @@ export default function LoginForm () {
 
   return (
     <Container maxWidth='xs'>
-      { error
+      {error
         ? <Alert
           variant='standard'
           severity="error"
@@ -59,11 +62,11 @@ export default function LoginForm () {
         >
           {'Incorrect credentials provided'}
         </Alert>
-        : null }
+        : null}
       <Paper elevation={10} sx={{ py: 3, flexGrow: 1 }}>
         <Grid container display='flex' direction='column' alignItems='center'>
           <Grid item>
-            <Image alt='branda logo' src='/branda-logo-long-2.png' width={150} height={60}/>
+            <Image alt='branda logo' src='/branda-logo-long-2.png' width={150} height={60} />
           </Grid>
           <Divider sx={{ width: '90%', mt: 1 }} />
           <Grid item p={4} textAlign='center'>
@@ -92,11 +95,27 @@ export default function LoginForm () {
                 id='password'
                 label='Password'
                 variant='standard'
-                type='password'
+                type={showPW ? 'text' : 'password'}
                 sx={{ my: 1 }}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={handleKeyPress}
+                InputProps={{ // <-- This is where the toggle button is added.
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        sx = {{
+                          fontSize: '12px'
+                        }}
+                        aria-label="toggle password visibility"
+                        onClick={() => setShowPW(!showPW)}
+                        // onMouseDown={setShowPW(!showPW)}
+                      >
+                        {showPW ? 'Hide' : 'Show'}
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
               />
               <Button
                 sx={{ mt: 5 }}
