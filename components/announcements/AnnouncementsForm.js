@@ -1,5 +1,10 @@
 import { useState } from 'react';
-import { TextField } from '@mui/material';
+import {
+  TextField,
+  Typography,
+  Button
+} from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { withStyles } from '@mui/styles';
 
@@ -14,13 +19,14 @@ export default function AnnouncementsForm (props) {
   });
 
   function handleChange (output, toChange) {
-    if (toChange === 'reset') {
+    if (toChange === 'submit') {
       setState({
         type: '',
         content: '',
         startTime: new Date(),
         endTime: new Date()
       });
+      props.handleClose();
     } else if (toChange === 'type') {
       setState(prev => ({ ...prev, type: output.target.value }));
     } else if (toChange === 'content') {
@@ -34,7 +40,7 @@ export default function AnnouncementsForm (props) {
 
   return (
     <div className="announcement-card">
-      <h5>Make an announcement</h5>
+      <Typography variant="h5">Make an announcement</Typography>
       <div style={{ marginTop: '40px' }}>
         <span className="input-label">Type</span>
         <CustomTextField
@@ -83,12 +89,13 @@ export default function AnnouncementsForm (props) {
           />
         </div>
       </div>
-      <button className="btn waves-effect waves-light" type="submit"
-        name="action" onClick={() => { props.create(state); handleChange(null, 'reset'); }}
-        style={{ backgroundColor: '#1B4370', color: 'white', marginTop: '40px', padding: '0 1.5rem' }}>
-                Submit
-        <i className="material-icons right">send</i>
-      </button>
-    </div>
+      <Button variant="contained"
+        name="action" onClick={() => { props.create(state); handleChange(null, 'submit'); }}
+        sx={{ backgroundColor: '#1B4370', color: 'white', marginTop: '20px' }}
+        size="medium"
+        endIcon={<SendIcon />}>
+        Submit
+      </Button>
+    </div >
   );
 }

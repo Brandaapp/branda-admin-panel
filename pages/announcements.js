@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import AnnouncementsView from '../components/AnnouncementsView';
+import AnnouncementsView from '../components/announcements/AnnouncementsView';
 
 export default function Announcements () {
   return (
