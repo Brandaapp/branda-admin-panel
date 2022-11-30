@@ -15,7 +15,7 @@ export default (req, res) => {
         })
         .catch(err => {
           logger.error({ err }, 'Error deleting push notification');
-          res.status(500).semd({ err });
+          res.status(500).send({ err });
           logger.info({ res });
           resolve();
         });

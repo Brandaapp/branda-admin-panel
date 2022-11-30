@@ -6,21 +6,38 @@ import LoadingLogo from '../../shared/LoadingLogo';
 import ScheduledPushNotificationCard from './ScheduledPushNotificationCard';
 
 export default function ScheduledPushNotifications ({ author, emitter, setSnackMeta }) {
-  const [notifs, setNotifs] = useState(undefined);
+  let notifications;
+  const [notifsData, setNotifsData] = useState(undefined);
 
   useEffect(() => {
     axios.get(`/api/pushnotifications/schedule?author=${author}`)
       .then(response => {
-        setNotifs(response.data.reverse());
+        const notifs = response.data.reverse();
+        notifications = notifs;
+        rerenderNotifs(notifs);
       });
 
     emitter.on('scheduled', payload => {
-      setNotifs(notifs => {
-        notifs.unshift(payload);
-        return notifs;
-      });
+      notifications.unshift(payload);
+      rerenderNotifs(notifications);
     });
   }, []);
+
+  const rerenderNotifs = newNotifs => {
+    if (newNotifs) {
+      setNotifsData(
+        newNotifs.map((notif, index) => {
+          return <Grid item key={`${index}:${Math.random()}`}>
+            <ScheduledPushNotificationCard
+              notification={notif}
+              onDelete={onDeleteNotification.bind(this, notif._id)}
+              onSend={onSendNotification.bind(this, notif._id)}
+            />
+          </Grid>;
+        })
+      );
+    }
+  };
 
   const onSendNotification = id => {
     axios.post(`/api/pushnotifications/schedule/${id}/send`)
@@ -52,7 +69,7 @@ export default function ScheduledPushNotifications ({ author, emitter, setSnackM
       })
       .catch(() => {
         setSnackMeta({
-          open: 'true',
+          open: true,
           severity: 'error',
           message: 'Error deleting scheduled push notification'
         });
@@ -60,7 +77,9 @@ export default function ScheduledPushNotifications ({ author, emitter, setSnackM
   };
 
   const removeNotification = id => {
-    setNotifs(notifs => notifs.filter(notif => notif._id !== id));
+    const newNotifs = notifications.filter(notif => notif._id !== id);
+    notifications = newNotifs;
+    rerenderNotifs(newNotifs);
   };
 
   return (
@@ -75,19 +94,9 @@ export default function ScheduledPushNotifications ({ author, emitter, setSnackM
         reach out to <Link href='mailto: brandaapp@gmail.com'>brandaapp@gmail.com</Link>
       </Typography>
       {
-        notifs
+        notifsData
           ? <Grid container direction='row' spacing={5} justifyContent='flex-start'>
-            {
-              notifs.map((notif, index) => {
-                return <Grid item key={`${index}:${Math.random()}`}>
-                  <ScheduledPushNotificationCard
-                    notification={notif}
-                    onDelete={onDeleteNotification.bind(this, notif._id)}
-                    onSend={onSendNotification.bind(this, notif._id)}
-                  />
-                </Grid>;
-              })
-            }
+            {notifsData}
           </Grid>
           : <Box
             width='100%'

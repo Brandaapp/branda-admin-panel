@@ -46,7 +46,7 @@ export default function PushNotificationForm ({ clubs, setSnackMeta, author, emi
       };
 
       axios.post('/api/pushnotifications/schedule', payload)
-        .then(() => {
+        .then(response => {
           setSnackMeta({
             open: true,
             message: 'Successfully scheduled push notification',
@@ -55,7 +55,10 @@ export default function PushNotificationForm ({ clubs, setSnackMeta, author, emi
 
           clearForm();
 
-          emitter.emit('scheduled', payload);
+          emitter.emit('scheduled', {
+            ...payload,
+            _id: response.data._id
+          });
         }).catch((e) => {
           setSnackMeta({
             open: true,
