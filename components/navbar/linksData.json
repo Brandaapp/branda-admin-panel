@@ -18,5 +18,9 @@
   "/push-notifications": {
     "name": "Push Notifications",
     "icon": "sms"
+  },
+  "/knowledge-base": {
+    "name": "Knowledge Base",
+    "icon": "help_outline"
   }
 }
