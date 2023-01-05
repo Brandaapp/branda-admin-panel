@@ -7,6 +7,7 @@
     "dev-log": "next dev | bunyan",
     "build": "next build",
     "start": "next start",
+    "test": "sh localtest.sh",
     "depcheck": "npx depcheck",
     "test:utils": "mocha --colors ./tests/utils/$UTIL.spec.mjs",
     "test:utils:all": "mocha --colors --exit ./tests/utils",

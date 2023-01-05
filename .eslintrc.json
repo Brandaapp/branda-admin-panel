@@ -5,8 +5,7 @@
   "extends": [
     "eslint:recommended",
     "standard",
-    "next/babel",
-    "next/core-web-vitals"
+    "next"
   ],
   "env": {
     "node" : true,
