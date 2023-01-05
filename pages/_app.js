@@ -1,5 +1,5 @@
 import '../styles/globals.css';
-import '../styles/materialize.css';
+// import '../styles/materialize.css';
 import '../styles/mui.css';
 import { useEffect } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
