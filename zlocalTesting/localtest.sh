@@ -25,27 +25,41 @@
 name=mongo_test_server
 
 # checks if docker is installed
-(sudo docker --version > /dev/null && \
+if ! sudo docker --version > /dev/null 
+then
+    echo "Error: Docker is not installed"
+    exit 1
+fi
 
 # pulls mongo image from docker
-sudo docker pull mongo > /dev/null 2>&1 ; \
+sudo docker pull mongo > /dev/null 2>&1
 
 # deletes any previous containers with the same name
-sudo docker rm -f "$name" > /dev/null 2>&1 ; \
+sudo docker rm -f "$name" > /dev/null 2>&1
+
 # starts container, or if does not exist, will create it and run it
-# ignore the error messages: Should be connected at part 8080
-sudo docker run -p 8080:27017 --name "$name" -d mongo > /dev/null && \
+if ! sudo docker run -p 8080:27017 --name "$name" -d mongo > /dev/null
+then 
+    echo "Failed to connect to docker container running mongodb instance"
+    exit 1
+fi
 
-# enter the container ISSUE: script ends once entering the 
-# gain access to the mongo shell
-echo "Connected at http://localhost:8080" && \
-echo "Running tests:\n" && \
-
-# TODO: run tests
-
+echo "Connected to docker container at http://localhost:8080"
+echo "Running tests:\n"
 node ./zlocalTesting/runTests.mjs && \
-    
 echo "\nTests complete" && \
+    
 # end container process and delete container
-sudo docker stop "$name" > /dev/null && \
-sudo docker rm -f "$name" > /dev/null) || "An issue has happened, please check that you have docker installed"
+if ! sudo docker stop "$name" > /dev/null
+then 
+    echo "Error stopping mongo container"
+    exit 1
+fi
+
+if ! sudo docker rm -f "$name" > /dev/null
+then
+    echo "Error deleting mongo container"
+    exit 1
+else
+    exit 0
+fi
