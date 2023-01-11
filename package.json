@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "depcheck": "npx depcheck",
+    "test:api:all":,
     "test:utils": "mocha --colors ./tests/utils/$UTIL.spec.mjs",
     "test:utils:all": "mocha --colors --exit ./tests/utils",
     "localtest:utils:all": "sudo sh zlocalTesting/testEverything.sh",
