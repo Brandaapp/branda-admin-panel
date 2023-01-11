@@ -43,23 +43,3 @@ then
     echo "Failed to connect to docker container running mongodb instance"
     exit 1
 fi
-
-echo "Connected to docker container at http://localhost:8080"
-echo "Running tests:\n"
-node ./zlocalTesting/runTests.mjs && \
-echo "\nTests complete" && \
-    
-# end container process and delete container
-if ! sudo docker stop "$name" > /dev/null
-then 
-    echo "Error stopping mongo container"
-    exit 1
-fi
-
-if ! sudo docker rm -f "$name" > /dev/null
-then
-    echo "Error deleting mongo container"
-    exit 1
-else
-    exit 0
-fi
