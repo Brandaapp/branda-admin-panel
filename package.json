@@ -7,10 +7,10 @@
     "dev-log": "next dev | bunyan",
     "build": "next build",
     "start": "next start",
-    "test": "sudo sh zlocalTesting/localtest.sh",
     "depcheck": "npx depcheck",
     "test:utils": "mocha --colors ./tests/utils/$UTIL.spec.mjs",
     "test:utils:all": "mocha --colors --exit ./tests/utils",
+    "localtest:utils:all": "sudo sh zlocalTesting/testEverything.sh",
     "lint": "eslint --cache .",
     "lint:fix": "eslint --cache --fix ."
   },
