@@ -70,7 +70,7 @@ export function sendPushNotification (to, title, body, link) {
           // logger.debug({ errors }, 'Errors sending push notifications');
           response.status = 200;
           response.send = responseData;
-          logger.info('Sent push notifications');
+          logger.info({ responseData }, 'Sent push notifications');
           resolve(response);
         });
       } else {
