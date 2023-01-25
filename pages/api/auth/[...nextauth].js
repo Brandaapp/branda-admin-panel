@@ -61,7 +61,7 @@ const options = {
       }
       return Promise.resolve(session);
     },
-    jwt: async (token, user, account, profile, isNewUser) => {
+    jwt: async (token, user) => {
       const isSignIn = !!(user);
       if (isSignIn) {
         token.id = user._id;

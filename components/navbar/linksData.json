@@ -18,5 +18,9 @@
   "/push-notifications": {
     "name": "Push Notifications",
     "icon": "sms"
+  },
+  "/clubs": {
+    "name": "Clubs Management",
+    "icon": "group"
   }
 }

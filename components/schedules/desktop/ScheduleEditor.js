@@ -1,20 +1,16 @@
 import {
-  Alert,
   Box,
   Button,
   Divider,
   Grid,
-  IconButton,
   List,
   ListItemButton,
   ListItemText,
-  Snackbar,
   Tooltip
 } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { weekNum, packageScheduleData } from '../../../utils/dateUtils.mjs';
-import CloseIcon from '@mui/icons-material/Close';
 
 import dayjs from 'dayjs';
 
@@ -27,14 +23,12 @@ import LoadingLogo from '../../shared/LoadingLogo.js';
 
 const schedulesCache = {};
 
-export default function ScheduleEditor () {
+export default function ScheduleEditor ({ setSnackMeta }) {
   const [schedules, setSchedules] = useState(undefined);
   const [placeIndex, setPlaceIndex] = useState(0);
   const [day, setDay] = useState(undefined);
   const [times, setTimes] = useState({});
   const [edit, setEdit] = useState(false);
-
-  const [snackMeta, setSnackMeta] = useState({ open: false, message: undefined, severity: 'success' });
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [addPlaceModal, setAddPlaceModal] = useState(false);
@@ -110,25 +104,6 @@ export default function ScheduleEditor () {
       });
     });
   };
-
-  const closeSnack = () => {
-    const snack = JSON.clone(snackMeta);
-    snack.open = false;
-    setSnackMeta(snack);
-  };
-
-  const snackAction = (
-    <div>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={closeSnack}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </div>
-  );
 
   useEffect(() => {
     fetchWeekSchedule(dayjs());
@@ -219,18 +194,6 @@ export default function ScheduleEditor () {
           deleteAction={() => setDeleteModal(true)}
           addAction={() => setAddPlaceModal(true)}
         />
-        <Snackbar
-          open={snackMeta.open}
-          autoHideDuration={3500}
-          onClose={closeSnack}
-          action={snackAction}
-          key='topright'
-          sx={{ maxWidth: 600 }}
-        >
-          <Alert onClose={closeSnack} severity={snackMeta.severity} sx={{ width: '100%' }}>
-            {snackMeta.message}
-          </Alert>
-        </Snackbar>
         <DeleteConfirmation
           open={deleteModal}
           setOpen={setDeleteModal}

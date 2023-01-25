@@ -1,13 +1,12 @@
-import logger from '../../../utils/loggers/server.mjs';
-import { hashPassword } from '../../../utils/passwordUtils';
-const User = require('../../../models/User');
+import logger from '../../../../utils/loggers/server.mjs';
+import { hashPassword } from '../../../../utils/passwordUtils';
+const User = require('../../../../models/User');
 
 export default (req, res) => {
   return new Promise(resolve => {
     logger.info({ req });
-    const { query: { id } } = req;
     if (req.method === 'PATCH') {
-      User.findById(id, (err, doc) => {
+      User.findById(req.query.id, (err, doc) => {
         if (err) {
           logger.error({ err }, 'Error finding user');
           res.status(500).send({ err });
@@ -35,7 +34,7 @@ export default (req, res) => {
         }
       });
     } else if (req.method === 'DELETE') {
-      User.findByIdAndDelete(id, (err, doc) => {
+      User.findByIdAndDelete(req.query.id, (err, doc) => {
         if (err) {
           logger.error({ err }, 'Error deleting user');
           res.status(500).send({ err });
@@ -53,7 +52,7 @@ export default (req, res) => {
         }
       });
     } else if (req.method === 'GET') {
-      User.findById(id, (err, doc) => {
+      User.findById(req.query.id, (err, doc) => {
         if (err) {
           logger.error({ err }, 'Error fetching user');
           res.status(500).send({ err });

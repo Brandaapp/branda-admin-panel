@@ -1,0 +1,14 @@
+name: 30-Minute Basis Cron Jobs
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+
+jobs:
+  sendScheduledNotifications:
+    runs-on: ubuntu-latest
+    env:
+      API_TOKEN: ${{ secrets.API_TOKEN }}
+    steps:
+      - run: |
+          curl --request PATCH -H "api_token: $API_TOKEN" --url https://branda-admin-panel.herokuapp.com/api/cron/sendScheduledNotifications

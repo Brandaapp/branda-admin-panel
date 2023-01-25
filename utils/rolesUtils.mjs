@@ -8,6 +8,7 @@ export const access = {
       '/announcements',
       '/schedules',
       '/register',
+      '/clubs',
       '/push-notifications'
     ]),
     redirectTo: '/'
@@ -22,14 +23,16 @@ export const access = {
   publicsafety: {
     allowed: new Set([
       '/login',
-      '/shuttles-management'
+      '/shuttles-management',
+      '/push-notifications'
     ]),
     redirectTo: '/shuttles-management'
   },
   joseph: {
     allowed: new Set([
       '/login',
-      '/shuttles-management'
+      '/shuttles-management',
+      '/push-notifications'
     ]),
     redirectTo: '/shuttles-management'
   },

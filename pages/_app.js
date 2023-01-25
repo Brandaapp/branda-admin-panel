@@ -1,11 +1,12 @@
 import '../styles/globals.css';
 // import '../styles/materialize.css';
 import '../styles/mui.css';
-import { useEffect } from 'react';
+import { createContext, useEffect, useState } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ThemeProvider } from 'styled-components';
-import { createTheme } from '@mui/material';
+import { Alert, createTheme, IconButton, Snackbar } from '@mui/material';
 import { access } from '../utils/rolesUtils';
 import { useRouter } from 'next/router';
 import { getSession, Provider, signIn, useSession } from 'next-auth/client';
@@ -14,6 +15,7 @@ import Image from 'next/image';
 
 // set global headers - all internal axios requests use our API token
 import axios from 'axios';
+
 axios.defaults.headers.common = {
   api_token: process.env.API_TOKEN_SECRET
 };
@@ -23,10 +25,18 @@ JSON.clone = function (obj) {
   return JSON.parse(JSON.stringify(obj));
 };
 
+// tokens context
+const TokensContext = createContext();
+const tokens = {
+  bitly: process.env.NEXT_PUBLIC_BITLY_ACCESS_TOKEN
+};
+
 const inputTheme = createTheme({ palette: { primary: { main: '#1B4370' } } });
 
 function TLApp ({ Component, pageProps }) {
   const router = useRouter();
+
+  const [snackMeta, setSnackMeta] = useState({ open: false, message: undefined, severity: 'success' });
 
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
@@ -41,17 +51,52 @@ function TLApp ({ Component, pageProps }) {
     } else return null;
   }
 
+  const closeSnack = () => {
+    const snack = JSON.clone(snackMeta);
+    snack.open = false;
+    setSnackMeta(snack);
+  };
+
+  const snackAction = (
+    <div>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={closeSnack}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </div>
+  );
+
   return (
     <div style={{ height: '100%' }}>
       <Provider session={pageProps.session}>
-        <Auth>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <ThemeProvider theme={inputTheme}>
-              {nav()}
-              <div className="row"><Component {...pageProps} /></div>
-            </ThemeProvider>
-          </LocalizationProvider>
-        </Auth>
+        <TokensContext.Provider value={tokens}>
+          <Auth>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <ThemeProvider theme={inputTheme}>
+                {nav()}
+                <div className="row">
+                  <Component {...pageProps} setSnackMeta={setSnackMeta}/>
+                  <Snackbar
+                    open={snackMeta.open}
+                    autoHideDuration={3500}
+                    onClose={closeSnack}
+                    action={snackAction}
+                    key='topright'
+                    sx={{ maxWidth: 600 }}
+                  >
+                    <Alert onClose={closeSnack} severity={snackMeta.severity} sx={{ width: '100%' }}>
+                      {snackMeta.message}
+                    </Alert>
+                  </Snackbar>
+                </div>
+              </ThemeProvider>
+            </LocalizationProvider>
+          </Auth>
+        </TokensContext.Provider>
       </Provider>
     </div>
   );
@@ -101,5 +146,7 @@ export async function getServerSideProps (ctx) {
     }
   };
 }
+
+export { TokensContext };
 
 export default TLApp;
