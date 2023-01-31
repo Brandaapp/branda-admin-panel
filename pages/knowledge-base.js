@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import AppKBView from '../components/AppKbView';
+import AppKBView from '../components/kb/AppKbView';
 
 export default function Page () {
   return (
