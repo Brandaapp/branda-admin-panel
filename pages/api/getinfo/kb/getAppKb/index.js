@@ -34,7 +34,7 @@ export default (req, res) => {
         }
       });
     } else if (req.method === 'DELETE') {
-      KB.findOneAndDelete({ title: req.body.title }, (err, knowledge) => {
+      KB.findOneAndDelete({ id: req.body.id }, (err, knowledge) => {
         if (err) {
           logger.error({ err }, 'Error deleting knowledge');
           res.status(500).send({ success: false, error: err });
@@ -49,7 +49,7 @@ export default (req, res) => {
     } else if (req.method === 'PUT') {
       const data = typeof req.body === 'object' ? req.body : JSON.parse(req.body);
       logger.debug(data, 'req.body parsed');
-      KB.findOneAndUpdate({ $or: [{ title: req.body.title }, { content: req.body.content }] },
+      KB.findOneAndUpdate({ id: req.body.id },
         req.body, { new: true }, (err, knowledge) => {
           if (err) {
             logger.error({ err }, 'Error updating knowledge');

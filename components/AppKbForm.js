@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { TextField } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import Typography from '@mui/material/Typography';
+import { v4 as uuidv4 } from 'uuid';
 
 const CustomTextField = withStyles({ root: { width: '100% !important' } })(TextField);
 
 const AppKbForm = (props) => {
   const [kbState, setKBState] = useState({
+    id: '',
     title: '',
     content: ''
   });
@@ -52,7 +54,11 @@ const AppKbForm = (props) => {
         />
       </div>
       <button className="btn waves-effect waves-light" type="submit"
-        name="action" onClick={() => { props.create(kbState); handleChange(null, 'reset'); }}
+        name="action" onClick={() => {
+          kbState.id = uuidv4();
+          props.create(kbState);
+          handleChange(null, 'reset');
+        }}
         style={{ backgroundColor: '#1B4370', color: 'white', marginTop: '40px', padding: '0 1.5rem' }}>
         Submit
         <i className="material-icons right">send</i>

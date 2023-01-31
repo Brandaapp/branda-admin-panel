@@ -16,12 +16,13 @@ const AppKbDisplay = (props) => {
     state: false
   });
   const [cardState, setCardState] = useState({
+    id: '',
     title: '',
     content: ''
   });
 
-  const deleteCard = (title) => {
-    axios.delete('/api/getinfo/kb/getAppKb', { data: { title: title } })
+  const deleteCard = (id) => {
+    axios.delete('/api/getinfo/kb/getAppKb', { data: { id: id } })
       .then(() => { props.refresh(); });
   };
 
@@ -30,12 +31,17 @@ const AppKbDisplay = (props) => {
       index: index,
       state: true
     });
+    setCardState(() => ({
+      id: props.appKbs[index].id,
+      title: props.appKbs[index].title,
+      content: props.appKbs[index].content }));
   };
 
   const updateCard = (output, toChange) => {
     if (toChange === 'reset') {
-      const data = { title: cardState.title, content: cardState.content };
+      const data = { id: cardState.id, title: cardState.title, content: cardState.content };
       setCardState({
+        id: '',
         title: '',
         content: ''
       });
@@ -78,7 +84,7 @@ const AppKbDisplay = (props) => {
                   value={cardState.content}
                   onChange={(event) => updateCard(event, 'content')}
                 />
-                <Button onClick={() => updateCard(null, 'reset')}>Update</Button>
+                <Button onClick={() => { updateCard(null, 'reset'); }}>Update</Button>
               </>
             ) : (
               <>
@@ -89,7 +95,7 @@ const AppKbDisplay = (props) => {
                   {item.content}
                 </Typography>
                 <CardActions>
-                  <Button onClick={() => deleteCard(item.title)}>Delete</Button>
+                  <Button onClick={() => deleteCard(item.id)}>Delete</Button>
                   <Button onClick={() => allowEdit(index)}>Edit</Button>
                 </CardActions>
               </>
