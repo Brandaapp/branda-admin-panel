@@ -19,6 +19,10 @@
     "name": "Push Notifications",
     "icon": "sms"
   },
+  "/knowledge-base": {
+    "name": "Knowledge Base",
+    "icon": "help_outline"
+  },
   "/clubs": {
     "name": "Clubs Management",
     "icon": "group"
