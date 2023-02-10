@@ -10,7 +10,8 @@ export const access = {
       '/register',
       '/push-notifications',
       '/clubs',
-      '/knowledge-base'
+      '/knowledge-base',
+      '/special-events'
     ]),
     redirectTo: '/'
   },

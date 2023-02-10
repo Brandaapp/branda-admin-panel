@@ -26,5 +26,9 @@
   "/clubs": {
     "name": "Clubs Management",
     "icon": "group"
+  },
+  "/special-events": {
+    "names": "Special Events",
+    "icon": "event"
   }
 }
