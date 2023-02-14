@@ -19,7 +19,7 @@ export default function (req, res) {
         }))
         .then(tags => tags.filter(tag => routesToUpdate.includes(tag.name)))
         .then(tags => {
-          logger.debug({ tags }, 'Taggs being updated');
+          logger.debug({ tags }, 'Tags being updated');
           shuttleActivity.findOne({
             date: {
               $gte: moment().startOf('day'),

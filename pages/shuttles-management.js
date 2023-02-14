@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import ShuttleView from '../components/ShuttleView';
+import ShuttleViewDesktop from '../components/shuttles/desktop/ShuttleViewDesktop';
 
-export default function ShuttlesManagement () {
+export default function ShuttlesManagement ({ isMobile, setSnackMeta }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -10,10 +10,22 @@ export default function ShuttlesManagement () {
       </Head>
 
       <main className={styles.main}>
-        <ShuttleView />
+        { isMobile
+          ? null
+          : <ShuttleViewDesktop setSnackMeta={setSnackMeta} />
+        }
       </main>
 
       <footer className={styles.footer}></footer>
     </div>
   );
+}
+
+export async function getServerSideProps ({ req }) {
+  const userAgent = req ? req.headers['user-agent'] : navigator.userAgent;
+  const isMobile = Boolean(userAgent.match(
+    /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+  ));
+
+  return { props: { isMobile } };
 }
