@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const KBArticle = new Schema({
+  id: {
+    type: String
+  },
   title: {
     type: String
   },
