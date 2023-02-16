@@ -10,6 +10,7 @@
     "depcheck": "npx depcheck",
     "test:utils": "mocha --colors ./tests/utils/$UTIL.spec.mjs",
     "test:utils:all": "mocha --colors --exit ./tests/utils",
+    "test:apis": "mocha --colors --exit ./tests/apis",
     "lint": "eslint --cache .",
     "lint:fix": "eslint --cache --fix ."
   },
