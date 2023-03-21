@@ -1,5 +1,5 @@
 import logger from '../../../../utils/loggers/server.mjs';
-const ShuttleActivity = require('../../../../models/ShuttleActivity');
+import ShuttleActivity from '../../../../models/ShuttleActivity.js';
 const { DateTime } = require('luxon');
 
 export default (req, res) => {

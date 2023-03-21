@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import ShuttleViewDesktop from '../components/shuttles/desktop/ShuttleViewDesktop';
+import ShuttleViewMobile from '../components/shuttles/mobile/ShuttleViewMobile';
 
 export default function ShuttlesManagement ({ isMobile, setSnackMeta }) {
   return (
@@ -11,7 +12,7 @@ export default function ShuttlesManagement ({ isMobile, setSnackMeta }) {
 
       <main className={styles.main}>
         { isMobile
-          ? null
+          ? <ShuttleViewMobile setSnackMeta={setSnackMeta} />
           : <ShuttleViewDesktop setSnackMeta={setSnackMeta} />
         }
       </main>

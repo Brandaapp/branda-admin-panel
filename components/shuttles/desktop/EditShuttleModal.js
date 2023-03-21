@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import BugReportIcon from '@mui/icons-material/BugReport';
 
@@ -35,39 +35,38 @@ const style = {
   width: '45vw'
 };
 
-export default function AddShuttleModal ({
+export default function EditShuttleModal ({
   routeName,
   date,
   open,
   setOpen,
   setSnackMeta,
-  propagateShuttle
+  initialShuttle,
+  initialStart,
+  initialEnd,
+  propagateRemove,
+  propagateUpdate
 }) {
-  const [shuttle, setShuttle] = useState(shuttles[0]);
-  const [start, setStart] = useState(dayjs(date).startOf('D'));
-  const [end, setEnd] = useState(dayjs(date).endOf('D'));
-
-  useEffect(() => {
-    setStart(dayjs(date).startOf('D'));
-    setEnd(dayjs(date).endOf('D'));
-  }, [date]);
+  const [shuttle, setShuttle] = useState(initialShuttle.text);
+  const [start, setStart] = useState(dayjs(initialStart));
+  const [end, setEnd] = useState(dayjs(initialEnd));
 
   const notTodayOrTomorrow = day => {
-    const today = dayjs(date);
+    const today = dayjs(initialStart).startOf('day');
     return !today.isSame(dayjs(day), 'day') && !today.add(1, 'day').isSame(dayjs(day), 'day');
   };
 
   const close = () => {
-    setShuttle(shuttles[0]);
+    setShuttle(initialShuttle.text);
     setOpen(false);
-    setStart(dayjs(date).startOf('D'));
-    setEnd(dayjs(date).endOf('D'));
+    setStart(dayjs(initialStart));
+    setEnd(dayjs(initialEnd));
   };
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(JSON.stringify({
-      selectedShuttleName: shuttle.text,
-      selectedShuttleID: shuttle.value,
+      selectedShuttleName: shuttle,
+      selectedShuttleID: shuttles.find(bus => bus.text === shuttle).value,
       currentDate: dayjs(date).format(),
       startTime: start.format(),
       endTime: end.format(),
@@ -87,29 +86,50 @@ export default function AddShuttleModal ({
     });
   };
 
-  const addShuttle = () => {
-    axios.post(`/api/shuttles/${dayjs(date).format()}`, {
-      start,
-      end,
-      ID: dayjs().valueOf(),
-      busID: shuttle.value,
-      busName: shuttle.text,
-      route: routeName
-    }).then(response => {
-      setSnackMeta({
-        open: true,
-        severity: 'success',
-        message: `Successfully added ${shuttle.text} to the ${routeName} route on ${date.format('L')}`
+  const deleteShuttle = () => {
+    axios.delete(`api/shuttles/${dayjs(date).format()}/${initialShuttle.ID}`)
+      .then(() => {
+        setSnackMeta({
+          open: true,
+          severity: 'success',
+          message: `Deleted shuttle ${shuttle} from the ${routeName} route.`
+        });
+        close();
+        propagateRemove();
+      }).catch(() => {
+        setSnackMeta({
+          open: true,
+          severity: 'error',
+          message: `Error deleting shuttle ${shuttle.text} from the ${routeName} route.`
+        });
       });
-      close();
-      propagateShuttle(response.data, routeName);
-    }).catch(() => {
-      setSnackMeta({
-        open: true,
-        severity: 'error',
-        message: 'Error adding shuttle'
+  };
+
+  const updateShuttle = () => {
+    const data = {
+      busID: shuttles.find(bus => bus.text === shuttle).value,
+      busName: shuttle,
+      start: start.format(),
+      end: end.format()
+    };
+
+    axios.patch(`api/shuttles/${dayjs(date).format()}/${initialShuttle.ID}`, data)
+      .then(() => {
+        close();
+        propagateUpdate(data, initialShuttle.text);
+        setSnackMeta({
+          open: true,
+          severity: 'success',
+          message: `Updated shuttle.`
+        });
+      })
+      .catch(() => {
+        setSnackMeta({
+          open: true,
+          severity: 'error',
+          message: `Error updating shuttle.`
+        });
       });
-    });
   };
 
   return (
@@ -119,11 +139,8 @@ export default function AddShuttleModal ({
     >
       <Card sx={style}>
         <CardContent>
-          {/* <Typography id='modal-modal-title' variant='h4' textAlign='center' pb={2}>
-            Add Shuttle
-          </Typography> */}
           <Typography id='modal-modal-title' variant='subtitle1' fontWeight={1}>
-            Choose a shuttle to add to the {routeName} route.
+            Update this shuttle on the {routeName} route.
           </Typography>
           <Stack spacing={3} mt={3}>
             <FormControl>
@@ -136,7 +153,7 @@ export default function AddShuttleModal ({
                 onChange={event => setShuttle(event.target.value)}
               >
                 {
-                  shuttles.map(bus => <MenuItem value={bus} key={bus.value}>{bus.text}</MenuItem>)
+                  shuttles.map(bus => <MenuItem value={bus.text} key={bus.value}>{bus.text}</MenuItem>)
                 }
               </Select>
             </FormControl>
@@ -162,7 +179,8 @@ export default function AddShuttleModal ({
         </CardContent>
         <CardActions sx={{ pt: 5 }}>
           <Stack spacing={4} direction='row' justifyContent='flex-end' width='100%'>
-            <Button size='small' onClick={addShuttle} variant='outlined' color='success'>Add Shuttle</Button>
+            <Button size='small' onClick={updateShuttle} variant='outlined' color='success'>Update</Button>
+            <Button size='small' onClick={deleteShuttle} variant='outlined' color='error'>Delete</Button>
             <Button
               size='small'
               startIcon={<BugReportIcon />}

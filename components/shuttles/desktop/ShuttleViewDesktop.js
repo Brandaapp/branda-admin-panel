@@ -3,7 +3,6 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import AddShuttleModal from './AddShuttleModal';
 import CustomDatePicker from './CustomDatePicker';
 import ShuttleList from './ShuttleList';
 
@@ -17,10 +16,6 @@ const cache = {};
 
 export default function ShuttleViewDesktop ({ setSnackMeta }) {
   const [date, setDate] = useState(dayjs());
-
-  // Modal metadata
-  const [currentRoute, setCurrentRoute] = useState('');
-  const [addShuttleModalOpen, setAddShuttleModalOpen] = useState(false);
 
   // Routes list
   const [separateRoutes, setSeparateRoutes] = useState({
@@ -65,10 +60,9 @@ export default function ShuttleViewDesktop ({ setSnackMeta }) {
           <Typography variant='subtitle1' fontWeight={1} fontSize={16}>
               Welcome to the Branda Shuttle Management page! To select a day to add a shuttle on, please use the
               day picker to the right. To add a shuttle on that day, click the image on the respective card, and
-              fill out the fields prompted. To edit or delete a shuttle, click on the pencil icon, and take
+              fill out the fields prompted. To edit or delete a shuttle, click on the shuttle item in the list, and take
               the appropriate action.
-              Please reach out to <Link href='mailto: brandaapp@gmail.com'>brandaapp@gmail.com</Link>
-              with  any questions.
+              Please email <Link href='mailto: brandaapp@gmail.com'>brandaapp@gmail.com</Link> with any questions.
           </Typography>
         </Grid>
         <Grid item xs={6}>
@@ -82,30 +76,42 @@ export default function ShuttleViewDesktop ({ setSnackMeta }) {
           ROUTES.map(route => (
             <Grid item xs={4} key={route}>
               <ShuttleList
+                date={date}
                 routeName={route}
                 shuttles={separateRoutes[route.toLowerCase()]}
-                openModal={route => {
-                  setCurrentRoute(route);
-                  setAddShuttleModalOpen(true);
-                }}/>
+                setSnackMeta={setSnackMeta}
+                propagateShuttle={(shuttles, currentRoute) => {
+                  const temp = JSON.clone(separateRoutes);
+                  temp[currentRoute.toLowerCase()] = shuttles.times.filter(shuttle =>
+                    shuttle.route.toLowerCase() === currentRoute.toLocaleLowerCase()
+                  );
+                  cache[date] = temp; // update the cache as well
+                  setSeparateRoutes(temp);
+                }}
+                deleteShuttle={(currentRoute, shuttleID) => {
+                  const temp = JSON.clone(separateRoutes);
+                  const routeTimes = temp[currentRoute.toLowerCase()];
+                  const idx =
+                    routeTimes.findIndex(shuttle => shuttle.ID === shuttleID);
+                  routeTimes.splice(idx, 1);
+                  cache[date] = temp;
+                  setSeparateRoutes(temp);
+                }}
+                updateShuttle={(currentRoute, shuttleID, data) => {
+                  const temp = JSON.clone(separateRoutes);
+                  const routeTimes = temp[currentRoute.toLowerCase()];
+                  const idx = routeTimes.findIndex(bus => bus.ID === shuttleID);
+                  const old = routeTimes[idx];
+                  routeTimes[idx] = { ...old, ...data };
+                  temp[currentRoute.toLowerCase()] = routeTimes;
+                  cache[date] = temp;
+                  setSeparateRoutes(temp);
+                }}
+              />
             </Grid>
           ))
         }
       </Grid>
-      <AddShuttleModal
-        open={addShuttleModalOpen}
-        setOpen={setAddShuttleModalOpen}
-        routeName={currentRoute}
-        date={date}
-        setSnackMeta={setSnackMeta}
-        propagateShuttle={shuttles => {
-          const temp = JSON.clone(separateRoutes);
-          temp[currentRoute.toLowerCase()] = shuttles.times.filter(shuttle =>
-            shuttle.route.toLowerCase() === currentRoute.toLocaleLowerCase()
-          );
-          setSeparateRoutes(temp);
-        }}
-      />
     </Box>
   );
 }
