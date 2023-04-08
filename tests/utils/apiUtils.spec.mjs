@@ -14,7 +14,7 @@ describe('API tests', () => {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });
-    const db = mongoose.connection
+    db = mongoose.connection
 
     // Set up test data
     await db.collection('myCollection').insertOne({ name: 'John Doe' });
