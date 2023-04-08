@@ -1,8 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
-
-const { MongoClient } = require('mongodb');
-const assert = require('assert');
+import { MongoClient } from 'mongodb';
 
 const url = 'mongodb://localhost:27017';
 const dbName = 'testdb';
@@ -29,8 +27,9 @@ describe('API tests', () => {
   });
 
   it('should retrieve data from the database', async () => {
-    const result = await db.collection('myCollection').findOne({ name: 'John Doe' });
-    expect(result.name).to.equal('John Doe');
+    const data = { name: 'John Doe' }
+    const result = await db.collection('myCollection').findOne(data);
+    expect(result.name).to.deep.equal(data);
   });
 
   it('should insert data into the database', async () => {
