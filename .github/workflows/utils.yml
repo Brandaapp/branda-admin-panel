@@ -46,3 +46,41 @@ jobs:
       - uses: ./.github/actions/node/latest
       - run: npm install
       - run: npm run test:utils
+
+  scheduleUtils:
+    runs-on: ubuntu-latest
+    env:
+      UTIL: scheduleUtils
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/node/latest
+      - run: npm install
+      - run: npm run test:utils
+
+  apiUtils:
+    runs-on: ubuntu-latest
+    env:
+      UTIL: apiUtils
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install node latest
+        uses: ./.github/actions/node/latest
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Start MongoDB container
+        uses: docker/compose-action@v1
+        with:
+          compose-file: docker-compose.yml
+
+      # - name: Seed test data in MongoDB
+      #   run: node seed.js
+
+      - name: Run API tests
+        run: npm run test:utils
+        
+      - name: Clean up MongoDB container
+        run: docker-compose down
