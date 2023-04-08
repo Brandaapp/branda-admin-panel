@@ -25,13 +25,13 @@ describe('API tests', () => {
     await db.collection('myCollection').deleteMany({});
 
     // Disconnect from MongoDB
-    await client.close();
+    await db.close();
   });
 
   it('should retrieve data from the database', async () => {
     const data = { name: 'John Doe' }
     const result = await db.collection('myCollection').findOne(data);
-    expect(result.name).to.deep.equal(data);
+    expect(result.name).to.equal(data.name);
   });
 
   it('should insert data into the database', async () => {
