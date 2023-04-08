@@ -1,9 +1,8 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
-import { MongoClient } from 'mongodb';
+import mongoose from 'mongoose';
 
-const url = 'mongodb://localhost:27017';
-const dbName = 'testdb';
+const url = process.env.ADMIN_PANEL_DATABASE_URL;
 
 describe('API tests', () => {
   let client;
@@ -11,8 +10,11 @@ describe('API tests', () => {
 
   beforeEach(async () => {
     // Connect to MongoDB
-    client = MongoClient.connect(url, { useUnifiedTopology: true });
-    db = client.db(dbName);
+    mongoose.connect(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    const db = mongoose.connection
 
     // Set up test data
     await db.collection('myCollection').insertOne({ name: 'John Doe' });

@@ -65,6 +65,7 @@ jobs:
             ports:
               - "27017:27017"
     env:
+      ADMIN_PANEL_DATABASE_URL: 'mongodb://localhost:27017/testing'
       UTIL: apiUtils
     steps:
       - name: Checkout code
