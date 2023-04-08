@@ -59,6 +59,13 @@ jobs:
 
   apiUtils:
     runs-on: ubuntu-latest
+    services:
+          mongodb:
+            image: mongo:latest
+            ports:
+              - "27017:27017"
+            env:
+              MONGO_INITDB_DATABASE: testdb
     env:
       UTIL: apiUtils
     steps:
@@ -71,16 +78,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Start MongoDB container
-        uses: docker/compose-action@v1
-        with:
-          compose-file: docker-compose.yml
-
       # - name: Seed test data in MongoDB
       #   run: node seed.js
 
       - name: Run API tests
         run: npm run test:utils
-        
-      - name: Clean up MongoDB container
-        run: docker-compose down
