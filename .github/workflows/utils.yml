@@ -74,17 +74,14 @@ jobs:
       - name: Install node latest
         uses: ./.github/actions/node/latest
 
-      - name: Install node-fetch for testing
-        run: npm install node-fetch
-
-      - name: Install dependencies
-        run: npm install
+      - name: Install dependencies and node-fetch for testing
+        run: npm install && npm i node-fetch
 
       - name: Run Server
         run: npm run dev &
 
       - name: Wait for server to start
-        run: bash wait-for-it.sh localhost:3000 --timeout=30 -- echo "Server started"
+        run: bash ./wait-for-it.sh localhost:3000 --timeout=30 -- echo "Server started"
 
       # - name: Seed test data in MongoDB
       #   run: node seed.js
