@@ -78,7 +78,7 @@ jobs:
         run: npm install
 
       - name: Run Server
-        run: npm run dev --background
+        run: npm run dev &
 
       - name: Wait for server to start
         run: npx wait-for-it localhost:3000 --timeout=30 --strict -- echo "Server started"
