@@ -2,19 +2,19 @@
 import { expect } from 'chai';
 import mongoose from 'mongoose';
 
-const url = process.env.ADMIN_PANEL_DATABASE_URL;
+const dburl = process.env.ADMIN_PANEL_DATABASE_URL;
+const url = 'http://localhost:3000/';
 
 describe('API tests', () => {
-  let client;
   let db;
 
   beforeEach(async () => {
     // Connect to MongoDB
-    mongoose.connect(url, {
+    mongoose.connect(dburl, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });
-    db = mongoose.connection
+    db = mongoose.connection;
 
     // Set up test data
     await db.collection('myCollection').insertOne({ name: 'John Doe' });
@@ -28,13 +28,25 @@ describe('API tests', () => {
     await db.close();
   });
 
-  it('should retrieve data from the database', async () => {
-    const data = { name: 'John Doe' }
-    const result = await db.collection('myCollection').findOne(data);
-    expect(result.name).to.equal(data.name);
+  it('should create a new user', async () => {
+    const data = { username: 'Archer',
+      email: 'a@a.gmail.com',
+      userType: 'student',
+      picture: 'archerpic' };
+    const res = await fetch(url + 'api/auth/users/', {
+      method: 'POST',
+      headers: {
+        'Content=Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    expect(res.status).to.equal(201);
+    expect((await res.json()).username).to.be('Archer');
+    // const result = await db.collection('User').findOne(data);
+    // expect(result.name).to.equal(data.name);
   });
 
-  it('should insert data into the database', async () => {
+  it('should get all users', async () => {
     const data = { name: 'Jane Doe' };
     await db.collection('myCollection').insertOne(data);
     const result = await db.collection('myCollection').findOne(data);
