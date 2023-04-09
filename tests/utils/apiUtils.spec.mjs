@@ -42,7 +42,7 @@ describe('API tests', () => {
       },
       body: JSON.stringify(data)
     });
-    console.log(res.text);
+    expect(res.text).to.be(5);
     expect(res.status).to.equal(201);
     expect((await res.json()).username).to.be('Archer');
     const result = await db.collection('User').findOne(data);
