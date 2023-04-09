@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
 import mongoose from 'mongoose';
+import fetch from 'node-fetch';
 
-const dburl = process.env.ADMIN_PANEL_DATABASE_URL;
+const dburl = 'mongodb://localhost:27017/testing';
 const url = 'http://localhost:3000/';
 
 describe('API tests', () => {
@@ -36,7 +37,7 @@ describe('API tests', () => {
     const res = await fetch(url + 'api/users/', {
       method: 'POST',
       headers: {
-        'Content=Type': 'application/json'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
     });
