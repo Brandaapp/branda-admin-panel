@@ -81,10 +81,7 @@ jobs:
         run: npm run dev --background
 
       - name: Wait for server to start
-        uses: npx wait-for-it loclahost:3000 --timeout=30 --strict -- echo "Server started"
-        with:
-          resources: http://localhost:3000
-          timeout: '30s'
+        run: npx wait-for-it localhost:3000 --timeout=30 --strict -- echo "Server started"
 
       # - name: Seed test data in MongoDB
       #   run: node seed.js
