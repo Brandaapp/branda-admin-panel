@@ -43,6 +43,7 @@ describe('API tests', () => {
       body: JSON.stringify(data)
     });
     console.log(await res.text());
+    console.log("Does console logging work????")
     expect(res.status).to.equal(201);
     expect((await res.json()).username).to.be('Archer');
     const result = await db.collection('User').findOne(data);
