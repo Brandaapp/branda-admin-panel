@@ -33,7 +33,7 @@ describe('API tests', () => {
       email: 'a@a.gmail.com',
       userType: 'student',
       picture: 'archerpic' };
-    const res = await fetch(url + 'api/auth/users/', {
+    const res = await fetch(url + 'api/users/', {
       method: 'POST',
       headers: {
         'Content=Type': 'application/json'
