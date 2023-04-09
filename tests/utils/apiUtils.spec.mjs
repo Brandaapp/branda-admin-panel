@@ -38,7 +38,7 @@ describe('API tests', () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'api_token': process.env.API_TOKEN_SECRET
+        'api_token': process.env.API_TOKEN || process.env.API_TOKEN_SECRET
       },
       body: JSON.stringify(data)
     });
