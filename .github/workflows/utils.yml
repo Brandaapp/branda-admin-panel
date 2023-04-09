@@ -78,7 +78,11 @@ jobs:
         run: npm install
 
       - name: Run Server
-        run: npm run dev
+        run: npm run dev --background
+        - uses: kamranahmedse/wait-on@1.1.0
+        with:
+          resources: http://localhost:3000
+          timeout: '30s'
 
       # - name: Seed test data in MongoDB
       #   run: node seed.js
