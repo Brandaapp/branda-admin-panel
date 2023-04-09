@@ -81,7 +81,7 @@ jobs:
         run: npm run dev --background
 
       - name: Wait for server to start
-        uses: kamranahmedse/wait-on@1.1.0
+        uses: npx wait-for-it loclahost:3000 --timeout=30 --strict -- echo "Server started"
         with:
           resources: http://localhost:3000
           timeout: '30s'
