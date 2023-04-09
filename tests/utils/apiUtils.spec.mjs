@@ -34,18 +34,19 @@ describe('API tests', () => {
       email: 'a@a.gmail.com',
       userType: 'student',
       picture: 'archerpic' };
+    let res;
     try {
-      const res = await fetch(url + 'api/users/', {
+      res = await fetch(url + 'api/users/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
       });
-      expect(res.status).to.equal(201);
     } catch (e) {
       e;
     }
+    expect(res.status).to.equal(201);
     // expect((await res.json()).username).to.be('Archer');
     // const result = await db.collection('User').findOne(data);
     // expect(result.name).to.equal(data.name);
