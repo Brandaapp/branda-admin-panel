@@ -37,7 +37,8 @@ describe('API tests', () => {
     const res = await fetch(url + 'api/users/', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'api_token': 1
       },
       body: JSON.stringify(data)
     });
