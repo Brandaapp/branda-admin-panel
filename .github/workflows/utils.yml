@@ -74,7 +74,7 @@ jobs:
       - name: Install node latest
         uses: ./.github/actions/node/latest
 
-      -name: Install wait-for-it
+      - name: Install wait-for-it
         run: npm install -g wait-for-it
 
       - name: Install dependencies
