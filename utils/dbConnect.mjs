@@ -3,11 +3,11 @@ import mongoose from 'mongoose';
 
 const connection = {};
 
-function dbConnect (dev = false) {
+function dbConnect () {
   if (connection.isConnected) {
     return Promise.resolve();
   }
-  const uri = dev ? 'mongodb://localhost:8080' : process.env.ADMIN_PANEL_DATABASE_URL;
+  const uri = process.env.ADMIN_PANEL_DATABASE_URL;
   return new Promise((resolve, reject) => {
     mongoose.connect(uri, {
       useNewUrlParser: true,
