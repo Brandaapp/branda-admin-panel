@@ -74,9 +74,6 @@ jobs:
       - name: Install node latest
         uses: ./.github/actions/node/latest
 
-      - name: Install wait-for-it
-        run: npm install -D wait-for-it
-
       - name: Install dependencies
         run: npm install
 
@@ -84,7 +81,7 @@ jobs:
         run: npm run dev &
 
       - name: Wait for server to start
-        run: wait-for-it localhost:3000 --timeout=30 --strict -- echo "Server started"
+        run: bash wait-for-it.sh localhost:3000 --timeout=30 --strict -- echo "Server started"
 
       # - name: Seed test data in MongoDB
       #   run: node seed.js
