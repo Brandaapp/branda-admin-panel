@@ -71,7 +71,7 @@ jobs:
       ADMIN_PANEL_SECRET: '18'
       SAMSARA_API_KEY: 'abc'
       NEXTAUTH_URL: 'http://localhost:3000'
-		  DB_ACCESS_TOKEN_SECRET: 'def'
+      DB_ACCESS_TOKEN_SECRET: 'def'
       UTIL: apiUtils
     steps:
       - name: Checkout code
