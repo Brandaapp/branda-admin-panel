@@ -46,7 +46,7 @@ describe('API tests', () => {
     });
     expect(res.status).to.equal(200);
     expect((await res.json()).username).to.equal('Archer');
-    const result = await db.collection('User').findOne(data);
+    const result = await db.collection('User').findOne({ username: 'Archer' });
     expect(result.username).to.equal(data.username);
   });
 
