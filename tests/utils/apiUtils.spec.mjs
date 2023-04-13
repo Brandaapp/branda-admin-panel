@@ -52,6 +52,28 @@ describe('API tests', () => {
     expect(result.userType).to.equal(data.userType);
     expect(result.picture).to.equal(data.picture);
   });
+  it('should create a new user', async () => {
+    const data = { username: 'Archer',
+      email: 'a@a.gmail.com',
+      password: 'password',
+      userType: 'student',
+      picture: 'archerpic' };
+    const res = await fetch(url + 'api/users/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'api_token': process.env.API_TOKEN || process.env.API_TOKEN_SECRET
+      },
+      body: JSON.stringify(data)
+    });
+    // TODO: Must fix to expect 201 and must fix pages/
+    expect(res.status).to.equal(200);
+    expect((await res.json()).username).to.equal('Archer');
+    const result = await db.collection('users').findOne({ username: 'Archer' });
+    expect(result.username).to.equal(data.username);
+    expect(result.userType).to.equal(data.userType);
+    expect(result.picture).to.equal(data.picture);
+  });
 
   it('should get all users', async () => {
     const data = { name: 'Jane Doe' };
