@@ -30,7 +30,7 @@ describe('API tests', () => {
     await db.close();
   });
 
-  it('should create a new user', async () => {
+  it('should create a new user and as the first test, will take a hot second', async () => {
     const data = { username: 'Archer',
       email: 'a@a.gmail.com',
       password: 'password',
@@ -52,7 +52,7 @@ describe('API tests', () => {
     expect(result.userType).to.equal(data.userType);
     expect(result.picture).to.equal(data.picture);
   });
-  it('should create a new user', async () => {
+  it('should create a new user but will take a lot less time', async () => {
     const data = { username: 'Archer',
       email: 'a@a.gmail.com',
       password: 'password',
@@ -75,7 +75,7 @@ describe('API tests', () => {
     expect(result.picture).to.equal(data.picture);
   });
 
-  it('should get all users', async () => {
+  it('confirms we can query from the database', async () => {
     const data = { name: 'Jane Doe' };
     await db.collection('myCollection').insertOne(data);
     const result = await db.collection('myCollection').findOne(data);
