@@ -24,7 +24,7 @@ describe('API tests', () => {
   afterEach(async () => {
     // Remove test data
     await db.collection('myCollection').deleteMany({});
-    await db.collection('User').deleteMany({});
+    await db.collection('users').deleteMany({});
 
     // Disconnect from MongoDB
     await db.close();
@@ -44,11 +44,13 @@ describe('API tests', () => {
       },
       body: JSON.stringify(data)
     });
+    // TODO: Must fix to expect 201 and must fix pages/
     expect(res.status).to.equal(200);
     expect((await res.json()).username).to.equal('Archer');
-    const result = await db.collection('User').find({});
-    console.log(result);
+    const result = await db.collection('users').findOne({ username: 'Archer' });
     expect(result.username).to.equal(data.username);
+    expect(result.userType).to.equal(data.userType);
+    expect(result.picture).to.equal(data.picture);
   });
 
   it('should get all users', async () => {
