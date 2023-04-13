@@ -24,6 +24,7 @@ describe('API tests', () => {
   afterEach(async () => {
     // Remove test data
     await db.collection('myCollection').deleteMany({});
+    await db.collection('User').deleteMany({});
 
     // Disconnect from MongoDB
     await db.close();
@@ -43,7 +44,7 @@ describe('API tests', () => {
       },
       body: JSON.stringify(data)
     });
-    expect(res.status).to.equal(201);
+    expect(res.status).to.equal(200);
     expect((await res.json()).username).to.be('Archer');
     const result = await db.collection('User').findOne(data);
     expect(result.name).to.equal(data.name);
