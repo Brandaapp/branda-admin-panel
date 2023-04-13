@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import mongoose from 'mongoose';
 import fetch from 'node-fetch';
 
-const dburl = 'mongodb://localhost:27017/testing';
+const dburl = process.env.ADMIN_PANEL_DATABASE_URL || 'mongodb://localhost:27017/testing';
 const url = 'http://localhost:3000/';
 
 describe('API tests', () => {
@@ -32,6 +32,7 @@ describe('API tests', () => {
   it('should create a new user', async () => {
     const data = { username: 'Archer',
       email: 'a@a.gmail.com',
+      password: 'password',
       userType: 'student',
       picture: 'archerpic' };
     const res = await fetch(url + 'api/users/', {
