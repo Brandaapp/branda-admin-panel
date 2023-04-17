@@ -1,0 +1,33 @@
+version: "3"
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      ADMIN_PANEL_DATABASE_URL: "mongodb://db:27017/testing"
+      API_TOKEN_SECRET: "random_api_token_secret"
+      DB_ACCESS_TOKEN_SECRET: "random_access_token_secret"
+
+    command: npm start
+    depends_on:
+      - db
+
+  db:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+
+  api-test:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api-test
+    environment:
+      ADMIN_PANEL_DATABASE_URL: "mongodb://db:27017/testing"
+      API_TOKEN_SECRET: "random_api_token_secret"
+      APP_URL: "http://app:3000/"
+    depends_on:
+      - app
+
