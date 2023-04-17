@@ -4,14 +4,14 @@ import mongoose from 'mongoose';
 import fetch from 'node-fetch';
 
 const dburl = process.env.ADMIN_PANEL_DATABASE_URL || 'mongodb://localhost:27017/testing';
-const url = 'http://localhost:3000/';
+const url = process.env.APP_URL || 'http://localhost:3000/';
 
 describe('API tests', () => {
   let db;
 
   beforeEach(async () => {
     // Connect to MongoDB
-    mongoose.connect(dburl, {
+    await mongoose.connect(dburl, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });
@@ -30,6 +30,11 @@ describe('API tests', () => {
     await db.close();
   });
 
+  it('should check if server is running', async () => {
+    const res = await fetch(url);
+    expect(res.status).to.equal(200);
+  });
+
   it('should create a new user and as the first test, will take a hot second', async () => {
     const data = { username: 'Archer',
       email: 'a@a.gmail.com',
@@ -40,7 +45,7 @@ describe('API tests', () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'api_token': process.env.API_TOKEN || process.env.API_TOKEN_SECRET
+        'api_token': process.env.API_TOKEN_SECRET
       },
       body: JSON.stringify(data)
     });
@@ -62,7 +67,7 @@ describe('API tests', () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'api_token': process.env.API_TOKEN || process.env.API_TOKEN_SECRET
+        'api_token': process.env.API_TOKEN_SECRET
       },
       body: JSON.stringify(data)
     });
