@@ -46,3 +46,34 @@ jobs:
       - uses: ./.github/actions/node/latest
       - run: npm install
       - run: npm run test:utils
+
+  apiUtils:
+    runs-on: ubuntu-latest
+    services:
+          mongodb:
+            image: mongo:latest
+            ports:
+              - "27017:27017"
+    env:
+      ADMIN_PANEL_DATABASE_URL: 'mongodb://localhost:27017/testing'
+      API_TOKEN_SECRET: ${{ secrets.API_TOKEN }}
+      DB_ACCESS_TOKEN_SECRET: 'def'
+      UTIL: apiUtils
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install node latest
+        uses: ./.github/actions/node/latest
+
+      - name: Install dependencies and node-fetch for testing
+        run: npm install && npm i node-fetch
+
+      - name: Run Server
+        run: npm run dev &
+
+      # - name: Seed test data in MongoDB
+      #   run: node seed.js
+
+      - name: Run API tests
+        run: npm run test:utils
