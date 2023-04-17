@@ -1,0 +1,19 @@
+FROM node:16
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json into the container
+RUN npm init -y
+
+# Install dependencies
+RUN npm install node-fetch chai mongoose
+
+RUN npm i -g mocha
+
+
+# Copy the rest of the app code into the container
+COPY ../tests .
+
+# Set the command to run the API tests
+CMD ["mocha", "--colors", "./utils/apiUtils.spec.mjs", "--timeout", "20000"]
