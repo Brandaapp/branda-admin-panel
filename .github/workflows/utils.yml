@@ -58,8 +58,7 @@ jobs:
       ADMIN_PANEL_DATABASE_URL: 'mongodb://localhost:27017/testing'
       API_TOKEN: ${{ secrets.API_TOKEN }}
       API_TOKEN_SECRET: ${{ secrets.API_TOKEN }}
-      ADMIN_PANEL_JWT_SECRET: '17'
-      # ADMIN_PANEL_SECRET: '18'
+      # ADMIN_PANEL_JWT_SECRET: '17'
       DB_ACCESS_TOKEN_SECRET: 'def' # this is required
       UTIL: apiUtils
     steps:
