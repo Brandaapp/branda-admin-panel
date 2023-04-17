@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "depcheck": "npx depcheck",
+    "test:api": "docker compose down | docker compose up --build --abort-on-container-exit",
     "test:utils": "mocha --colors ./tests/utils/$UTIL.spec.mjs --timeout 20000",
     "test:utils:all": "mocha --colors --exit ./tests/utils",
     "lint": "eslint --cache .",
