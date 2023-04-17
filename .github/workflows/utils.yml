@@ -60,8 +60,7 @@ jobs:
       API_TOKEN_SECRET: ${{ secrets.API_TOKEN }}
       ADMIN_PANEL_JWT_SECRET: '17'
       ADMIN_PANEL_SECRET: '18'
-      SAMSARA_API_KEY: 'abc'
-      # NEXTAUTH_URL: 'http://localhost:3000'
+      # SAMSARA_API_KEY: 'abc'
       DB_ACCESS_TOKEN_SECRET: 'def' # this is required
       UTIL: apiUtils
     steps:
